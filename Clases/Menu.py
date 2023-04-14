@@ -8,7 +8,7 @@ class Menu:
         self.cant_ingredientes = []
     
     def __str__(self):
-        return 'Nombre del plato: ' + self.nombre + " Precio: " + str(self.precio) + " Ingredientes: " + str(self.ingredientes) + " Tiempo de preparacion: " + str(self.tiempo_preparacion)
+        return 'Nombre del plato: ' + self.nombre + " Precio: " + str(self.precio) + " Ingredientes: " + str(self.ingredientes) + ' Cantidad de cada ingrediente: ' + str(self.cant_ingredientes) + " Tiempo de preparacion: " + str(self.tiempo_preparacion)
     def agregar_plato(self):
         self.nombre = str(input("Ingrese el nombre del plato: "))
         self.precio = int(input("Ingrese el precio del plato: "))
@@ -21,5 +21,3 @@ class Menu:
 plato1 = Menu()
 plato1.agregar_plato()
 print(plato1)
-
-#hola andy
