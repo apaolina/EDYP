@@ -1,0 +1,27 @@
+Hola chicos
+
+-Llega cliente/s, se le asigna mesa, y a la mesa cliente. (otra opción podría ser sumar takeaway)
+-A la mesa se le asigna mozo. 
+-El mozo le entrega carta al cliente (o a la mesa)
+-Crear menú, MP para cada plato, tiempos, costo, inventario, personal que se necesita para hacer el plato.
+-Ver si hay que sumar los tiempos de cada cosa (usar libreria estadistica)
+-Clase Pedido con todos los pedidos de la mesa, o si es takeaway los platos que pidió. 
+-Clase Inventario de la que se resten lo que se va ordenando. 
+-Clase Orden MP para los pedidos que necesiten hacerse a proveedores de la MP. 
+-Después que el mesero busca el pedido y lo lleva a la mesa.
+-También que nos quedamos sin alguna MP "rebote" el pedido hasta que ordene bien. 
+-Clase Personal, que incluya mozos, cocineros.
+-Arribo de los clientes por gamma o alguna similar, y que si supera la cantidad de comensales x mesa los divida en más mesas.
+-Asumimos que se cobra cuando hacen el pedido. 
+-Poder ver la caja con los ingresos. Todos los pagos son digitales.
+-Cuando se va el cliente se libera la mesa, u otra opcion que cada mozo maneje en simultaneo X mesas. 
+-Podemos hacer mini-layout con botones. 
+-Asignarle el mozo de manera manual. 
+-Funcionalidades de la app: Cuando clickeas en cada mesa, ver orden, 
+    ver tiempo que están y mozo asignado. Además, poder contratar y despedir personal,
+    chequear stocks y alerta cuando nivel de stock bajo para efectuar nueva orden. 
+    Agregar/sacar mesas, cambiar precios, crear nuevo plato, dar de baja un plato. Hacer reservas. 
+-Tener dos tipos de accesos: que las Funcionalidades picantes solo las haga el gerente, pero ver que puedan los mozos por ej.
+-Linkear todo a base de datos que va guardando lo que va pasando.
+-Crear un usuario/dar de baja
+
