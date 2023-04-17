@@ -1,0 +1,10 @@
+Buenas, les dejo aca unas herramientas que creo que nos va a ayudar mucho en el proceso para diseñar y trabajar en este proyecto:
+
+Trello - Una herramienta para ir poniendo que actividades o elementos requieren desarrollo o en que situacion se encuentran (A falta de revision, rediseño, etc.)
+https://trello.com/invite/b/QDBhF76N/ATTI4ec272e91b6cfc1988a0a80f1094ab18B3BB4E48/edyp
+
+Figma - Una herramienta para poder visualizar la estructura y las relaciones que vamos a tener en cuanto nuestras clases
+Para esta les mande un mail para poder unirse al proyecto
+
+
+Estas dos herramientas se usan bastante en el laburo posta y me parece buena idea usarlas para evitar repeticion de trabajo y bastante rediseño
