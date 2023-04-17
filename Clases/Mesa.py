@@ -1,4 +1,5 @@
 #Se crea la clase Mesa
+# Clase que representa una mesa para que los clientes ocupen y puedan realizar pedidos
 class Mesa:
     def __init__(self, numero, capacidad, estado):
         self.numero = numero

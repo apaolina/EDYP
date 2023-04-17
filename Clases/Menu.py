@@ -1,4 +1,5 @@
 #Se crea la clase Menu
+# Clase que visualiza los platos disponibles para pedir a los clientes basado en los ingredientes disponibles
 class Menu:
     def __init__(self): 
         self.nombre = ''
