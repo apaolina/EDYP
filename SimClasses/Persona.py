@@ -1,3 +1,5 @@
+from enum import Enum
+from .SimController import *
 #Clase generica de las personas
 class Persona():
     def __init__(self, nombre:str) -> None:
@@ -19,6 +21,13 @@ class Cliente(Persona):
     def __str__(self) -> str:
         return super().__str__()
 
+class EstadoGC(Enum):
+    ESPERANDO_MESA = 1
+    ELIGIENDO_COMIDA = 2
+    ESPERANDO_PEDIR = 3
+    ESPERANDO_COMIDA = 4
+    COMIENDO = 5
+
 #Clase para agrupar a los clientes, se encarga de sentarse en una mesa desocupada, realizar pedidos y pagar
 class GrupoClientes():
     totalGrupos = 0
@@ -28,6 +37,7 @@ class GrupoClientes():
         for cliente in clientes:
             self.clientes.append(cliente)
         GrupoClientes.totalGrupos += 1
+        self.estado = EstadoGC.ESPERANDO_MESA
 
     def __str__(self) -> str:
         string = ""
@@ -46,8 +56,19 @@ class GrupoClientes():
     def getCantidadClientes(self) -> int:
         return len(self.clientes)
     
-    def requestMesa():
-        pass
+    def getEstado(self) -> EstadoGC:
+        return self.estado
+    
+    def __responseMesa(self, result: bool) -> None:
+        if(result):
+            self.estado = EstadoGC.ELIGIENDO_COMIDA
+            # Aca implementar funcion que inicia el proceso de seleccion de comida
+        else:
+            i = 1 # Falta crear una cola de pedir asiento. Cambiar codigo aca cuando tengo eso
+    
+    def requestMesa(self) -> None:
+        instance.requestMesa(self.getCantidadClientes(), self.__responseMesa)
+
         
 #Clase generica de los empleados, hereda de Persona
 class Empleado(Persona):
