@@ -8,3 +8,5 @@ Para esta les mande un mail para poder unirse al proyecto
 
 
 Estas dos herramientas se usan bastante en el laburo posta y me parece buena idea usarlas para evitar repeticion de trabajo y bastante rediseño
+
+Me parece mejor idea usar .jsons para guardar informacion relevante como info de mozos, recetas, resultados cuantitativos de la sim, etc.
