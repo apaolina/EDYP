@@ -1,5 +1,4 @@
 from enum import Enum
-from .SimController import *
 #Clase generica de las personas
 class Persona():
     def __init__(self, nombre:str) -> None:
@@ -60,16 +59,22 @@ class GrupoClientes():
         return self.estado
     
     def __responseMesa(self, result: bool) -> None:
+        from .SimController import instance
         if(result):
             self.estado = EstadoGC.ELIGIENDO_COMIDA
+            if(instance.grupoController.colaSentar.dentro(self)):
+                instance.grupoController.colaSentar.desencolar(self)
             # Aca implementar funcion que inicia el proceso de seleccion de comida
-        else:
-            i = 1 # Falta crear una cola de pedir asiento. Cambiar codigo aca cuando tengo eso
+        elif(not instance.grupoController.colaSentar.dentro(self)):
+            instance.grupoController.colaSentar.encolar(self)
     
     def requestMesa(self) -> None:
-        instance.requestMesa(self.getCantidadClientes(), self.__responseMesa)
+        from .SimController import instance
+        if(self.estado != EstadoGC.ESPERANDO_MESA):
+            raise Exception("Grupo ya esta sentado")
+        instance.requestMesa(self, self.__responseMesa)
 
-        
+
 #Clase generica de los empleados, hereda de Persona
 class Empleado(Persona):
     def __init__(self, nombre:str) -> None:
