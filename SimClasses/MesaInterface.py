@@ -18,7 +18,7 @@ class MesaInterface():
     def requestMesa(self, cantidad: int, response) -> None:
         # Busca dentro de la lista de todas las mesas una que este desocupada y que tenga la capacidad para el grupo que pide
         encontroMesa = False
-        for id in range(len(MesaInterface.mesas) + 1):
+        for id in range(len(MesaInterface.mesas)):
             if(id in MesaInterface.mesas):
                 if((MesaInterface.mesas[id].getEstado() == EstadoMesa.DESOCUPADO) and\
                     (MesaInterface.mesas[id].getCapacidad() >= cantidad)):

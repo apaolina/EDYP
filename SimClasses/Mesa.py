@@ -11,7 +11,7 @@ class Mesa:
     totalMesas = 0
     
     def __init__(self, capacidad):
-        self.id = Mesa.totalMesas + 1
+        self.id = Mesa.totalMesas
         Mesa.totalMesas += 1
         self.capacidad = capacidad
         self.estado = EstadoMesa.DESOCUPADO

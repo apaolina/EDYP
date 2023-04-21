@@ -15,10 +15,14 @@ class Cliente(Persona):
         super().__init__(nombre)
         self.id = Cliente.totalClientes + 1
         Cliente.totalClientes += 1
+        self.enGrupo = False
         self.velocidad = 2 # Sujeto a cambio, requiere varianza, en metros/segundo
 
     def __str__(self) -> str:
         return super().__str__()
+    
+    def agrupar(self) -> None:
+        self.enGrupo = True
 
 class EstadoGC(Enum):
     ESPERANDO_MESA = 1
@@ -34,7 +38,10 @@ class GrupoClientes():
         self.id = GrupoClientes.totalGrupos + 1
         self.clientes:list[Cliente] = []
         for cliente in clientes:
+            if(cliente.enGrupo):
+                raise Exception(f"Cliente {cliente.nombre} ya se encuentra en un grupo")
             self.clientes.append(cliente)
+            cliente.agrupar()
         GrupoClientes.totalGrupos += 1
         self.estado = EstadoGC.ESPERANDO_MESA
 
