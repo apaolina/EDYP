@@ -1,14 +1,11 @@
-from .MesaController import MesaController
-from .GrupoClientesController import GrupoClientesController
+from .MesaInterface import MesaInterface
+from .GrupoClientesInterface import GrupoClientesInterface
 
-# Clase que contiene todas las instancias de los controllers en simultaneo
+# Clase que contiene todas las instancias de los Interfaces en simultaneo
 class Instance():
     def __init__(self) -> None:
-        self.mesaController = MesaController()
-        self.grupoController = GrupoClientesController()
+        self.mesaInterface = MesaInterface()
+        self.grupoInterface = GrupoClientesInterface()
         pass
-
-    def requestMesa(self, grupoClientes, respuesta) -> None:
-        self.mesaController.requestMesa(grupoClientes.getCantidadClientes(), respuesta)
 
 instance = Instance()

@@ -3,18 +3,18 @@ from typing import TypeVar, Generic
 T = TypeVar('T')
 
 class NodoCola(Generic[T]):
-    def __init__(self,item:T, id: int) -> None:
+    def __init__(self,item:T, posicion: int) -> None:
         self.item: T = item
-        self.id: int = id
+        self.posicion: int = posicion
 
     def __str__(self) -> str:
-        return f"item: {self.item}, id: {self.id}"
+        return f"item: {self.item}, posicion: {self.posicion}"
 
     def MoverAdelante(self) -> None:
-        self.id -= 1
+        self.posicion -= 1
 
     def MoverAtras(self) -> None:
-        self.id += 1
+        self.posicion += 1
 
 
 class Cola(Generic[T]):
@@ -50,16 +50,16 @@ class Cola(Generic[T]):
     
 class ColaSentar(Cola):
 
-    def __acomodarCola(self, id: int) -> None:
-        for nodo in self.nodos[id+1:]:
+    def __acomodarCola(self, posicion: int) -> None:
+        for nodo in self.nodos[posicion+1:]:
             nodo.MoverAdelante()
 
 
     def desencolar(self, item: T) -> T:
         for nodo in self.nodos:
             if(nodo.item == item):
-                resultado = self.nodos.pop(nodo.id)
-                self.__acomodarCola(nodo.id)
+                resultado = self.nodos.pop(nodo.posicion)
+                self.__acomodarCola(nodo.posicion)
                 self.totalnodos -= 1
                 return resultado.item
             

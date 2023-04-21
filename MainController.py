@@ -13,14 +13,14 @@ po = p.GrupoClientes(cliente1,cliente2,cliente3, cliente1)
 o = p.GrupoClientes(cliente1,cliente2,cliente3, cliente1)
 
 lista = [grupo, rupo, upo, po, o]
-instance.mesaController.crearMesa(1) # Se le esta asignando a esta mesa un grupo de clientes de 3 cuando es mejor asignarle la mesa de 10 de capacidad.
-instance.mesaController.crearMesa(10)
+instance.mesaInterface.crearMesa(1) # Se le esta asignando a esta mesa un grupo de clientes de 3 cuando es mejor asignarle la mesa de 10 de capacidad.
+instance.mesaInterface.crearMesa(10)
 
 for grupo in lista:
     grupo.requestMesa()
 
-print(instance.mesaController.mesas[1].getEstado())
-print(instance.grupoController.colaSentar.totalnodos)
+print(instance.mesaInterface.mesas[1].getEstado())
+print(instance.grupoInterface.colaSentar.totalnodos)
 
 
 

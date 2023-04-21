@@ -44,7 +44,7 @@ class GrupoClientes():
         for cliente in self.clientes:
             string += f"{cliente.nombre}, "
 
-        return string[0:len(str) - 2]
+        return string[:-2]
 
     def addCliente(self, cliente:Cliente) -> None:
         self.clientes.append(cliente)
@@ -62,17 +62,17 @@ class GrupoClientes():
         from .SimController import instance
         if(result):
             self.estado = EstadoGC.ELIGIENDO_COMIDA
-            if(instance.grupoController.colaSentar.dentro(self)):
-                instance.grupoController.colaSentar.desencolar(self)
+            if(instance.grupoInterface.colaSentar.dentro(self)):
+                instance.grupoInterface.colaSentar.desencolar(self)
             # Aca implementar funcion que inicia el proceso de seleccion de comida
-        elif(not instance.grupoController.colaSentar.dentro(self)):
-            instance.grupoController.colaSentar.encolar(self)
+        elif(not instance.grupoInterface.colaSentar.dentro(self)):
+            instance.grupoInterface.colaSentar.encolar(self)
     
     def requestMesa(self) -> None:
         from .SimController import instance
         if(self.estado != EstadoGC.ESPERANDO_MESA):
             raise Exception("Grupo ya esta sentado")
-        instance.requestMesa(self, self.__responseMesa)
+        instance.mesaInterface.requestMesa(self.getCantidadClientes(), self.__responseMesa)
 
 
 #Clase generica de los empleados, hereda de Persona
