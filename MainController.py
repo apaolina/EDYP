@@ -1,6 +1,9 @@
 from SimClasses import instance
 
-instance.simular(tiempoSimulacion = 20, tiempoEntreTick = 1)
+instance.mesaManager.crearMesa(2)
+instance.mesaManager.crearMesa(4)
+
+instance.simular(tiempoSimulacion = 20, tiempoPorTick = 1)
 
 """
 
@@ -21,6 +24,7 @@ Todo los cambios que pasaron en este push son basicamente la IMPLEMENTACION DEL 
 """
 
 print(instance.grupoManager.colaSentar.totalnodos)
+print(instance.mesaManager.verEstadoMesas())
 
 
 

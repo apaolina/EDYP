@@ -29,7 +29,7 @@ class Restaurante():
         self.tick = Tick(tiempoPorTick)
         self.__subscribirAcciones()
         while tiempoSimulacion > 0:
-            self.tick.on_tick(self.tick.tiempoPorTick,self.grupoManager.colaSentar)
+            self.tick.on_tick(self.tick.tiempoPorTick)
             # Aca hay que poner un metodo de recoleccion de informacion
             tiempoSimulacion -= tiempoPorTick
 

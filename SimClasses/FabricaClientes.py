@@ -18,7 +18,7 @@ class FabricaClientes():
         self.tiempoParaProxCliente -= tiempoPorTick
         pass
 
-    def fabricarClientes(self, tiempoPorTick:int, cola: ColaSentar) -> None: # Esta seria la funcion que se callea por tick
+    def fabricarClientes(self, tiempoPorTick:int) -> None: # Esta seria la funcion que se callea por tick
 
         if(self.tiempoParaProxCliente > 0):
             self.__descontarTiempo(tiempoPorTick)
@@ -32,7 +32,7 @@ class FabricaClientes():
             nuevoCliente = Cliente(names.get_full_name())
             resultado.addCliente(nuevoCliente)
 
-        cola.encolar(resultado) 
+        resultado.requestMesa()
         self.__tiempoEntreClientes() # Estas lineas de codigo producen un nuevo grupo, lo encolan y generan un nuevo tiempo entre clientes
 
     
