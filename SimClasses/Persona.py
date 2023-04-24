@@ -66,20 +66,20 @@ class GrupoClientes():
         return self.estado
     
     def __responseMesa(self, result: bool) -> None:
-        from .SimController import instance
+        from .RestauranteManager import instance
         if(result):
             self.estado = EstadoGC.ELIGIENDO_COMIDA
-            if(instance.grupoInterface.colaSentar.dentro(self)):
-                instance.grupoInterface.colaSentar.desencolar(self)
+            if(instance.grupoManager.colaSentar.dentro(self)):
+                instance.grupoManager.colaSentar.desencolar(self)
             # Aca implementar funcion que inicia el proceso de seleccion de comida
-        elif(not instance.grupoInterface.colaSentar.dentro(self)):
-            instance.grupoInterface.colaSentar.encolar(self)
+        elif(not instance.grupoManager.colaSentar.dentro(self)):
+            instance.grupoManager.colaSentar.encolar(self)
     
     def requestMesa(self) -> None:
-        from .SimController import instance
+        from .RestauranteManager import instance
         if(self.estado != EstadoGC.ESPERANDO_MESA):
             raise Exception("Grupo ya esta sentado")
-        instance.mesaInterface.requestMesa(self.getCantidadClientes(), self.__responseMesa)
+        instance.mesaManager.requestMesa(self.getCantidadClientes(), self.__responseMesa)
 
 
 #Clase generica de los empleados, hereda de Persona

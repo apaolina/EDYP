@@ -1,6 +1,6 @@
 from .Mesa import Mesa, EstadoMesa
 # Esta clase controla todas las mesas que se crearon
-class MesaInterface():
+class MesaManager():
 
     mesas: dict[int,Mesa] = {}
 
@@ -9,21 +9,21 @@ class MesaInterface():
 
     def crearMesa(self, capacidad:int) -> Mesa:
         nuevaMesa = Mesa(capacidad)
-        MesaInterface.mesas.update({nuevaMesa.getId():nuevaMesa})
+        MesaManager.mesas.update({nuevaMesa.getId():nuevaMesa})
         return nuevaMesa
     
     def eliminarMesa(self, id: int) -> None:
-        MesaInterface.mesas.pop(id)
+        MesaManager.mesas.pop(id)
 
     def requestMesa(self, cantidad: int, response) -> None:
         # Busca dentro de la lista de todas las mesas una que este desocupada y que tenga la capacidad para el grupo que pide
         encontroMesa = False
-        for id in range(len(MesaInterface.mesas)):
-            if(id in MesaInterface.mesas):
-                if((MesaInterface.mesas[id].getEstado() == EstadoMesa.DESOCUPADO) and\
-                    (MesaInterface.mesas[id].getCapacidad() >= cantidad)):
+        for id in range(len(MesaManager.mesas)):
+            if(id in MesaManager.mesas):
+                if((MesaManager.mesas[id].getEstado() == EstadoMesa.DESOCUPADO) and\
+                    (MesaManager.mesas[id].getCapacidad() >= cantidad)):
                     encontroMesa = True
-                    MesaInterface.mesas[id].ocupar()
+                    MesaManager.mesas[id].ocupar()
                     break
 
         response(encontroMesa)
@@ -32,9 +32,9 @@ class MesaInterface():
         a = 0
         b = 0
         c = 0
-        for id in range(len(MesaInterface.mesas) + 1):
-            if(id in MesaInterface.mesas):
-                match MesaInterface.mesas[id].getEstado():
+        for id in range(len(MesaManager.mesas) + 1):
+            if(id in MesaManager.mesas):
+                match MesaManager.mesas[id].getEstado():
                     case EstadoMesa.DESOCUPADO:
                         a += 1
                     case EstadoMesa.OCUPADO:
