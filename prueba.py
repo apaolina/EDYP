@@ -1,14 +1,16 @@
-from SimClasses import Persona
-from SimClasses import Mesa
+# from SimClasses import Persona
+# from SimClasses import Mesa
 
-mesa = Mesa.Mesa(4)
-cliente1 = Persona.Cliente("Joaquin Ramos")
-cliente2 = Persona.Cliente("Lionel Messi")
+# mesa = Mesa.Mesa(4)
+# cliente1 = Persona.Cliente("Joaquin Ramos")
+# cliente2 = Persona.Cliente("Lionel Messi")
 
-grupo = Persona.GrupoClientes(cliente1)
+# grupo = Persona.GrupoClientes(cliente1)
 
-grupo.addCliente(cliente2)
+# grupo.addCliente(cliente2)
 
-mesa.ocupar(grupo)
+# mesa.ocupar(grupo)
 
-print(mesa.getEstado)
+# print(mesa.getEstado)
+import hashlib as hash
+print(hash.sha256("a".encode()))
