@@ -1,6 +1,5 @@
 from .Persona import Cliente, GrupoClientes
 import random as r
-from .Cola import ColaSentar
 import names
 
 # Esta .py se encargara de la produccion de grupos de clientes, simulando entrada de los mismos
@@ -12,7 +11,7 @@ class FabricaClientes():
         pass
 
     def __tiempoEntreClientes(self) -> None: # Esto devolvera la cantidad de tiempo para que llegue un nuevo grupo de clientes
-        self.tiempoParaProxCliente = 5 # Aca utilizar media y stdDev para alterar la frecuencia de los clientes
+        self.tiempoParaProxCliente = 60 # Aca utilizar media y stdDev para alterar la frecuencia de los clientes
     
     def __descontarTiempo(self, tiempoPorTick:int) -> None: # Esta funcion ajusta la cantidad de tiempo entre c/tick
         self.tiempoParaProxCliente -= tiempoPorTick
@@ -20,7 +19,7 @@ class FabricaClientes():
 
     def fabricarClientes(self, tiempoPorTick:int) -> None: # Esta seria la funcion que se callea por tick
 
-        if(self.tiempoParaProxCliente > 0):
+        if(self.tiempoParaProxCliente > 1):
             self.__descontarTiempo(tiempoPorTick)
             return None
         

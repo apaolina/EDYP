@@ -1,9 +1,12 @@
 from SimClasses import instance
+import time
 
 instance.mesaManager.crearMesa(2)
-instance.mesaManager.crearMesa(4)
+instance.mesaManager.crearMesa(2)
 
-instance.simular(tiempoSimulacion = 20, tiempoPorTick = 1)
+start = time.time()
+instance.simular(tiempoSimulacion = (60*60*8), tiempoPorTick = 1)
+end = time.time()
 
 """
 
@@ -23,8 +26,8 @@ Todo los cambios que pasaron en este push son basicamente la IMPLEMENTACION DEL 
 
 """
 
-print(instance.grupoManager.colaSentar.totalnodos)
+
+print(f"grupos: {instance.grupoManager.getCantidadGrupoClientes()}")
+print(f"en cola: {instance.grupoManager.colaSentar.totalnodos}")
 print(instance.mesaManager.verEstadoMesas())
-
-
-
+print(end-start)

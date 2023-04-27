@@ -8,6 +8,9 @@ class GrupoClientesManager():
         self.fabricaClientes = FabricaClientes(mediaLlegadaGrupos, stdDevLlegadaGrupos) # Este objeto producira la entrada de nuevos clientes
         pass
 
+    def getCantidadGrupoClientes(self) -> int:
+        return GrupoClientes.totalGrupos
+
     def getCantidadColaSentar(self) -> int:
         return len(GrupoClientesManager.colaSentar)
     

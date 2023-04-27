@@ -52,6 +52,9 @@ class GrupoClientes():
             string += f"{cliente.nombre}, "
 
         return string[:-2]
+    
+    def __len__(self) -> int:
+        return len(self.clientes)
 
     def addCliente(self, cliente:Cliente) -> None:
         self.clientes.append(cliente)
@@ -81,18 +84,30 @@ class GrupoClientes():
             raise Exception("Grupo ya esta sentado")
         instance.mesaManager.requestMesa(self.getCantidadClientes(), self.__responseMesa)
 
-
 #Clase generica de los empleados, hereda de Persona
 class Empleado(Persona):
     def __init__(self, nombre:str) -> None:
         super().__init__(nombre)
 
+class MeseroEstado(Enum):
+    ESPERANDO_ACCION = 1
+    TOMANDO_PEDIDO = 2
+    LLEVANDO_PLATOS = 3
+    LAVANDO_MESA = 4
+
 #Clase de Meseros, hereda de Empleado, se encarga de tomar pedidos y servir platos
 class Mesero(Empleado):
+    totalMeseros = 0
     def __init__(self, nombre:str) -> None:
         super().__init__(nombre)
+        self.estado: MeseroEstado = MeseroEstado.ESPERANDO_ACCION
+        self.id = Mesero.totalMeseros
+        Mesero.totalMeseros += 1
 
 #Clase de Cocineros, hereda de Empleado, se encarga de crear platos segun los pedidos siguiendo los pasos de las recetas
 class Cocinero(Empleado):
+    totalCocineros = 0
     def __init__(self, nombre:str) -> None:
         super().__init__(nombre)
+        self.id = Mesero.totalCocineros
+        Cocinero.totalCocineros += 1
