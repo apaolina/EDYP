@@ -1,4 +1,5 @@
 from .Persona import Cliente, GrupoClientes
+from .Tiempo import tiempo_aleatorio
 import random as r
 import names
 
@@ -11,7 +12,7 @@ class FabricaClientes():
         pass
 
     def __tiempoEntreClientes(self) -> None: # Esto devolvera la cantidad de tiempo para que llegue un nuevo grupo de clientes
-        self.tiempoParaProxCliente = 60 # Aca utilizar media y stdDev para alterar la frecuencia de los clientes
+        self.tiempoParaProxCliente = tiempo_aleatorio(60) # Definir el valor de lambda que queremos para los clientes (Lo fije 60 en un principio)
     
     def __descontarTiempo(self, tiempoPorTick:int) -> None: # Esta funcion ajusta la cantidad de tiempo entre c/tick
         self.tiempoParaProxCliente -= tiempoPorTick
