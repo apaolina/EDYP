@@ -44,7 +44,7 @@ def create_account():
     
 def login():
     username = username_entry.get()
-    password = password_entry.get()
+    password = password_entry.get().encode()
     stored_password = None
     stored_username = None
     with open("users.txt", "r") as file:

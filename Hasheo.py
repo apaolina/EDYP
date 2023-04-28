@@ -14,6 +14,6 @@ def verify_password(stored_password, entered_password):
     salt = stored_password[:16]
     stored_hash = stored_password[16:]
     # Aplicar el hash a la contraseña ingresada junto con la sal
-    entered_hash = hashlib.pbkdf2_hmac("sha256", entered_password.encode(), salt, 100000)
+    entered_hash = hashlib.pbkdf2_hmac("sha256", entered_password, salt, 100000)
     # Comparar los hashes
     return entered_hash == stored_hash
