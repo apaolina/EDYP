@@ -10,10 +10,10 @@ from tkinter import messagebox
 
 #root.mainloop()
 
-
-
 instance.mesaManager.crearMesa(2)
 instance.mesaManager.crearMesa(2)
+
+instance.empleadoManager.crearMesero("Joaquin Ramos")
 
 start = time.time()
 instance.simular(tiempoSimulacion = (60*60*8), tiempoPorTick = 1)

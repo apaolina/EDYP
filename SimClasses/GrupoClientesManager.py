@@ -4,6 +4,7 @@ from .FabricaClientes import FabricaClientes
 
 class GrupoClientesManager():
     colaSentar = ColaSentar()
+    gruposEligiendoComida = []
     colaPedido = Cola()
     def __init__(self, mediaLlegadaGrupos: int, stdDevLlegadaGrupos: int) -> None:
         self.fabricaClientes = FabricaClientes(mediaLlegadaGrupos, stdDevLlegadaGrupos) # Este objeto producira la entrada de nuevos clientes
@@ -18,6 +19,17 @@ class GrupoClientesManager():
     def requestMesaDenuevo(self) -> int:
         self.colaSentar.nodos[0].item.requestMesa()
 
+    def requestPedido(self, response) -> None:
+        if(len(self.colaPedido) == 0):
+            response(None,None)
+            return None
+        
+        grupo: GrupoClientes = self.colaPedido.desencolar()
+        
+        response(grupo.listaPedido, grupo.id)
+        grupo.listaPedido = []
+        
+
     def elegirComidaGrupoClientes(self, tiempoPorTick: int) -> None:
-        for grupo in self.colaPedido.items:
+        for grupo in self.gruposEligiendoComida:
             grupo.elegirComida(tiempoPorTick)

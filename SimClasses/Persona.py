@@ -6,6 +6,7 @@ menu = Menu()
 
 #Clase generica de las personas
 class Persona():
+
     def __init__(self, nombre:str) -> None:
         self.nombre = nombre
         pass
@@ -15,7 +16,9 @@ class Persona():
 
 #Clase de Clientes, hereda de Persona
 class Cliente(Persona):
+
     totalClientes = 0
+
     def __init__(self, nombre:str) -> None:
         super().__init__(nombre)
         self.id = Cliente.totalClientes + 1
@@ -38,19 +41,25 @@ class EstadoGC(Enum):
 
 #Clase para agrupar a los clientes, se encarga de sentarse en una mesa desocupada, realizar pedidos y pagar
 class GrupoClientes():
+
     totalGrupos = 0
+
     def __init__(self, *clientes: Cliente) -> None:
         self.id = GrupoClientes.totalGrupos + 1
         self.clientes:list[Cliente] = []
+
         for cliente in clientes:
+
             if(cliente.enGrupo):
                 raise Exception(f"Cliente {cliente.nombre} ya se encuentra en un grupo")
+            
             self.clientes.append(cliente)
             cliente.agrupar()
+
         GrupoClientes.totalGrupos += 1
         self.estado = EstadoGC.ESPERANDO_MESA
         self.tiempoParaPedir: int
-        self.pedido: list(str)
+        self.listaPedido: list(str) = []
 
     def __str__(self) -> str:
         string = ""
@@ -77,7 +86,6 @@ class GrupoClientes():
     
     def __descontarTiempoElegirComida(self, tiempoPorTick: int) -> None:
         self.tiempoParaPedir -= tiempoPorTick
-        pass
 
     def elegirComida(self, tiempoPorTick: int) -> None:
         if(self.estado != EstadoGC.ELIGIENDO_COMIDA):
@@ -87,37 +95,58 @@ class GrupoClientes():
             self.__descontarTiempoElegirComida(tiempoPorTick)
             return None
 
-        self.listaPedido = []
-
         for cliente in self.clientes:
             plato = menu.listaPlatos[r.randint(0,len(menu.listaPlatos) - 1)]
             self.listaPedido.append(plato)
 
         self.estado = EstadoGC.ESPERANDO_PEDIR
 
-    def __responseMesa(self, result: bool) -> None:
         from .RestauranteManager import instance
-        if(result):
+        instance.grupoManager.colaPedido.encolar(self)
+
+    def __responseMesa(self, resultado: bool) -> None:
+        from .RestauranteManager import instance
+
+        if(resultado):
             if(instance.grupoManager.colaSentar.dentro(self)):
                 instance.grupoManager.colaSentar.desencolar(self)
+
             self.tiempoParaPedir = 60 # Otra instancia donde necesitamos aleatorizar el tiempo
             self.estado = EstadoGC.ELIGIENDO_COMIDA
-            instance.grupoManager.colaPedido.encolar(self)
+
+            instance.grupoManager.gruposEligiendoComida.append(self)
+
         elif(not instance.grupoManager.colaSentar.dentro(self)):
             instance.grupoManager.colaSentar.encolar(self)
     
     def requestMesa(self) -> None:
         from .RestauranteManager import instance
+
         if(self.estado != EstadoGC.ESPERANDO_MESA):
-            raise Exception("Grupo ya esta sentado")
+            raise Exception(f"El grupo {self.id} ya esta sentado")
+        
         instance.mesaManager.requestMesa(self.getCantidadClientes(), self.__responseMesa)
+
+    def tomarPedido(self) -> None:
+        if(self.estado != EstadoGC.ESPERANDO_PEDIR):
+            raise Exception(f"El grupo {self.id} no esta esperando pedir")
+        
+        self.estado = EstadoGC.ESPERANDO_COMIDA
 
 #Clase generica de los empleados, hereda de Persona
 class Empleado(Persona):
+
+    totalEmpleados = 0
+
     def __init__(self, nombre:str) -> None:
         super().__init__(nombre)
+        self.id = self.totalEmpleados
+        self.totalEmpleados += 1
 
-class MeseroEstado(Enum):
+    def getId(self) -> int:
+        return self.id
+
+class EstadoMesero(Enum):
     ESPERANDO_ACCION = 1
     TOMANDO_PEDIDO = 2
     LLEVANDO_PLATOS = 3
@@ -125,17 +154,52 @@ class MeseroEstado(Enum):
 
 #Clase de Meseros, hereda de Empleado, se encarga de tomar pedidos y servir platos
 class Mesero(Empleado):
-    totalMeseros = 0
+
     def __init__(self, nombre:str) -> None:
         super().__init__(nombre)
-        self.estado: MeseroEstado = MeseroEstado.ESPERANDO_ACCION
-        self.id = Mesero.totalMeseros
-        Mesero.totalMeseros += 1
+        self.estado: EstadoMesero = EstadoMesero.ESPERANDO_ACCION
+        self.pedidoEnMano: tuple(list,int)
+        self.contadorParaAccion: int
+
+    def __responsePedido(self, resultado: (None|list), id: (None|int)) -> None:
+        if(resultado is None or id is None):
+            return None
+        
+        self.estado = EstadoMesero.TOMANDO_PEDIDO
+        self.pedidoEnMano = (resultado,id)
+        self.contadorParaAccion = 10 # Otra instancia donde necesitamos aleatorizar el tiempo
+
+    def __requestPedido(self) -> None:
+        from .RestauranteManager import instance
+        if(self.estado != EstadoMesero.ESPERANDO_ACCION):
+            raise Exception(f"Mesero {self.id} ya esta ocupado")
+        
+        instance.grupoManager.requestPedido(self.__responsePedido)
+
+    def realizarAccion(self,tiempoPorTick: int) -> None:
+        
+        match self.estado:
+
+            case EstadoMesero.ESPERANDO_ACCION: # Orden de priorizacion iria aca
+                self.__requestPedido()
+                pass
+
+            case EstadoMesero.TOMANDO_PEDIDO:
+                if(self.contadorParaAccion > 1):
+                    self.contadorParaAccion -= tiempoPorTick
+
+                # Implementar aca entrega de pedido a cola para producir los platos
+                pass
+
+            case EstadoMesero.LLEVANDO_PLATOS:
+                pass
+
+            case other:
+                pass
+
 
 #Clase de Cocineros, hereda de Empleado, se encarga de crear platos segun los pedidos siguiendo los pasos de las recetas
 class Cocinero(Empleado):
-    totalCocineros = 0
+
     def __init__(self, nombre:str) -> None:
         super().__init__(nombre)
-        self.id = Mesero.totalCocineros
-        Cocinero.totalCocineros += 1

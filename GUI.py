@@ -15,9 +15,6 @@ password_entry = Entry(root, show="*")
 username_entry.grid(row=0, column=1)
 password_entry.grid(row=1, column=1)
 
-   
-
-
 def create_account():
     create_window = Toplevel(root)
     create_window.title("Crear cuenta")
