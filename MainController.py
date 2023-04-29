@@ -1,14 +1,9 @@
 from SimClasses import instance
 import time
 from GUI import *
-from tkinter import *
-from tkinter import messagebox
 
-#Button(root, text="Iniciar sesión", command=login).grid(row=3)
 
-#Button(root, text="Crear cuenta", command=create_account).grid(row=4)
 
-#root.mainloop()
 
 instance.mesaManager.crearMesa(2)
 instance.mesaManager.crearMesa(2)
