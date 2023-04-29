@@ -1,3 +1,4 @@
+
 from Hasheo import *
 
 #Va a haber que agregar muchos verificadores acá. Especialmente cuando interactuamos con el users.txt
@@ -28,28 +29,43 @@ def dos():
     print("|Ingrese su nombre de usuario:")
     usuario = str(input('|>>  ').strip())
     with open("users.txt", "r") as file:
-        usuario_almacenado = []
+        usuarios_almacenados = []
         for line in file.readlines():
             usuario_almacenado, contraseña_almacenada = line.strip().split(",")
-        if usuario_almacenado == usuario:
-            print("|El usuario ya existe, pruebe otro")
-            file.close()
-            dos()
-        else:
-            file.close()
-            registrar_usuario(usuario)
+            usuarios_almacenados.append(usuario_almacenado)
+        for i in range(len(usuarios_almacenados)):
+            if usuarios_almacenados[i-1] == usuario:
+                print("|El usuario ya existe, pruebe otro")
+                file.close()
+                consola()
+        file.close()
+        registrar_usuario(usuario)
 
 def uno():
     print("|Ingrese su nombre de usuario: ")
     usuario_ingresado = str(input('|>>  ').strip())
+    with open('users.txt', 'r') as file:
+        existe = False
+        usuarios_almacenados = []
+        for line in file.readlines():
+            usuario_almacenado, contraseña_almacenada = line.strip().split(",")
+            usuarios_almacenados.append(usuario_almacenado)
+        for i in range(len(usuarios_almacenados)):
+                if usuarios_almacenados[i-1] == usuario_ingresado:
+                    existe = True
+        if existe == False:
+            print("|El usuario no existe, pruebe otro")
+            file.close()
+            consola()
+        file.close()
     print("|Ingrese su contraseña: ")
-    contraseña_ingresadaa = input(">>  ")
-    if verificar_contraseña(contraseña_ingresadaa, usuario_ingresado) == True:
+    contraseña_ingresada = input(">>  ")
+    if verificar_contraseña(contraseña_ingresada, usuario_ingresado) == True:
         print("|Bienvenido " + usuario_ingresado)
         print('----------------------------------------')
     else:
         print("|Contraseña incorrecta")
-        uno() #Ojo con esto puedo estar en un loop infinito. Lo mismo con las otras opciones chequear.
+        consola() 
 
 def consola():
     print('----------------------------------------')
