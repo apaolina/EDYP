@@ -21,6 +21,7 @@ class Cola(Generic[T]):
     def __init__(self) -> None:
         self.nodos: list[NodoCola] = []
         self.totalnodos: int = 0
+        self.items = self.__getItems()
         pass
 
     def __len__(self) -> int:
@@ -29,6 +30,7 @@ class Cola(Generic[T]):
     def encolar(self, item:T):
         self.nodos.append(NodoCola(item,self.totalnodos))
         self.totalnodos += 1
+        self.items = self.__getItems()
         pass
 
     def desencolar(self) -> T:
@@ -47,6 +49,13 @@ class Cola(Generic[T]):
                 return True
         
         return False
+    
+    def __getItems(self):
+        resultado: list(T) = []
+        for nodo in self.nodos:
+            resultado.append(nodo.item)
+
+        return tuple(resultado)
     
 class ColaSentar(Cola):
 

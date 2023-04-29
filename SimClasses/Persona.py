@@ -1,4 +1,9 @@
 from enum import Enum
+from .Menu import Menu
+import random as r
+
+menu = Menu()
+
 #Clase generica de las personas
 class Persona():
     def __init__(self, nombre:str) -> None:
@@ -16,13 +21,13 @@ class Cliente(Persona):
         self.id = Cliente.totalClientes + 1
         Cliente.totalClientes += 1
         self.enGrupo = False
-        self.velocidad = 2 # Sujeto a cambio, requiere varianza, en metros/segundo
 
     def __str__(self) -> str:
         return super().__str__()
     
     def agrupar(self) -> None:
         self.enGrupo = True
+
 
 class EstadoGC(Enum):
     ESPERANDO_MESA = 1
@@ -44,6 +49,8 @@ class GrupoClientes():
             cliente.agrupar()
         GrupoClientes.totalGrupos += 1
         self.estado = EstadoGC.ESPERANDO_MESA
+        self.tiempoParaPedir: int
+        self.pedido: list(str)
 
     def __str__(self) -> str:
         string = ""
@@ -68,13 +75,34 @@ class GrupoClientes():
     def getEstado(self) -> EstadoGC:
         return self.estado
     
+    def __descontarTiempoElegirComida(self, tiempoPorTick: int) -> None:
+        self.tiempoParaPedir -= tiempoPorTick
+        pass
+
+    def elegirComida(self, tiempoPorTick: int) -> None:
+        if(self.estado != EstadoGC.ELIGIENDO_COMIDA):
+            return None
+        
+        if(self.tiempoParaPedir > 1):
+            self.__descontarTiempoElegirComida(tiempoPorTick)
+            return None
+
+        self.listaPedido = []
+
+        for cliente in self.clientes:
+            plato = menu.listaPlatos[r.randint(0,len(menu.listaPlatos) - 1)]
+            self.listaPedido.append(plato)
+
+        self.estado = EstadoGC.ESPERANDO_PEDIR
+
     def __responseMesa(self, result: bool) -> None:
         from .RestauranteManager import instance
         if(result):
-            self.estado = EstadoGC.ELIGIENDO_COMIDA
             if(instance.grupoManager.colaSentar.dentro(self)):
                 instance.grupoManager.colaSentar.desencolar(self)
-            # Aca implementar funcion que inicia el proceso de seleccion de comida
+            self.tiempoParaPedir = 60 # Otra instancia donde necesitamos aleatorizar el tiempo
+            self.estado = EstadoGC.ELIGIENDO_COMIDA
+            instance.grupoManager.colaPedido.encolar(self)
         elif(not instance.grupoManager.colaSentar.dentro(self)):
             instance.grupoManager.colaSentar.encolar(self)
     

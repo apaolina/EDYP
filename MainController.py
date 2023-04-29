@@ -4,20 +4,20 @@ from GUI import *
 from tkinter import *
 from tkinter import messagebox
 
-Button(root, text="Iniciar sesión", command=login).grid(row=3)
+#Button(root, text="Iniciar sesión", command=login).grid(row=3)
 
-Button(root, text="Crear cuenta", command=create_account).grid(row=4)
+#Button(root, text="Crear cuenta", command=create_account).grid(row=4)
 
-root.mainloop()
+#root.mainloop()
 
 
 
-#instance.mesaManager.crearMesa(2)
-#instance.mesaManager.crearMesa(2)
+instance.mesaManager.crearMesa(2)
+instance.mesaManager.crearMesa(2)
 
-#start = time.time()
-#instance.simular(tiempoSimulacion = (60*60*8), tiempoPorTick = 1)
-#end = time.time()
+start = time.time()
+instance.simular(tiempoSimulacion = (60*60*8), tiempoPorTick = 1)
+end = time.time()
 
 """
 
@@ -38,7 +38,7 @@ Todo los cambios que pasaron en este push son basicamente la IMPLEMENTACION DEL 
 """
 
 
-#print(f"grupos: {instance.grupoManager.getCantidadGrupoClientes()}")
-#print(f"en cola: {instance.grupoManager.colaSentar.totalnodos}")
-#print(instance.mesaManager.verEstadoMesas())
-#print(end-start)
+print(f"grupos: {instance.grupoManager.getCantidadGrupoClientes()}")
+print(f"en cola: {instance.grupoManager.colaSentar.totalnodos}")
+print(instance.mesaManager.verEstadoMesas())
+print(end-start)

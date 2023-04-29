@@ -25,6 +25,7 @@ class Restaurante():
 
     def __subscribirAcciones(self) -> None: # Esta funcion va a hacer que todas las acciones escuchen al paso del tiempo del tick
         self.tick.on_tick += self.grupoManager.fabricaClientes.fabricarClientes
+        self.tick.on_tick += self.grupoManager.elegirComidaGrupoClientes
         pass
 
     def simular(self, tiempoSimulacion: int, tiempoPorTick: int) -> None: # Esto despues va a escupir los resultados de la simulacion, tiempoSim debe ser en segundos
