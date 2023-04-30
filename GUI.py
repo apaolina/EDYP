@@ -46,11 +46,13 @@ def dos():
         registrar_usuario(usuario)
 
 def resultado_simulacion(start, end):
-    print(f"|grupos: {instance.grupoManager.getCantidadGrupoClientes()}")
-    print(f"|en cola: {instance.grupoManager.colaSentar.totalnodos}")
-    print("|" + instance.mesaManager.verEstadoMesas())
-    print("|" + instance.cocinaManager.inventario)
-    print("|" + end-start)
+    print("----------------------------------------")
+    print("|Resultados de la simulación:")
+    print(f"grupos: {instance.grupoManager.getCantidadGrupoClientes()}")
+    print(f"en cola: {instance.grupoManager.colaSentar.totalnodos}")
+    print(instance.mesaManager.verEstadoMesas())
+    print(instance.cocinaManager.inventario)
+    print(end-start)
     exit()
 
 def empezar_simulacion():
@@ -62,38 +64,29 @@ def empezar_simulacion():
     resultado_simulacion(start, end)
 
 def crear_empleados():
-    print("|¿Desea crear un cocinero o un mozo?")
-    print("|1 - Cocinero")
-    print("|2 - Mozo")
-    print("|3 - Continuar")
-    respuesta = input('|>>  ')
-    if respuesta == "1":
-        print("|Cuántos cocineros desea agregar a la simulación?")
-        numero_cocineros = int(input('|>>  '))
-        for i in range(1, numero_cocineros + 1):
-            print("|Ingrese el nombre del cocinero " + str(i) + ":")
-            nombre_cocinero = input('|>>  ')
-            instance.empleadoManager.crearCocinero(nombre_cocinero)
-        print("|Ha creado " + str(numero_cocineros) + " cocineros con exito")
-        print("|Nombres de los cocineros creados:")
-        for i in range(1, numero_cocineros +1):
-            #print(instance.empleadoManager.empleados[i].nombre) FALTA ESTOOO
-            print("|No se como hacer que se muestren los nombres de los cocineros creados")
-        crear_empleados()
-    if respuesta == "2":
-        print("|Cuántos mozos desea agregar a la simulación?")
-        numero_mozos = int(input('|>>  '))
-        for i in range(1, numero_mozos + 1):
-            print("|Ingrese el nombre del mozo " + str(i) + ":")
-            nombre_mozo = input('|>>  ')
-            instance.empleadoManager.crearMesero(nombre_mozo)
-        print("|Ha creado" + str(numero_mozos) + " con exito")
-        print("|Nombres de los mozos creados:")
-        for i in range(1, numero_mozos + 1):
-            print("|No se como hacer que se muestren los nombres de los mozos creados")
-        crear_empleados()
-    if respuesta == "3":
-        empezar_simulacion()
+    print("|Cuántos cocineros desea agregar a la simulación?")
+    numero_cocineros = int(input('|>>  '))
+    for i in range(1, numero_cocineros + 1):
+        print("|Ingrese el nombre del cocinero " + str(i) + ":")
+        nombre_cocinero = input('|>>  ')
+        instance.empleadoManager.crearCocinero(nombre_cocinero)
+    print("|Ha creado " + str(numero_cocineros) + " cocineros con exito")
+    print("|Nombres de los cocineros creados:")
+    for i in range(1, numero_cocineros +1):
+        #print(instance.empleadoManager.empleados[i].nombre) FALTA ESTOOO
+        print("|No se como hacer que se muestren los nombres de los cocineros creados")
+          
+    print("|Cuántos mozos desea agregar a la simulación?")
+    numero_mozos = int(input('|>>  '))
+    for i in range(1, numero_mozos + 1):
+        print("|Ingrese el nombre del mozo " + str(i) + ":")
+        nombre_mozo = input('|>>  ')
+        instance.empleadoManager.crearMesero(nombre_mozo)
+    print("|Ha creado" + str(numero_mozos) + " con exito")
+    print("|Nombres de los mozos creados:")
+    for i in range(1, numero_mozos + 1):
+        print("|No se como hacer que se muestren los nombres de los mozos creados")
+    empezar_simulacion()
 
 def crear_mesas(usuario_ingresado):
     print("|Bienvenido al simulador 'Restaurant City' " + usuario_ingresado)
