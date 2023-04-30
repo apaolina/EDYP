@@ -1,7 +1,9 @@
-
+from SimClasses import instance
+import time
 from Hasheo import *
 
 #Va a haber que agregar muchos verificadores acá. Especialmente cuando interactuamos con el users.txt
+# Tambien verificar que las respuestas sean numericas o strings, dependiendo de lo que se pida.
 
 def tres():
             print('|Programa cerrado')
@@ -41,6 +43,25 @@ def dos():
         file.close()
         registrar_usuario(usuario)
 
+def crear_mesas(usuario_ingresado):
+    print("|Bienvenido al simulador 'Restaurant City' " + usuario_ingresado)
+    print("|¿Cuántas mesas desea agregar a la simulación?")
+    mesas = int(input('|>>  '))
+    print("|¿Desea que todas las mesas tengan la misma capacidad?")
+    print("|1 - Si")
+    print("|2 - No")
+    respuesta = input('|>>  ')
+    if respuesta == "1":
+        print("|Ingrese la capacidad de las mesas:")
+        capacidad_mesas = int(input('|>>  '))
+        for i in range(1, mesas+1):
+            instance.mesaManager.crearMesa(capacidad_mesas)
+    if respuesta == "2":
+        for i in range(1, mesas+1):
+            print("|Ingrese la capacidad de la mesa " + str(i) + ":")
+            capacidad_mesas = int(input('|>>  '))
+            instance.mesaManager.crearMesa(capacidad_mesas)
+
 def uno():
     print("|Ingrese su nombre de usuario: ")
     usuario_ingresado = str(input('|>>  ').strip())
@@ -65,6 +86,7 @@ def uno():
     if verificador == True:
         print("|Bienvenido " + usuario_ingresado)
         print('----------------------------------------')
+        crear_mesas(usuario_ingresado)
     if verificador == False:
         print("|Contraseña incorrecta")
         consola() 
