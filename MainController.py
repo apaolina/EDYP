@@ -1,16 +1,17 @@
 from SimClasses import instance
 import time
-# from GUI import *
+from GUI import *
 
-instance.mesaManager.crearMesa(4)
-instance.mesaManager.crearMesa(4)
+consola()
+# instance.mesaManager.crearMesa(4)
+# instance.mesaManager.crearMesa(4)
 
-mesero = instance.empleadoManager.crearMesero("Joaquin Ramos")
-cocinero = instance.empleadoManager.crearCocinero("Tadeo Ramos")
+# mesero = instance.empleadoManager.crearMesero("Joaquin Ramos")
+# cocinero = instance.empleadoManager.crearCocinero("Tadeo Ramos")
 
-start = time.time()
-instance.simular(tiempoSimulacion = (60*60*8), tiempoPorTick = 1)
-end = time.time()
+# start = time.time()
+# instance.simular(tiempoSimulacion = (60*60*8), tiempoPorTick = 1)
+# end = time.time()
 
 """
 
@@ -30,8 +31,8 @@ Todo los cambios que pasaron en este push son basicamente la IMPLEMENTACION DEL 
 
 """
 
-print(f"grupos: {instance.grupoManager.getCantidadGrupoClientes()}")
-print(f"en cola: {instance.grupoManager.colaSentar.totalnodos}")
-print(instance.mesaManager.verEstadoMesas())
-print(instance.cocinaManager.inventario)
-print(end-start)
+# print(f"grupos: {instance.grupoManager.getCantidadGrupoClientes()}")
+# print(f"en cola: {instance.grupoManager.colaSentar.totalnodos}")
+# print(instance.mesaManager.verEstadoMesas())
+# print(instance.cocinaManager.inventario)
+# print(end-start)
