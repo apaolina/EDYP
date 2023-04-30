@@ -1,6 +1,6 @@
 from SimClasses import instance
 import time
-# #from GUI import *
+# from GUI import *
 
 instance.mesaManager.crearMesa(4)
 instance.mesaManager.crearMesa(4)
