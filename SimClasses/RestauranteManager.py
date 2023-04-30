@@ -17,7 +17,7 @@ class Tick(Events):
 class Restaurante():
     def __init__(self) -> None: 
         self.mesaManager = MesaManager()
-        self.grupoManager = GrupoClientesManager(1,1) # Acordarse de que los inputs son media y std Dev de la llegada de los clientes
+        self.grupoManager = GrupoClientesManager()
         self.empleadoManager = EmpleadoManager()
         self.cocinaManager = CocinaManager()
         self.tick: Tick

@@ -8,10 +8,10 @@ class GrupoClientesManager():
     listaDesocupar: int = []
     colaPedido = Cola()
 
-    def __init__(self, mediaLlegadaGrupos: int, stdDevLlegadaGrupos: int) -> None:
-        self.fabricaClientes = FabricaClientes(mediaLlegadaGrupos, stdDevLlegadaGrupos) # Este objeto producira la entrada de nuevos clientes
+    def __init__(self) -> None:
+        self.fabricaClientes = FabricaClientes() # Este objeto producira la entrada de nuevos clientes
         pass
-
+    
     def getCantidadGrupoClientes(self) -> int:
         return GrupoClientes.totalGrupos
 
