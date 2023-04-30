@@ -34,7 +34,7 @@ def dos():
             usuario_almacenado, contraseña_almacenada = line.strip().split(",")
             usuarios_almacenados.append(usuario_almacenado)
         for i in range(len(usuarios_almacenados)):
-            if usuarios_almacenados[i-1] == usuario:
+            if usuarios_almacenados[i] == usuario:
                 print("|El usuario ya existe, pruebe otro")
                 file.close()
                 consola()
@@ -51,7 +51,7 @@ def uno():
             usuario_almacenado, contraseña_almacenada = line.strip().split(",")
             usuarios_almacenados.append(usuario_almacenado)
         for i in range(len(usuarios_almacenados)):
-                if usuarios_almacenados[i-1] == usuario_ingresado:
+                if usuarios_almacenados[i] == usuario_ingresado:
                     existe = True
         if existe == False:
             print("|El usuario no existe, pruebe otro")
@@ -60,10 +60,12 @@ def uno():
         file.close()
     print("|Ingrese su contraseña: ")
     contraseña_ingresada = input(">>  ")
-    if verificar_contraseña(contraseña_ingresada, usuario_ingresado) == True:
+    verificador = verificar_contraseña(contraseña_ingresada, usuario_ingresado)
+    print(verificador)
+    if verificador == True:
         print("|Bienvenido " + usuario_ingresado)
         print('----------------------------------------')
-    else:
+    if verificador == False:
         print("|Contraseña incorrecta")
         consola() 
 
