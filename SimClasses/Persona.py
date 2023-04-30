@@ -47,6 +47,8 @@ class GrupoClientes():
     def __init__(self, *clientes: Cliente) -> None:
         self.id = GrupoClientes.totalGrupos + 1
         self.clientes:list[Cliente] = []
+        self.mesa: int
+        self.desocupando = False
 
         for cliente in clientes:
 
@@ -58,7 +60,7 @@ class GrupoClientes():
 
         GrupoClientes.totalGrupos += 1
         self.estado = EstadoGC.ESPERANDO_MESA
-        self.tiempoParaPedir: int
+        self.contadorParaAccion: int
         self.listaPedido: list(str) = []
 
     def __str__(self) -> str:
@@ -83,38 +85,47 @@ class GrupoClientes():
     
     def getEstado(self) -> EstadoGC:
         return self.estado
-    
-    def __descontarTiempoElegirComida(self, tiempoPorTick: int) -> None:
-        self.tiempoParaPedir -= tiempoPorTick
 
-    def elegirComida(self, tiempoPorTick: int) -> None:
-        if(self.estado != EstadoGC.ELIGIENDO_COMIDA):
-            return None
+    def realizarAccion(self, tiempoPorTick: int) -> None:
         
-        if(self.tiempoParaPedir > 1):
-            self.__descontarTiempoElegirComida(tiempoPorTick)
-            return None
+        match self.estado:
 
-        for cliente in self.clientes:
-            plato = menu.listaPlatos[r.randint(0,len(menu.listaPlatos) - 1)]
-            self.listaPedido.append(plato)
+            case EstadoGC.ELIGIENDO_COMIDA:
+                if(self.contadorParaAccion > 1):
+                    self.contadorParaAccion -= tiempoPorTick
+                    return None
 
-        self.estado = EstadoGC.ESPERANDO_PEDIR
+                for cliente in self.clientes:
+                    plato = menu.listaPlatos[r.randint(0,len(menu.listaPlatos) - 1)]
+                    self.listaPedido.append(plato)
 
-        from .RestauranteManager import instance
-        instance.grupoManager.colaPedido.encolar(self)
+                self.estado = EstadoGC.ESPERANDO_PEDIR
 
-    def __responseMesa(self, resultado: bool) -> None:
+                from .RestauranteManager import instance
+                instance.grupoManager.colaPedido.encolar(self)
+
+            case EstadoGC.COMIENDO:
+
+                if(self.contadorParaAccion > 1):
+                    self.contadorParaAccion -= tiempoPorTick
+                    return None
+                
+                from .RestauranteManager import instance
+                self.desocupando = True
+                instance.mesaManager.desocuparMesa(self.mesa)
+
+    def __responseMesa(self, resultado: bool, id: int) -> None:
         from .RestauranteManager import instance
 
         if(resultado):
             if(instance.grupoManager.colaSentar.dentro(self)):
                 instance.grupoManager.colaSentar.desencolar(self)
 
-            self.tiempoParaPedir = 60 # Otra instancia donde necesitamos aleatorizar el tiempo
+            self.contadorParaAccion = 60 # Otra instancia donde necesitamos aleatorizar el tiempo
             self.estado = EstadoGC.ELIGIENDO_COMIDA
+            self.mesa = id
 
-            instance.grupoManager.gruposEligiendoComida.append(self)
+            instance.grupoManager.gruposSentados.update({self.id:self})
 
         elif(not instance.grupoManager.colaSentar.dentro(self)):
             instance.grupoManager.colaSentar.encolar(self)
@@ -132,6 +143,13 @@ class GrupoClientes():
             raise Exception(f"El grupo {self.id} no esta esperando pedir")
         
         self.estado = EstadoGC.ESPERANDO_COMIDA
+
+    def entregarPedido(self) -> None:
+        if(self.estado != EstadoGC.ESPERANDO_COMIDA):
+            raise Exception(f"El grupo {self.id} no esta esperando comida")
+        
+        self.estado = EstadoGC.COMIENDO
+        self.contadorParaAccion = 20 # Otra instancia donde necesitamos aleatorizar el tiempo
 
 #Clase generica de los empleados, hereda de Persona
 class Empleado(Persona):
@@ -158,7 +176,7 @@ class Mesero(Empleado):
     def __init__(self, nombre:str) -> None:
         super().__init__(nombre)
         self.estado: EstadoMesero = EstadoMesero.ESPERANDO_ACCION
-        self.pedidoEnMano: tuple(list,int)
+        self.pedidoEnMano: tuple[list[str],int]
         self.contadorParaAccion: int
 
     def __responsePedido(self, resultado: (None|list), id: (None|int)) -> None:
@@ -168,6 +186,21 @@ class Mesero(Empleado):
         self.estado = EstadoMesero.TOMANDO_PEDIDO
         self.pedidoEnMano = (resultado,id)
         self.contadorParaAccion = 10 # Otra instancia donde necesitamos aleatorizar el tiempo
+
+    def __responsePlatos(self, resultado: (None|list), id: (None|int)) -> None:
+        if(resultado is None or id is None):
+            return None
+        
+        self.estado = EstadoMesero.LLEVANDO_PLATOS
+        self.pedidoEnMano = (resultado,id)
+        self.contadorParaAccion = 10 # Otra instancia donde necesitamos aleatorizar el tiempo
+    
+    def __requestPlatos(self) -> None:
+        from .RestauranteManager import instance
+        if(self.estado != EstadoMesero.ESPERANDO_ACCION):
+            raise Exception(f"Mesero {self.id} ya esta ocupado")
+        
+        instance.cocinaManager.requestPlatos(self.__responsePlatos)
 
     def __requestPedido(self) -> None:
         from .RestauranteManager import instance
@@ -182,24 +215,89 @@ class Mesero(Empleado):
 
             case EstadoMesero.ESPERANDO_ACCION: # Orden de priorizacion iria aca
                 self.__requestPedido()
+                if(self.estado == EstadoMesero.ESPERANDO_ACCION):
+                    self.__requestPlatos()
+                # if(self.estado == EstadoMesero.ESPERANDO_ACCION):
+                #    self.__requestPlatos()
                 pass
 
             case EstadoMesero.TOMANDO_PEDIDO:
                 if(self.contadorParaAccion > 1):
                     self.contadorParaAccion -= tiempoPorTick
 
-                # Implementar aca entrega de pedido a cola para producir los platos
+                from .RestauranteManager import instance
+                instance.cocinaManager.agregarPedido(self.pedidoEnMano)
+
+                self.estado = EstadoMesero.ESPERANDO_ACCION
+                self.pedidoEnMano = None
                 pass
 
             case EstadoMesero.LLEVANDO_PLATOS:
+                if(self.contadorParaAccion > 1):
+                    self.contadorParaAccion -= tiempoPorTick
+
+
+                from .RestauranteManager import instance
+                instance.grupoManager.gruposSentados[self.pedidoEnMano[1]].entregarPedido()
+                
+                self.estado = EstadoMesero.ESPERANDO_ACCION
+                self.pedidoEnMano = None
                 pass
 
             case other:
                 pass
 
-
+class EstadoCocinero(Enum):
+    ESPERANDO_ACCION = 1
+    COCINANDO = 2
+    
 #Clase de Cocineros, hereda de Empleado, se encarga de crear platos segun los pedidos siguiendo los pasos de las recetas
 class Cocinero(Empleado):
 
     def __init__(self, nombre:str) -> None:
         super().__init__(nombre)
+        self.estado = EstadoCocinero.ESPERANDO_ACCION
+        self.platoEnCoccion = ""
+        self.contadorParaAccion = 0
+
+    def responseCocinar(self, plato: (None|str)) -> None:
+        
+        if(plato is None):
+            return None
+        
+        self.platoEnCoccion = plato
+        self.estado = EstadoCocinero.COCINANDO
+        self.contadorParaAccion = 10
+        
+        
+    def __requestCocinar(self) -> None:
+        
+        if(self.estado != EstadoCocinero.ESPERANDO_ACCION):
+            raise Exception(f"Cocinero {self.id} ya esta cocinando")
+        
+        from .RestauranteManager import instance
+        instance.cocinaManager.requestCocinar(self.responseCocinar)
+        
+    def realizarAccion(self, tiempoPorTick: int) -> None:
+
+        match self.estado:
+
+            case EstadoCocinero.ESPERANDO_ACCION:
+                self.__requestCocinar()
+                pass
+            
+            case EstadoCocinero.COCINANDO:
+                if(self.contadorParaAccion > 1):
+                    self.contadorParaAccion -= tiempoPorTick
+
+                from .RestauranteManager import instance
+                instance.cocinaManager.agregarInventario(self.platoEnCoccion)
+                
+                self.platoEnCoccion = ""
+                self.estado = EstadoCocinero.ESPERANDO_ACCION
+                pass
+            
+            case other:
+                pass
+        
+

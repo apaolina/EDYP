@@ -27,3 +27,7 @@ class EmpleadoManager():
     def realizarAccionMeseros(self, tiempoPorTick: int) -> None:
         for mesero in self.meseros:
             mesero.realizarAccion(tiempoPorTick)
+
+    def realizarAccionCocineros(self, tiempoPorTick: int) -> None:
+        for cocinero in self.cocineros:
+            cocinero.realizarAccion(tiempoPorTick)

@@ -1,6 +1,7 @@
 from .MesaManager import MesaManager
 from .GrupoClientesManager import GrupoClientesManager
 from .EmpleadoManager import EmpleadoManager
+from .CocinaManager import CocinaManager
 from events import Events
 
 # Un tick seria un chequeo de que el tiempo paso
@@ -18,14 +19,17 @@ class Restaurante():
         self.mesaManager = MesaManager()
         self.grupoManager = GrupoClientesManager(1,1) # Acordarse de que los inputs son media y std Dev de la llegada de los clientes
         self.empleadoManager = EmpleadoManager()
+        self.cocinaManager = CocinaManager()
         self.tick: Tick
         pass
     
     # Funcion para definir variables entrarian aca
 
     def __subscribirAcciones(self) -> None: # Esta funcion va a hacer que todas las acciones escuchen al paso del tiempo del tick
+        self.tick.on_tick += self.cocinaManager.crearPedido
+        self.tick.on_tick += self.empleadoManager.realizarAccionCocineros
         self.tick.on_tick += self.empleadoManager.realizarAccionMeseros
-        self.tick.on_tick += self.grupoManager.elegirComidaGrupoClientes
+        self.tick.on_tick += self.grupoManager.realizarAccionGrupoClientes
         self.tick.on_tick += self.grupoManager.fabricaClientes.fabricarClientes
         pass
 
