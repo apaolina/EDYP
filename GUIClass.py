@@ -13,10 +13,8 @@ class Simulador:
         self.cantidad_cocineros = 0
         self.cantidad_mozos = 0
         self.cantidad_mesas = 0
-        self.estado_mesas = []
-        self.grupos = []
-        self.en_cola = 0
-        self.inventario = []
+        self.clientes = 0
+        self.clientes_generados = 0
         self.tiempo = 0
 
     def tres(self):
