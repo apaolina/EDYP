@@ -1,14 +1,14 @@
 #Se crea la clase Menu
 # Clase que visualiza los platos disponibles para pedir a los clientes basado en los ingredientes disponibles
 
-from Plato import Platos
+from .Plato import Plato
 
 class Menu:
     def __init__(self): 
         self.Platos_menu = []
 
     def agregar_plato(self):
-        nuevo_plato = Platos()
+        nuevo_plato = Plato()
         self.Platos_menu.append(nuevo_plato)
         print("El plato {} ha sido añadido al menú.".format(nuevo_plato.nombre))
 
