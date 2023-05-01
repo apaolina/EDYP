@@ -3,11 +3,6 @@
 # Esto es distinto a la clase Receta ya que la receta marca las indicaciones para el cocinero para crear uno de estos platos, pero capaz
 # queremos implementar un sistema para simular platos mal armados o de diferentes niveles de calidad basado en la calidad de los chefs
 
-#class Plato():
-#    def __init__(self) -> None:
-#        pass
-
-
 class Platos():
     def __init__(self) -> None:
         self.nombre = str(input('Ingrese el nombre del plato nuevo: '))
