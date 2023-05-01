@@ -70,6 +70,7 @@ class Simulador:
     def empezar_simulacion(self):
         print("|¿Cuánto es el tiempo a simular")
         tiempoSimulacion = int(input('|>>  '))
+        self.tiempo = tiempoSimulacion
         start = time.time()
         instance.simular(tiempoSimulacion, tiempoPorTick = 1)
         end = time.time()
