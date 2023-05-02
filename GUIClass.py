@@ -168,7 +168,7 @@ class Simulador:
             
     def registrar_resultados(self):
         with open('resultadosSim.txt', 'a') as file:
-            file.write(self.nombre + "," + str(instance.grupoManager.getCantidadGrupoClientes()) + "," + str(instance.grupoManager.colaSentar.totalnodos) + "," + str(instance.mesaManager.verEstadoMesas()) + "," + str(instance.cocinaManager.inventario) + "\n")
+            file.write(self.nombre + "," + str(self.cantidad_cocineros) + "," + str(self.cantidad_mozos) + "," + str(self.cantidad_mesas) + "," + str(self.clientes) + "," + str(self.tiempo) + "\n")
             file.close()
 
     def consola(self):
