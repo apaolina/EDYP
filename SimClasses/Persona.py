@@ -1,6 +1,7 @@
 from enum import Enum
 from .Menu import Menu
 import random as r
+from .Tiempo import tiempo_aleatorio_normal
 
 menu = Menu()
 
@@ -149,7 +150,7 @@ class GrupoClientes():
             raise Exception(f"El grupo {self.id} no esta esperando comida")
         
         self.estado = EstadoGC.COMIENDO
-        self.contadorParaAccion = 20 # Otra instancia donde necesitamos aleatorizar el tiempo
+        self.contadorParaAccion = tiempo_aleatorio_normal(10,5) # Otra instancia donde necesitamos aleatorizar el tiempo
 
 #Clase generica de los empleados, hereda de Persona
 class Empleado(Persona):
@@ -185,7 +186,7 @@ class Mesero(Empleado):
         
         self.estado = EstadoMesero.TOMANDO_PEDIDO
         self.pedidoEnMano = (resultado,id)
-        self.contadorParaAccion = 10 # Otra instancia donde necesitamos aleatorizar el tiempo
+        self.contadorParaAccion = tiempo_aleatorio_normal(5,3)  # Otra instancia donde necesitamos aleatorizar el tiempo
 
     def __responsePlatos(self, resultado: (None|list), id: (None|int)) -> None:
         if(resultado is None or id is None):
@@ -193,7 +194,7 @@ class Mesero(Empleado):
         
         self.estado = EstadoMesero.LLEVANDO_PLATOS
         self.pedidoEnMano = (resultado,id)
-        self.contadorParaAccion = 10 # Otra instancia donde necesitamos aleatorizar el tiempo
+        self.contadorParaAccion = tiempo_aleatorio_normal(5,3) # Otra instancia donde necesitamos aleatorizar el tiempo
     
     def __requestPlatos(self) -> None:
         from .RestauranteManager import instance
@@ -300,4 +301,3 @@ class Cocinero(Empleado):
             case other:
                 pass
         
-
