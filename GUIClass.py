@@ -78,27 +78,31 @@ class Simulador:
         print("|Cuántos cocineros desea agregar a la simulación?")
         numero_cocineros = int(input('|>>  '))
         self.cantidad_cocineros = numero_cocineros
+        nombres_Cocineros = []
         for i in range(1, numero_cocineros + 1):
             print("|Ingrese el nombre del cocinero " + str(i) + ":")
             nombre_cocinero = input('|>>  ')
+            nombres_Cocineros.append(nombre_cocinero)
             instance.empleadoManager.crearCocinero(nombre_cocinero)
         print("|Ha creado " + str(numero_cocineros) + " cocineros con exito")
         print("|Nombres de los cocineros creados:")
-        for i in range(1, numero_cocineros +1):
+        for nombre in nombres_Cocineros:
             #print(instance.empleadoManager.empleados[i].nombre) FALTA ESTOOO
-            print("|No se como hacer que se muestren los nombres de los cocineros creados")
+            print(f"El cocinero {nombre} ha sido creado correctamente")
             
         print("|Cuántos mozos desea agregar a la simulación?")
         numero_mozos = int(input('|>>  '))
+        nombres_Mozos = []
         self.cantidad_mozos = numero_mozos
         for i in range(1, numero_mozos + 1):
             print("|Ingrese el nombre del mozo " + str(i) + ":")
             nombre_mozo = input('|>>  ')
+            nombres_Mozos.append(nombre_mozo)
             instance.empleadoManager.crearMesero(nombre_mozo)
         print("|Ha creado" + str(numero_mozos) + " con exito")
         print("|Nombres de los mozos creados:")
-        for i in range(1, numero_mozos + 1):
-            print("|No se como hacer que se muestren los nombres de los mozos creados")
+        for nombre in nombres_Mozos:
+            print(f"El mozo {nombre} ha sido creado correctamente")
         self.empezar_simulacion()
 
     def crear_mesas(self, usuario_ingresado):

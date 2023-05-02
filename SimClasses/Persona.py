@@ -96,7 +96,7 @@ class GrupoClientes():
                     return None
 
                 for cliente in self.clientes:
-                    plato = menu.listaPlatos[r.randint(0,len(menu.listaPlatos) - 1)]
+                    plato = menu.Platos_menu[r.randint(0,len(menu.Platos_menu) - 1)]
                     self.listaPedido.append(plato)
 
                 self.estado = EstadoGC.ESPERANDO_PEDIR
