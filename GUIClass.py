@@ -55,6 +55,13 @@ class Simulador:
             file.close()
             self.registrar_usuario(usuario)
 
+    def registrar_resultados(self):
+        with open('resultadosSim.txt', 'a') as file:
+            file.write(self.nombre + "," + str(self.cantidad_cocineros) + "," + str(self.cantidad_mozos) + "," + str(self.cantidad_mesas) + "," + str(self.clientes) + "," + str(self.clientes_generados) + "," + str(self.tiempo) + "\n")
+            file.close()
+            print("|Resultados guardados con exito")
+            exit()
+
     def resultado_simulacion(self, start, end):
         print("----------------------------------------")
         print("|Resultados de la simulación:")
@@ -63,6 +70,9 @@ class Simulador:
         print(instance.mesaManager.verEstadoMesas())
         print(instance.cocinaManager.inventario)
         print(end-start)
+        self.clientes = instance.grupoManager.getCantidadGrupoClientes()
+        self.clientes_generados = instance.grupoManager.getCantidadNClientes()
+        self.registrar_resultados()
         exit()
 
     def empezar_simulacion(self):
@@ -88,7 +98,7 @@ class Simulador:
         print("|Nombres de los cocineros creados:")
         for nombre in nombres_Cocineros:
             #print(instance.empleadoManager.empleados[i].nombre) FALTA ESTOOO
-            print(f"El cocinero {nombre} ha sido creado correctamente")
+            print(f"|El cocinero {nombre} ha sido creado correctamente")
             
         print("|Cuántos mozos desea agregar a la simulación?")
         numero_mozos = int(input('|>>  '))
@@ -102,7 +112,7 @@ class Simulador:
         print("|Ha creado" + str(numero_mozos) + " con exito")
         print("|Nombres de los mozos creados:")
         for nombre in nombres_Mozos:
-            print(f"El mozo {nombre} ha sido creado correctamente")
+            print(f"|El mozo {nombre} ha sido creado correctamente")
         self.empezar_simulacion()
 
     def crear_mesas(self, usuario_ingresado):
@@ -166,10 +176,7 @@ class Simulador:
             print("|Contraseña incorrecta")
             self.consola()
             
-    def registrar_resultados(self):
-        with open('resultadosSim.txt', 'a') as file:
-            file.write(self.nombre + "," + str(self.cantidad_cocineros) + "," + str(self.cantidad_mozos) + "," + str(self.cantidad_mesas) + "," + str(self.clientes) + "," + str(self.tiempo) + "\n")
-            file.close()
+  
 
     def consola(self):
         print('----------------------------------------')

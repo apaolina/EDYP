@@ -5,8 +5,11 @@ import names
 
 # Esta .py se encargara de la produccion de grupos de clientes, simulando entrada de los mismos
 class FabricaClientes():
+    n_clientes: int = 0
+    
     def __init__(self) -> None:
         self.tiempoParaProxCliente: int = 0
+        
         pass
 
     def __tiempoEntreClientes(self) -> None: # Esto devolvera la cantidad de tiempo para que llegue un nuevo grupo de clientes
@@ -24,6 +27,8 @@ class FabricaClientes():
         
         cantidadClientes = r.randint(1,4) # Entre 1 a X, donde X es la cantidad maxima de grupos de clientes que acepta el restaurante
 
+        self.n_clientes = self.n_clientes + cantidadClientes
+        
         resultado = GrupoClientes()
 
         for cliente in range(cantidadClientes):
