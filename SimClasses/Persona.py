@@ -122,7 +122,7 @@ class GrupoClientes():
             if(instance.grupoManager.colaSentar.dentro(self)):
                 instance.grupoManager.colaSentar.desencolar(self)
 
-            self.contadorParaAccion = 60 # Otra instancia donde necesitamos aleatorizar el tiempo
+            self.contadorParaAccion = tiempo_aleatorio_normal(40,7)
             self.estado = EstadoGC.ELIGIENDO_COMIDA
             self.mesa = id
 
@@ -268,7 +268,7 @@ class Cocinero(Empleado):
         
         self.platoEnCoccion = plato
         self.estado = EstadoCocinero.COCINANDO
-        self.contadorParaAccion = 10
+        self.contadorParaAccion = tiempo_aleatorio_normal(9,2)
         
         
     def __requestCocinar(self) -> None:
