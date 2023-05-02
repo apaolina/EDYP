@@ -16,7 +16,7 @@ class GrupoClientesManager():
         return GrupoClientes.totalGrupos
     
     def getCantidadNClientes(self) -> int:
-        return FabricaClientes.n_clientes
+        return self.fabricaClientes.n_clientes
 
     def getCantidadColaSentar(self) -> int:
         return len(GrupoClientesManager.colaSentar)

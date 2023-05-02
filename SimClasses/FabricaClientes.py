@@ -5,11 +5,10 @@ import names
 
 # Esta .py se encargara de la produccion de grupos de clientes, simulando entrada de los mismos
 class FabricaClientes():
-    n_clientes: int = 0
     
     def __init__(self) -> None:
         self.tiempoParaProxCliente: int = 0
-        
+        self.n_clientes: int = 0
         pass
 
     def __tiempoEntreClientes(self) -> None: # Esto devolvera la cantidad de tiempo para que llegue un nuevo grupo de clientes

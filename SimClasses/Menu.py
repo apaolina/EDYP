@@ -5,7 +5,7 @@ from .Plato import Plato
 
 class Menu:
     def __init__(self): 
-        self.Platos_menu = ["Hamburguesa","Pancho"]
+        self.Platos_menu = ["Hamburguesa","Pancho","Pasta"]
 
     def agregar_plato(self):
         nuevo_plato = Plato()
