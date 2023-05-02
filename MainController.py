@@ -1,8 +1,8 @@
 from SimClasses import instance
 import time
-from GUI import *
+from GUIClass import *
 
-consola()
+restaurante.consola()
 # instance.mesaManager.crearMesa(4)
 # instance.mesaManager.crearMesa(4)
 
