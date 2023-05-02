@@ -293,6 +293,8 @@ class Simulador:
         time.sleep(1)
         print("|3 - Salir")
         time.sleep(1)
+        print("|4 - Resultados históricos (Coming soon))")
+        time.sleep(1)
         print('|')
         print("|Ingrese el numero de la opcion que desea realizar:")
         opcion = input('|>>  ')
