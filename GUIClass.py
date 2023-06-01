@@ -18,7 +18,7 @@ class Simulador:
         self.clientes_generados = 0
         self.tiempo = 0
 
-    def tres(self):
+    def opcion_tres(self):
         print('|')
         print('|Programa cerrado')
         print('----------------------------------------')
@@ -57,7 +57,7 @@ class Simulador:
                     print("|Usuario creado con exito")
                     self.consola()
 
-    def dos(self):
+    def opcion_dos(self):
         print('|')
         print("|Creando nuevo usuario...")
         print("|Ingrese su nombre de usuario:")
@@ -224,7 +224,7 @@ class Simulador:
         
         self.crear_mesas(usuario_ingresado)
 
-    def uno(self):
+    def opcion_uno(self):
         print('|')
         print("|Ingrese su nombre de usuario: ")
         usuario_ingresado = str(input('|>>  ').strip())
@@ -274,12 +274,12 @@ class Simulador:
             print("|Ingrese una opcion valida")
             self.consola()
         if opcion == "3":
-            self.tres()
+            self.opcion_tres()
 
         if opcion == "2":
-            self.dos()
+            self.opcion_dos()
         if opcion == "1":
-            self.uno()
+            self.opcion_uno()
             
     
 restaurante = Simulador()
