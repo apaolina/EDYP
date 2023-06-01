@@ -1,6 +1,7 @@
 from SimClasses import instance
 import time
 from Hasheo import *
+from Usuario import *
 
 #Va a haber que agregar muchos verificadores acá. Especialmente cuando interactuamos con el users.txt
 #Tambien verificar que las respuestas sean numericas o strings, dependiendo de lo que se pida.
@@ -62,22 +63,9 @@ class Simulador:
         print("|Creando nuevo usuario...")
         print("|Ingrese su nombre de usuario:")
         usuario = str(input('|>>  ').strip())
-        if not os.path.exists("users.txt"):
-            with open("users.txt", "w") as file:
-                file.write("")
-                file.close()
-        with open("users.txt", "r") as file:
-            usuarios_almacenados = []
-            for line in file.readlines():
-                usuario_almacenado, contraseña_almacenada = line.strip().split(",")
-                usuarios_almacenados.append(usuario_almacenado)
-            for i in range(len(usuarios_almacenados)):
-                if usuarios_almacenados[i] == usuario:
-                    print("|El usuario ya existe, pruebe otro")
-                    file.close()
-                    self.consola()
-            file.close()
-            self.registrar_usuario(usuario)
+        if self.verificar_existencia_usuario(usuario) == True:
+            self.consola()
+        self.registrar_usuario(usuario)
 
     def registrar_resultados(self):
         with open('resultadosSim.txt', 'a') as file:
