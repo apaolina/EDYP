@@ -31,3 +31,6 @@ class EmpleadoManager():
     def realizarAccionCocineros(self, tiempoPorTick: int) -> None:
         for cocinero in self.cocineros:
             cocinero.realizarAccion(tiempoPorTick)
+
+    def __str__(self) -> str:
+        return f"Meseros: {self.meseros}, Cocineros: {self.cocineros}"

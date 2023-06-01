@@ -49,3 +49,6 @@ class MesaManager():
                         pass
         
         return {"Desocupado": a, "Ocupado": b, "Sucio": c}
+    
+    def __str__(self) -> str:
+        return f"Mesas: {self.mesas}"

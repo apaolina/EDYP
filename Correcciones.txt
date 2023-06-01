@@ -57,7 +57,7 @@ CORRECCIONES FEDE:
 2- Comentar código con docstring
 3- Revisar nombre de variables como contraseña1 (LISTO)
 4- Modulizar ciertas partes del código
-5- Llamar al simulador desde el main 
+5- Llamar al simulador desde el main (LISTO)
 
 
 CORRECCIONES YO:
@@ -66,8 +66,7 @@ CORRECCIONES YO:
 3- Revisar nuevos requisitos de consigna.
 
 
-Consultas: 
-Hashear contraseña
+Consultas: Hashear contraseña
 Nota examen 
 GUI Class 
 Versiones librerías.

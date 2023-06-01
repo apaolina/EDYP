@@ -37,4 +37,6 @@ class FabricaClientes():
         resultado.requestMesa()
         self.__tiempoEntreClientes() # Estas lineas de codigo producen un nuevo grupo, lo encolan y generan un nuevo tiempo entre clientes
 
-    
+    def __str__(self) -> str:
+        return f"Tiempo entre clientes: {self.tiempoParaProxCliente}, Cantidad de clientes: {self.n_clientes}"
+

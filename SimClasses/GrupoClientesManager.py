@@ -39,4 +39,5 @@ class GrupoClientesManager():
             if(self.gruposSentados[grupo].desocupando is False):
                 self.gruposSentados[grupo].realizarAccion(tiempoPorTick)
         
-
+    def __str__(self) -> str:
+        return f"Cant sentados: {len(self.colaSentar)}, Grupos sentados: {self.gruposSentados}"
