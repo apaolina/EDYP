@@ -33,7 +33,7 @@ class Restaurante():
         self.tick.on_tick += self.grupoManager.fabricaClientes.fabricarClientes
         pass
 
-    def simular(self, tiempoSimulacion: int, tiempoPorTick: int) -> None: # Esto despues va a escupir los resultados de la simulacion, tiempoSim debe ser en segundos
+    def simular(self, tiempoSimulacion: int, tiempoPorTick: int) -> None: # Esto despues va a devolver los resultados de la simulacion, tiempoSim debe ser en segundos
         self.tick = Tick(tiempoPorTick)
         self.__subscribirAcciones()
         while tiempoSimulacion > 0:
