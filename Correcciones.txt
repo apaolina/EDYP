@@ -31,7 +31,7 @@ Correcciones:
 1. -Modularizar mejor las funcionalidades (incluso si son métodos de clases lo pueden hacer)
 2. -Incluir métodos string en las clases. La idea es que pueda visualizar información relevante de un objeto en cualquier momento.
 3. -Tratar de hacer legible el código en la clase simulacion y en el main, de modo de hacer más comprensible el flujo del programa
-4. -Nombrar todas las funciones con nombres representativos. BPP
+4. -Nombrar todas las funciones con nombres representativos. BPP (LISTO)
 
 1.
 2.
@@ -64,3 +64,9 @@ CORRECCIONES YO:
 
 1- CREAR clase USUARIO obligatorio.
 3- Revisar nuevos requisitos de consigna.
+
+
+Consultas: Hashear contraseña
+Nota examen 
+GUI Class 
+Versiones librerías.
