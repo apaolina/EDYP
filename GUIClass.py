@@ -29,8 +29,8 @@ class Simulador:
         print("|Ingrese su contraseña: ")
         contraseña = input("|>>  ")
         print("|Repita su contraseña: ")
-        contraseña2 = input("|>>  ")
-        if contraseña != contraseña2:
+        repetir_contraseña = input("|>>  ")
+        if contraseña != repetir_contraseña:
             print("|Las contraseñas no coinciden, intente nuevamente")
             self.registrar_usuario(usuario)
         else:  

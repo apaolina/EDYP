@@ -47,3 +47,14 @@ Funcionalidad: 1.5
 BPP: 1
 Reportes: 1.5
 Nota: 9
+
+
+
+
+CORRECCIONES FEDE: 
+
+1- Requirements (LISTO)
+2- Comentar código con docstring
+3- Revisar nombre de variables como contraseña1 (LISTO)
+4- Modulizar ciertas partes del código
+5- Llamar al simulador desde el main 
