@@ -66,7 +66,7 @@ class Simulador:
         if self.verificar_existencia_usuario(usuario) == True:
             self.consola()
         self.registrar_usuario(usuario)
-
+        
     def registrar_resultados(self):
         with open('resultadosSim.txt', 'a') as file:
             file.write(self.nombre + "," + str(self.cantidad_cocineros) + "," + str(self.cantidad_mozos) + "," + str(self.cantidad_mesas) + "," + str(self.clientes) + "," + str(self.clientes_generados) + "," + str(self.tiempo) + "\n")
@@ -271,7 +271,7 @@ class Simulador:
     
     def __str__(self):
         return f"Simulador: {self.nombre}, {self.cantidad_cocineros}, {self.cantidad_mozos}, {self.cantidad_mesas}, {self.clientes}, {self.clientes_generados}, {self.tiempo}"        
-    
+
 restaurante = Simulador()
 restaurante.consola()
 

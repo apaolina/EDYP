@@ -7,7 +7,7 @@ Comentarios del TP:
 Observaciones:
 1. + Bien que hayan dedicado tiempo y esfuerzo a la planificación
 2. + Bien que hayan realizado una clase para simular los procesos
-3. +! Bien que hay aun readme, con las librerías usadas, recomiendo incluir un requirements.txt para poder incluir las librerias necesarias mediante un entorno virtual (pueden investigarlo)
+3. +! Bien que hay aun readme, con las librerías usadas, recomiendo incluir un requirements.txt para poder incluir las librerias necesarias mediante un entorno virtual (LISTO)
 4. + Se nota el trabajo de investigación y la contribución grupal
 5. -! Recomiendo comentar el código y sobre todo documentar los módulos
 6. -! El time.sleep es algo tedioso, para qué está?
@@ -18,7 +18,7 @@ Observaciones:
 
 1. -
 2. -
-3. Investigar (falta)
+3. Investigar (falta) (Esta hecho el requirements pero sin el entorno virtual)
 4. -
 5. Comentar al codigo (falta)
 6. Listo, ya estan eliminados
@@ -29,14 +29,9 @@ Observaciones:
 
 Correcciones:
 1. -Modularizar mejor las funcionalidades (incluso si son métodos de clases lo pueden hacer)
-2. -Incluir métodos string en las clases. La idea es que pueda visualizar información relevante de un objeto en cualquier momento.
+2. (LISTO)  -Incluir métodos string en las clases. La idea es que pueda visualizar información relevante de un objeto en cualquier momento. 
 3. -Tratar de hacer legible el código en la clase simulacion y en el main, de modo de hacer más comprensible el flujo del programa
-4. -Nombrar todas las funciones con nombres representativos. BPP (LISTO)
-
-1.
-2.
-3.
-4.
+4. (LISTO) -Nombrar todas las funciones con nombres representativos. BPP 
 
 Calificación:
 
