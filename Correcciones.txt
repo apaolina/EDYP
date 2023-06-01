@@ -58,3 +58,9 @@ CORRECCIONES FEDE:
 3- Revisar nombre de variables como contraseña1 (LISTO)
 4- Modulizar ciertas partes del código
 5- Llamar al simulador desde el main 
+
+
+CORRECCIONES YO:
+
+1- CREAR clase USUARIO obligatorio.
+3- Revisar nuevos requisitos de consigna.
