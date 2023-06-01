@@ -268,7 +268,9 @@ class Simulador:
             self.opcion_dos()
         if opcion == "1":
             self.opcion_uno()
-            
+    
+    def __str__(self):
+        return f"Simulador: {self.nombre}, {self.cantidad_cocineros}, {self.cantidad_mozos}, {self.cantidad_mesas}, {self.clientes}, {self.clientes_generados}, {self.tiempo}"        
     
 restaurante = Simulador()
 restaurante.consola()

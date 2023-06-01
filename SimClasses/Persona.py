@@ -248,6 +248,10 @@ class Mesero(Empleado):
             case other:
                 pass
 
+    def __str__(self) -> str:
+        return f"Mesero {self.id}"
+    
+    
 class EstadoCocinero(Enum):
     ESPERANDO_ACCION = 1
     COCINANDO = 2
@@ -300,4 +304,7 @@ class Cocinero(Empleado):
             
             case other:
                 pass
-        
+    
+    def __str__(self) -> str:
+        return f"Cocinero {self.id}"
+    

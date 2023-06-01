@@ -27,6 +27,9 @@ class Menu:
             print("Ingredientes: {}".format(plato.ingredientes))
             print("Cantidades de cada ingrediente: {}".format(plato.cant_ingredientes))
 
+    def __str__(self):
+        return f"Platos disponibles: {self.Platos_menu}"
+
 MenuRestaurante = Menu()
 
 

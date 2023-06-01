@@ -15,8 +15,6 @@ class NodoCola(Generic[T]):
 
     def MoverAtras(self) -> None:
         self.posicion += 1
-
-
 class Cola(Generic[T]):
     def __init__(self) -> None:
         self.nodos: list[NodoCola] = []
@@ -56,6 +54,8 @@ class Cola(Generic[T]):
             resultado.append(nodo.item)
 
         return tuple(resultado)
+    def __str__(self) -> str:
+        return f"nodos: {self.nodos}, totalnodos: {self.totalnodos}, items: {self.items}"
     
 class ColaSentar(Cola):
 
@@ -72,6 +72,8 @@ class ColaSentar(Cola):
                 self.totalnodos -= 1
                 return resultado.item
             
+    def __str__(self) -> str:
+        return f"nodos: {self.nodos}, totalnodos: {self.totalnodos}, items: {self.items}"
             
 
 

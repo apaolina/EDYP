@@ -13,6 +13,9 @@ class Tick(Events):
         self.tiempoPorTick = tiempoPorTick # Esto es la cantidad de tiempo que se simulara entre ticks expresados en segundos
         pass
 
+    def __str__(self) -> str:
+        return f"Tiempo por tick: {self.tiempoPorTick}"
+    
 # Clase que contiene todas las instancias de los Managers en simultaneo
 class Restaurante():
     def __init__(self) -> None: 
@@ -22,6 +25,9 @@ class Restaurante():
         self.cocinaManager = CocinaManager()
         self.tick: Tick
         pass
+    
+    def __str__(self) -> str:
+        return f"Restaurante: {self.mesaManager}, {self.grupoManager}, {self.empleadoManager}, {self.cocinaManager}, {self.tick}"
     
     # Funcion para definir variables entrarian aca
 
