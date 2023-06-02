@@ -31,16 +31,25 @@ Correcciones:
 1. -Modularizar mejor las funcionalidades (incluso si son métodos de clases lo pueden hacer)
 2. (LISTO)  -Incluir métodos string en las clases. La idea es que pueda visualizar información relevante de un objeto en cualquier momento. 
 3. -Tratar de hacer legible el código en la clase simulacion y en el main, de modo de hacer más comprensible el flujo del programa
+<<<<<<< Updated upstream
 4. (LISTO) -Nombrar todas las funciones con nombres representativos. BPP 
+=======
+4. -Nombrar todas las funciones con nombres representativos. BPP (LISTO) OPCION DOS cambiar a registrar usuario por ejemplo
+
+1.
+2.
+3.
+4.
+>>>>>>> Stashed changes
 
 Calificación:
 
-Enfoque General: 2
-Clases y métodos: 1.5
-Relaciones entre clases: 1.5
-Funcionalidad: 1.5
-BPP: 1
-Reportes: 1.5
+Enfoque General: 2/2
+Clases y métodos: 1.5/1,5
+Relaciones entre clases: 1.5/1,5
+Funcionalidad: 1.5/1,5
+BPP: 1/1,5
+Reportes: 1.5/2
 Nota: 9
 
 
@@ -49,7 +58,7 @@ Nota: 9
 CORRECCIONES FEDE: 
 
 1- Requirements (LISTO)
-2- Comentar código con docstring
+2- Comentar código con docstring se usa """"   """
 3- Revisar nombre de variables como contraseña1 (LISTO)
 4- Modulizar ciertas partes del código
 5- Llamar al simulador desde el main (LISTO)
@@ -61,7 +70,11 @@ CORRECCIONES YO:
 3- Revisar nuevos requisitos de consigna.
 
 
-Consultas: Hashear contraseña
-Nota examen 
-GUI Class 
-Versiones librerías.
+Consultas: 
+Hashear contraseña LISTO
+Nota examen LISTO
+GUI Class LISTO
+Versiones librerías. LISTO
+
+
+Mejorar reultados simulacion en el archivo txt que quede mas claro que es cada cosa.

@@ -31,32 +31,17 @@ class Simulador:
         contraseña = input("|>>  ")
         print("|Repita su contraseña: ")
         repetir_contraseña = input("|>>  ")
-        if contraseña != repetir_contraseña:
+        if Usuario.verificar_contraseña_usuario(usuario, contraseña, repetir_contraseña) == False:
             print("|Las contraseñas no coinciden, intente nuevamente")
             self.registrar_usuario(usuario)
         else:  
             try:
-                
-                with open("users.txt", "a") as file:
-                    if file.closed:
-                        print('|')
-                        print("|El banco de usuarios no puede ser accedido. Intente en otro momento.")
-                        exit()
-                    contraseña_hashear = hashear_contraseña(contraseña)
-                    file.write(f"{usuario},{contraseña_hashear}\n")
-                    file.close()
-                    print('|')
-                    print("|Usuario creado con exito")
-                    self.consola()
+                self.try_guardar_usuario_en_archivo(usuario, contraseña)
+                self.consola()
                     
             except FileNotFoundError:
-                with open("users.txt", "w") as file: 
-                    contraseña_hashear = hashear_contraseña(contraseña)
-                    file.write(f"{usuario},{contraseña_hashear}\n")
-                    file.close()
-                    print('|')
-                    print("|Usuario creado con exito")
-                    self.consola()
+                self.except_guardar_usuario_en_archivo(usuario, contraseña)
+                self.consola()
 
     def opcion_dos(self):
         print('|')

@@ -15,7 +15,7 @@ class CocinaManager():
         } # Cambiar para el 2ndo parcial, hacerlo en base al menu y lo que agrega el usuario
 
     def agregarPedido(self, pedido) -> None:
-        
+        """hola"""
         self.colaPedidosPreparar.encolar(pedido)
 
         for plato in pedido[0]:
