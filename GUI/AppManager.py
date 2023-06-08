@@ -9,7 +9,5 @@ class AppManager():
         self.app.mainloop()
         pass
 
-    def cambiarWindow(self, nextFrame: FrameEnum) -> None:
-        self.app.cambiarWindow(nextFrame)
 
 AppManager()
