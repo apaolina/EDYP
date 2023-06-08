@@ -4,7 +4,7 @@ from enum import Enum
 import re
 
 # Contiene todos las pestañas posibles. Hard coded, agregar aca y en linea 54 una nueva pestaña si se necesita.
-class WindowEnum(Enum):
+class WindowState(Enum):
     LOGIN = 0,
     REGISTER = 1,
     MAIN_MENU = 2
@@ -27,6 +27,7 @@ class App(tk.Tk):
 
         # Handlers
         self.windowHandler = WindowHandler(self)
+        self.userHandler = UserHandler(self)
 
         self.container: tk.Frame
     
@@ -50,39 +51,46 @@ class WindowHandler():
         app.container.grid_rowconfigure(0, weight=1)
         app.container.grid_columnconfigure(0, weight=1)
 
-        self.frames: dict[WindowEnum, AppWindow] = {}
+        self.frames: dict[WindowState, AppWindow] = {}
         
         self.__loadFrames()
-    
+
     # Esto esta hardcoded, no creo que sea necesario cambiar esto excepto si se crean nuevos frames
     def __loadFrames(self) -> None:
-        for we in (WindowEnum.LOGIN,WindowEnum.REGISTER, WindowEnum.MAIN_MENU):
+        for we in (WindowState.LOGIN,WindowState.REGISTER, WindowState.MAIN_MENU):
             frame: AppWindow
 
             match we:
-                case WindowEnum.LOGIN:
-                    frame = LoginWindow(self.app.container, self)
+                case WindowState.LOGIN:
+                    frame = LoginWindow(self.app.container, self.app)
 
-                case WindowEnum.REGISTER:
-                    frame = RegistroUsuarioWindow(self.app.container, self)
+                case WindowState.REGISTER:
+                    frame = RegistroUsuarioWindow(self.app.container, self.app)
 
-                case WindowEnum.MAIN_MENU:
-                    frame = MenuPrincipalWindow(self.app.container, self)
+                case WindowState.MAIN_MENU:
+                    frame = MenuPrincipalWindow(self.app.container, self.app)
 
             self.frames[we] = frame
 
             frame.grid(row=0, column=0, sticky="nsew")
         
-        self.cambiarWindow(WindowEnum.LOGIN)
+        self.cambiarWindow(WindowState.LOGIN)
 
-    def cambiarWindow(self, nextWindow: WindowEnum) -> None:
+    def cambiarWindow(self, nextWindow: WindowState) -> None:
         frame = self.frames[nextWindow]
         frame.tkraise()
 
-class DataHandler():
-    pass
-class DatabaseHandler():
-    pass
+class UserHandler():
+    def __init__(self, app: App) -> None:
+        self.app = app
+        pass
+
+    def requestLogin(self):
+        pass
+
+    def requestRegistrar(self):
+        print("Se ha registrado un nuevo usuario!")
+        pass
 
 # Esta es nuestra clase generica de window, cualquier cambio que queremos que ocurra en todos los frames se aplica aca.
 class AppWindow(tk.Frame):
@@ -92,8 +100,10 @@ class AppWindow(tk.Frame):
     h3 = ("Times New Roman", 14)
     h4 = ("Times New Roman", 9)
 
-    def __init__(self, master: tk.Tk, windowHandler:WindowHandler, *args, **kwargs) -> None:
-        self.windowHandler = windowHandler
+    def __init__(self, master: tk.Tk, app: App, *args, **kwargs) -> None:
+        
+        self.app = app
+
         super().__init__(master,kwargs)
 
         #Configuracion Filas y Columnas
@@ -103,8 +113,8 @@ class AppWindow(tk.Frame):
 # Esta clase representa el window de login de la aplicacion
 class LoginWindow(AppWindow):
 
-    def __init__(self, master: tk.Tk, windowHandler:WindowHandler, *args, **kwargs) -> None:
-        super().__init__(master,windowHandler, *args, **kwargs)
+    def __init__(self, master: tk.Tk, app:App, *args, **kwargs) -> None:
+        super().__init__(master, app, *args, **kwargs)
         # Variables
         self._paqueteUsuario = PaqueteUsuario()
 
@@ -137,10 +147,10 @@ class LoginWindow(AppWindow):
     
     # Metodos de Botones
     def __requestLogin(self) -> None:
-        self.windowHandler.cambiarWindow(WindowEnum.MAIN_MENU)
+        self.app.windowHandler.cambiarWindow(WindowState.MAIN_MENU)
 
     def __requestRegistrarUsuario(self) -> None:
-        self.windowHandler.cambiarWindow(WindowEnum.REGISTER)
+        self.app.windowHandler.cambiarWindow(WindowState.REGISTER)
     
     def __loadCallbacks(self) -> None:
         # Lista de Callbacks registradas
@@ -200,13 +210,13 @@ class RegistroUsuarioWindow(AppWindow):
             print(f"{k}: {v}")
 
         if (resultados == len(self.validaciones)):
-            print("Usuario ha sido creado correctamente!")
+            self.app.userHandler.requestRegistrar()
         else:
             print("Hay un error en la registracion.")
 
 
     def __returnLogin(self):
-        self.windowHandler.cambiarWindow(WindowEnum.LOGIN)
+        self.app.windowHandler.cambiarWindow(WindowState.LOGIN)
 
     # ✔ ✖ , Validadores
 
@@ -337,15 +347,15 @@ class RegistroUsuarioWindow(AppWindow):
 
 # Esta clase representa el frame del main menu para el usuario de la aplicacion
 class MenuPrincipalWindow(AppWindow):
-    def __init__(self, master: tk.Tk, windowHandler:WindowHandler, *args, **kwargs) -> None:
-        super().__init__(master,windowHandler, *args, **kwargs)
+    def __init__(self, master: tk.Tk, app: App, *args, **kwargs) -> None:
+        super().__init__(master,app, *args, **kwargs)
 
         self.__loadCallbacks()
         self.__loadWidgets()
 
 
     def __goBack(self):
-        self.windowHandler.cambiarWindow(WindowEnum.LOGIN)
+        self.app.windowHandler.cambiarWindow(WindowState.LOGIN)
 
     def __loadCallbacks(self):
         pass
