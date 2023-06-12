@@ -1,6 +1,10 @@
 import tkinter as tk
-from DataClasses import PaqueteUsuario
+from DataClasses import *
 from enum import Enum
+import sys
+sys.path.insert(0,'Database')
+from DataBaseManager import DataManager
+from typing import Callable
 import re
 
 # Contiene todos las pestañas posibles. Hard coded, agregar aca y en linea 54 una nueva pestaña si se necesita.
@@ -52,6 +56,8 @@ class WindowHandler():
         app.container.grid_columnconfigure(0, weight=1)
 
         self.frames: dict[WindowState, AppWindow] = {}
+
+        self.currentFrame = WindowState.LOGIN
         
         self.__loadFrames()
 
@@ -79,17 +85,28 @@ class WindowHandler():
     def cambiarWindow(self, nextWindow: WindowState) -> None:
         frame = self.frames[nextWindow]
         frame.tkraise()
+        self.frames[self.currentFrame].reset()
+        self.currentFrame = nextWindow
 
 class UserHandler():
+
     def __init__(self, app: App) -> None:
         self.app = app
+        self.dataManager = DataManager()
         pass
 
-    def requestLogin(self):
+    def requestLogin(self) -> None:
         pass
 
-    def requestRegistrar(self):
-        print("Se ha registrado un nuevo usuario!")
+    def validarUsuario(self, input:str) -> bool:
+        return self.dataManager.validarUsuarioTomado(input)
+    
+    def validarEmail(self, input:str) -> bool:
+        return self.dataManager.validarEmailTomado(input)
+
+    def requestRegistrar(self, paquete: tuple[str], callback: Callable[[bool],None]) -> None:
+        # Estructura de tuple : Usuario, Contraseña, Email
+        self.dataManager.requestRegistrar(paquete[0],paquete[1],paquete[2], callback)
         pass
 
 # Esta es nuestra clase generica de window, cualquier cambio que queremos que ocurra en todos los frames se aplica aca.
@@ -121,6 +138,9 @@ class LoginWindow(AppWindow):
         self.__loadCallbacks()
         self.__loadWidgets()
 
+    def reset(self) -> None:
+        self._entry_usuario.delete(0, tk.END)
+        self._entry_password.delete(0, tk.END)
 
     #Metodos Publicos
     def getPaqueteUsuario(self) -> PaqueteUsuario:
@@ -200,6 +220,23 @@ class RegistroUsuarioWindow(AppWindow):
             "Email": False
         }
 
+    def __registrarCallback(self, result: bool) -> None:
+        if(result):
+            self.app.windowHandler.cambiarWindow(WindowState.LOGIN)
+        else:
+            from tkinter import messagebox
+            messagebox.showerror("Error", "No se pudo registrar correctamente.")
+
+    def reset(self) -> None:
+        self._entry_usuario.delete(0, tk.END)
+        self._entry_password_1.delete(0, tk.END)
+        self._entry_password_2.delete(0, tk.END)
+        self._entry_email.delete(0, tk.END)
+        self._label_usuario_verificado.config(text="")
+        self._label_password1_verificado.config(text="")
+        self._label_password2_verificado.config(text="")
+        self._label_email_verificado.config(text="")
+
     def __requestRegistrar(self):
         resultados = 0
 
@@ -210,9 +247,10 @@ class RegistroUsuarioWindow(AppWindow):
             print(f"{k}: {v}")
 
         if (resultados == len(self.validaciones)):
-            self.app.userHandler.requestRegistrar()
+            self.app.userHandler.requestRegistrar(paquete=(self._entry_usuario.get(), self._entry_password_2.get(), self._entry_email.get()), callback=self.__registrarCallback)
         else:
-            print("Hay un error en la registracion.")
+            from tkinter import messagebox
+            messagebox.showerror("Error", "No se pudo registrar correctamente.")
 
 
     def __returnLogin(self):
@@ -222,11 +260,11 @@ class RegistroUsuarioWindow(AppWindow):
 
     def __validarInputUsuario(self, input: str) -> bool:
         
-        if(len(input) == 0):
-            self._label_usuario_verificado.config(text="✖", fg="#880808", bg="#FFF") #Despues usar palette o algo
+        if(len(input) == 0 or not self.app.userHandler.validarUsuario(input)):
+            self._label_usuario_verificado.config(text="✖", fg="#880808") #Despues usar palette o algo
             self.validaciones["Usuario"] = False
         else:
-            self._label_usuario_verificado.config(text="✔", fg="#DAF7A6", bg="#FFF")
+            self._label_usuario_verificado.config(text="✔", fg="#228B22")
             self.validaciones["Usuario"] = True
         
         if(not input.isalnum() and len(input) > 0):
@@ -238,10 +276,10 @@ class RegistroUsuarioWindow(AppWindow):
     def __validarInputPassword1(self, input: str) -> bool:
         
         if(len(input) == 0):
-            self._label_password1_verificado.config(text="✖", fg="#880808", bg="#FFF") #Despues usar palette o algo
+            self._label_password1_verificado.config(text="✖", fg="#880808") #Despues usar palette o algo
             self.validaciones["Password1"] = False
         else:
-            self._label_password1_verificado.config(text="✔", fg="#DAF7A6", bg="#FFF")
+            self._label_password1_verificado.config(text="✔", fg="#228B22")
             self.validaciones["Password1"] = True
         
         if(not input.isalnum() and len(input) > 0):
@@ -253,10 +291,10 @@ class RegistroUsuarioWindow(AppWindow):
     def __validarInputPassword2(self, input: str) -> bool:
         
         if(input != self._entry_password_1.get()):
-            self._label_password2_verificado.config(text="✖", fg="#880808", bg="#FFF") #Despues usar palette o algo
+            self._label_password2_verificado.config(text="✖", fg="#880808") #Despues usar palette o algo
             self.validaciones["Password2"] = False
         else:
-            self._label_password2_verificado.config(text="✔", fg="#DAF7A6", bg="#FFF")
+            self._label_password2_verificado.config(text="✔", fg="#228B22")
             self.validaciones["Password2"] = True
         
         if(not input.isalnum() and len(input) > 0):
@@ -267,20 +305,22 @@ class RegistroUsuarioWindow(AppWindow):
     
     def __validarInputEmail(self, input: str) -> bool:
         
-        if(not re.match(r"[^@]+@[^@]+\.[^@]+", input)):
-            self._label_email_verificado.config(text="✖", fg="#880808", bg="#FFF") #Despues usar palette o algo
+        if(not re.match(r"[^@]+@[^@]+\.[^@]+", input) or not self.app.userHandler.validarEmail(input)):
+            self._label_email_verificado.config(text="✖", fg="#880808") #Despues usar palette o algo
             self.validaciones["Email"] = False
         else:
-            self._label_email_verificado.config(text="✔", fg="#DAF7A6", bg="#FFF")
+            self._label_email_verificado.config(text="✔", fg="#228B22")
             self.validaciones["Email"] = True
         
         return True
         
     def __loadCallbacks(self) -> None:
+
         self._validarInputUsuarioCallback = self.register(self.__validarInputUsuario)
         self._validarInputPassword1Callback = self.register(self.__validarInputPassword1)
         self._validarInputPassword2Callback = self.register(self.__validarInputPassword2)
         self._validarInputEmailCallback = self.register(self.__validarInputEmail)
+
         pass
 
     def __loadWidgets(self) -> None:
@@ -353,14 +393,16 @@ class MenuPrincipalWindow(AppWindow):
         self.__loadCallbacks()
         self.__loadWidgets()
 
-
-    def __goBack(self):
-        self.app.windowHandler.cambiarWindow(WindowState.LOGIN)
-
-    def __loadCallbacks(self):
+    def reset(self) -> None:
         pass
 
-    def __loadWidgets(self):
+    def __goBack(self) -> None:
+        self.app.windowHandler.cambiarWindow(WindowState.LOGIN)
+
+    def __loadCallbacks(self) -> None:
+        pass
+
+    def __loadWidgets(self) -> None:
         
         self._back_button = tk.Button(self, width=50, height=1, text= "Retornar a Log in", font= super().h4, command= self.__goBack)
         self._back_button.pack()

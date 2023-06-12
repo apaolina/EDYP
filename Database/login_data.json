@@ -1,0 +1,14 @@
+{
+    "Usuarios": [
+        {
+            "usuario": "a",
+            "password": "b",
+            "email": "joramos@itba.edu.ar"
+        },
+        {
+            "usuario": "joramos",
+            "password": "PipPip",
+            "email": "ramossjoaquinn@gmail.com"
+        }
+    ]
+}
