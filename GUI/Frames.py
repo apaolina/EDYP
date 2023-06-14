@@ -6,6 +6,8 @@ sys.path.insert(0,'Database')
 from DataBaseManager import DataManager
 from typing import Callable
 import re
+from tkinter import messagebox
+
 
 # Contiene todos las pestañas posibles. Hard coded, agregar aca y en linea 54 una nueva pestaña si se necesita.
 class WindowState(Enum):
@@ -170,7 +172,9 @@ class LoginWindow(AppWindow):
         if(self.dataManager.validarUsuarioExiste(self._entry_usuario.get(), self._entry_password.get()) == True):
             self.app.windowHandler.cambiarWindow(WindowState.MAIN_MENU)
         else:
-            exit("Usuario o Contraseña incorrectos")
+            self._popUp = tk.messagebox.showerror("Error", "Usuario o Contraseña incorrectos")
+            self.app.windowHandler.cambiarWindow(WindowState.LOGIN)
+            print("Usuario o Contraseña incorrectos")
 
     def __requestRegistrarUsuario(self) -> None:
         self.app.windowHandler.cambiarWindow(WindowState.REGISTER)
