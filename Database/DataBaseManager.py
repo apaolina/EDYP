@@ -1,5 +1,6 @@
 import json
 from typing import Callable
+from Hasheo import *
 
 class DataManager():
 
@@ -26,6 +27,7 @@ class DataManager():
     def requestRegistrar(self, usuario: str, password: str, email: str, callback: Callable[[bool], None]) -> None:
         
         # Aca utilizar encriptacion para ingresar al .json el password
+        password =   
         
         try:
             paquete = {
