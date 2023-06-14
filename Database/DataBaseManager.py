@@ -1,6 +1,6 @@
 import json
 from typing import Callable
-from Hasheo import *
+from Hasheo import * #Tuve que hacer un copy del archivo y meterlo en la carpeta Database porque no me lo reconocia.
 
 class DataManager():
 
@@ -27,7 +27,7 @@ class DataManager():
     def requestRegistrar(self, usuario: str, password: str, email: str, callback: Callable[[bool], None]) -> None:
         
         # Aca utilizar encriptacion para ingresar al .json el password
-        password =   
+        password = hashear_contraseña(password)
         
         try:
             paquete = {
