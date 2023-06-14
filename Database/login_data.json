@@ -3,12 +3,7 @@
         {
             "usuario": "admin",
             "password": "admin",
-            "email": "joramos@itba.edu.ar"
-        },
-        {
-            "usuario": "joramos",
-            "password": "PipPip",
-            "email": "ramossjoaquinn@gmail.com"
+            "email": "admins@itba.edu.ar"
         },
         {
             "usuario": "joaco",
@@ -19,6 +14,11 @@
             "usuario": "q",
             "password": "da2aa0da699b09b962db7700196ec17ec2181224cd037a14abf9a29766b5520c",
             "email": "q@w.com"
+        },
+        {
+            "usuario": "joramos",
+            "password": "969009cb517ba90edb752eeba5f7c1f2cf1239977ae61a6732f110797a5bb28e",
+            "email": "joramos@itba.edu.ar"
         }
     ]
 }

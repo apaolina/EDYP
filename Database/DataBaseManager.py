@@ -45,6 +45,7 @@ class DataManager():
             callback(True)
         except:
             callback(False)
+            
 
     def requestLogin(self, usuario: str, password:str, callback: Callable[[bool], None]) -> None:
         with open(self.login_data,"r+") as file:
