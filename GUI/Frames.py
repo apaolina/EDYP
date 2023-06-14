@@ -6,6 +6,8 @@ sys.path.insert(0,'Database')
 from DataBaseManager import DataManager
 from typing import Callable
 import re
+from tkinter import messagebox
+
 
 import matplotlib.pyplot as plt
 
@@ -116,7 +118,7 @@ class UserHandler():
 
 # Esta es nuestra clase generica de window, cualquier cambio que queremos que ocurra en todos los frames se aplica aca.
 class AppWindow(tk.Frame):
-
+    
     h1 = ("Times New Roman", 50)
     h2 = ("Times New Roman", 20)
     h3 = ("Times New Roman", 14)
@@ -125,7 +127,7 @@ class AppWindow(tk.Frame):
     def __init__(self, master: tk.Tk, app: App, *args, **kwargs) -> None:
         
         self.app = app
-
+        self.dataManager = DataManager()
         super().__init__(master,kwargs)
 
         #Configuracion Filas y Columnas
@@ -176,7 +178,12 @@ class LoginWindow(AppWindow):
 
     # Metodos de Botones
     def __requestLogin(self) -> None:
-        self.app.userHandler.requestLogin(self._entry_usuario.get(), self._entry_password.get(), self.__loginCallback)
+        if(self.dataManager.validarUsuarioExiste(self._entry_usuario.get(), self._entry_password.get()) == True):
+            self.app.userHandler.requestLogin(self._entry_usuario.get(), self._entry_password.get(), self.__loginCallback)
+        else:
+            self._popUp = tk.messagebox.showerror("Error", "Usuario o Contraseña incorrectos")
+            self.app.windowHandler.cambiarWindow(WindowState.LOGIN)
+            print("Usuario o Contraseña incorrectos")
 
     def __requestRegistrarUsuario(self) -> None:
         self.app.windowHandler.cambiarWindow(WindowState.REGISTER)
