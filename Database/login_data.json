@@ -14,6 +14,11 @@
             "usuario": "joaco",
             "password": "4014706ee32fc2bd0f888763eb635836c3fa2ad84ccb283e2d4739bd3937693f",
             "email": "jopalermo@itba.edu.ar"
+        },
+        {
+            "usuario": "q",
+            "password": "da2aa0da699b09b962db7700196ec17ec2181224cd037a14abf9a29766b5520c",
+            "email": "q@w.com"
         }
     ]
 }

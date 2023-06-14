@@ -111,7 +111,7 @@ class UserHandler():
 
 # Esta es nuestra clase generica de window, cualquier cambio que queremos que ocurra en todos los frames se aplica aca.
 class AppWindow(tk.Frame):
-
+    
     h1 = ("Times New Roman", 50)
     h2 = ("Times New Roman", 20)
     h3 = ("Times New Roman", 14)
@@ -120,7 +120,7 @@ class AppWindow(tk.Frame):
     def __init__(self, master: tk.Tk, app: App, *args, **kwargs) -> None:
         
         self.app = app
-
+        self.dataManager = DataManager()
         super().__init__(master,kwargs)
 
         #Configuracion Filas y Columnas
@@ -167,7 +167,10 @@ class LoginWindow(AppWindow):
     
     # Metodos de Botones
     def __requestLogin(self) -> None:
-        self.app.windowHandler.cambiarWindow(WindowState.MAIN_MENU)
+        if(self.dataManager.validarUsuarioExiste(self._entry_usuario.get(), self._entry_password.get()) == True):
+            self.app.windowHandler.cambiarWindow(WindowState.MAIN_MENU)
+        else:
+            exit("Usuario o Contraseña incorrectos")
 
     def __requestRegistrarUsuario(self) -> None:
         self.app.windowHandler.cambiarWindow(WindowState.REGISTER)

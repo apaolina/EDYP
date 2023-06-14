@@ -45,3 +45,11 @@ class DataManager():
             callback(True)
         except:
             callback(False)
+            
+    def validarUsuarioExiste(self, usuario, password):
+        with open(self.login_data, "r") as file:
+            file_data = json.load(file)
+            for user in file_data['Usuarios']:
+                if user['usuario'] == usuario and user['password'] == hashear_contraseña(password):
+                    return True
+            return False
