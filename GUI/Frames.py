@@ -7,6 +7,11 @@ from DataBaseManager import DataManager
 from typing import Callable
 import re
 
+import matplotlib.pyplot as plt
+
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+
+
 # Contiene todos las pestañas posibles. Hard coded, agregar aca y en linea 54 una nueva pestaña si se necesita.
 class WindowState(Enum):
     LOGIN = 0,
@@ -38,7 +43,7 @@ class App(tk.Tk):
     # Funcion que elige al azar el icono de la aplicacion entre las variantes
     def __chooseAppIcon(self) -> str:
         from random import randint
-        
+
         return "GUI/Images/PNG/opcion" + str(randint(1,3)) + ".png"
     
 # Handlers -> Clases que manejan ciertos aspectos de la aplicacion, los cuales pueden ser referenciados directamente por los frames
@@ -95,7 +100,8 @@ class UserHandler():
         self.dataManager = DataManager()
         pass
 
-    def requestLogin(self) -> None:
+    def requestLogin(self,usuarioInput: str, passwordInput:str , callback: Callable[[bool],None]) -> None:
+        self.dataManager.requestLogin(usuarioInput, passwordInput, callback)
         pass
 
     def validarUsuario(self, input:str) -> bool:
@@ -104,9 +110,8 @@ class UserHandler():
     def validarEmail(self, input:str) -> bool:
         return self.dataManager.validarEmailTomado(input)
 
-    def requestRegistrar(self, paquete: tuple[str], callback: Callable[[bool],None]) -> None:
-        # Estructura de tuple : Usuario, Contraseña, Email
-        self.dataManager.requestRegistrar(paquete[0],paquete[1],paquete[2], callback)
+    def requestRegistrar(self, usuarioInput: str, passwordInput:str, emailInput, callback: Callable[[bool],None]) -> None:
+        self.dataManager.requestRegistrar(usuarioInput, passwordInput, emailInput, callback)
         pass
 
 # Esta es nuestra clase generica de window, cualquier cambio que queremos que ocurra en todos los frames se aplica aca.
@@ -132,8 +137,6 @@ class LoginWindow(AppWindow):
 
     def __init__(self, master: tk.Tk, app:App, *args, **kwargs) -> None:
         super().__init__(master, app, *args, **kwargs)
-        # Variables
-        self._paqueteUsuario = PaqueteUsuario()
 
         self.__loadCallbacks()
         self.__loadWidgets()
@@ -153,7 +156,6 @@ class LoginWindow(AppWindow):
             print(input)
             return False
         
-        self._paqueteUsuario.usuario = input
         return True
     
     def __validarInputPassword(self, input:str) -> bool:
@@ -161,13 +163,20 @@ class LoginWindow(AppWindow):
         if(not input.isalnum() and len(input) > 0):
             print(input)
             return False
-        
-        self._paqueteUsuario.password = input
+
         return True
     
+    def __loginCallback(self, result: bool) -> None:
+        if(result):
+            self.app.windowHandler.cambiarWindow(WindowState.MAIN_MENU)
+        else:
+            from tkinter import messagebox
+            messagebox.showerror("Error", "Hay un error con el usuario o contraseña, en caso de no tener cuenta registrese")
+        
+
     # Metodos de Botones
     def __requestLogin(self) -> None:
-        self.app.windowHandler.cambiarWindow(WindowState.MAIN_MENU)
+        self.app.userHandler.requestLogin(self._entry_usuario.get(), self._entry_password.get(), self.__loginCallback)
 
     def __requestRegistrarUsuario(self) -> None:
         self.app.windowHandler.cambiarWindow(WindowState.REGISTER)
@@ -247,7 +256,7 @@ class RegistroUsuarioWindow(AppWindow):
             print(f"{k}: {v}")
 
         if (resultados == len(self.validaciones)):
-            self.app.userHandler.requestRegistrar(paquete=(self._entry_usuario.get(), self._entry_password_2.get(), self._entry_email.get()), callback=self.__registrarCallback)
+            self.app.userHandler.requestRegistrar(self._entry_usuario.get(), self._entry_password_2.get(), self._entry_email.get(), callback=self.__registrarCallback)
         else:
             from tkinter import messagebox
             messagebox.showerror("Error", "No se pudo registrar correctamente.")
@@ -381,9 +390,7 @@ class RegistroUsuarioWindow(AppWindow):
         self._entry_email.grid(row=5, column=2, padx=5, pady=5, sticky=tk.E)
 
         self._label_email_verificado = tk.Label(self._registrarInfoFrame, text= "", font= super().h3)
-        self._label_email_verificado.grid(row=5, column=3, padx=5, pady=5, sticky=tk.E)
-        
-
+        self._label_email_verificado.grid(row=5, column=3, padx=5, pady=5, sticky=tk.E) 
 
 # Esta clase representa el frame del main menu para el usuario de la aplicacion
 class MenuPrincipalWindow(AppWindow):
@@ -396,7 +403,7 @@ class MenuPrincipalWindow(AppWindow):
     def reset(self) -> None:
         pass
 
-    def __goBack(self) -> None:
+    def __logOff(self) -> None:
         self.app.windowHandler.cambiarWindow(WindowState.LOGIN)
 
     def __loadCallbacks(self) -> None:
@@ -404,8 +411,34 @@ class MenuPrincipalWindow(AppWindow):
 
     def __loadWidgets(self) -> None:
         
-        self._back_button = tk.Button(self, width=50, height=1, text= "Retornar a Log in", font= super().h4, command= self.__goBack)
-        self._back_button.pack()
+        self._menuFrame = tk.Frame(self, background="#FFFFFF")
+        self._menuFrame.grid(row=2, rowspan=3, column=2)
+        self._menuFrame.grid_rowconfigure(4)
+        self._menuFrame.grid_columnconfigure(1)
+
+        self._newSimulation_button = tk.Button(self._menuFrame, width=30, height=1, text="Nueva Simulacion", font= super().h3)
+        self._newSimulation_button.grid(row=1, column=1, pady=5, padx=5)
+
+        self._listaSimulation_button = tk.Button(self._menuFrame, width=30, height=1, text="Ver Simulaciones", font= super().h3)
+        self._listaSimulation_button.grid(row=2, column=1, pady=5, padx=5)
+
+        self._simulator_grafico = plt.subplots()[0]
+        self._simulator_canvas = FigureCanvasTkAgg(self._simulator_grafico,  self._menuFrame)
+        self._simulator_canvas.get_tk_widget().grid(row=3, column=1, padx=5, pady=5)
+        
+        self._profileFrame = tk.Frame(self, background="#FFFFFF", width= 50, height=10)
+        self._profileFrame.grid(row=1, column=1, sticky=tk.NW, padx=5, pady=5, ipadx=5, ipady=5)
+        self._profileFrame.grid_rowconfigure(1)
+        self._profileFrame.grid_columnconfigure(2)
+        
+        self._profileLabel = tk.Label(self._profileFrame, text= "Bienvenido Username!", font=super().h2, background="#FFFFFF")
+        self._profileLabel.grid(row=1, column=1)
+
+        self._profileConfig_button = tk.Button(self._profileFrame, text="⚙")
+        self._profileConfig_button.grid(row=1, column=2)
+
+        self._logOff_button = tk.Button(self, width=25, height=2, text= "Log off", font= super().h2, command= self.__logOff)
+        self._logOff_button.grid(row=1,column=3, padx=10, pady=10)
     pass
 
 # Esta clase representa el frame de crear una nueva simulacion para el usuario

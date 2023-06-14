@@ -81,6 +81,6 @@ Mejorar reultados simulacion en el archivo txt que quede mas claro que es cada c
 Clase 08/06/2023
 Nos falta:
 -Termina la GUI.
--Crear el datos Manager/base de datos.
--Recolección de datos.
+-Crear el datos Manager/base de datos. LISTO
+-Recolección de datos. 
 -Modularizar (Usuario/Managers/GUI)

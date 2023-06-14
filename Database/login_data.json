@@ -1,14 +1,9 @@
 {
     "Usuarios": [
         {
-            "usuario": "a",
-            "password": "b",
+            "usuario": "admin",
+            "password": "admin",
             "email": "joramos@itba.edu.ar"
-        },
-        {
-            "usuario": "joramos",
-            "password": "PipPip",
-            "email": "ramossjoaquinn@gmail.com"
         }
     ]
 }
