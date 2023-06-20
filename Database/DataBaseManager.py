@@ -47,10 +47,12 @@ class DataManager():
             callback(False)
             
 
-    def requestLogin(self, usuario: str, password:str, callback: Callable[[bool], None]) -> None:
+    def requestLogin(self, usuario: str, password:str, callback: Callable[[bool], None]) -> (str | None):
         with open(self.login_data,"r+") as file:
             file_data = json.load(file)
             if(any(user['usuario'] == usuario and user['password'] == password for user in file_data['Usuarios'])):
                 callback(True)
+                return usuario
             else:
                 callback(False)
+                return False
