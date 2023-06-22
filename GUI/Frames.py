@@ -19,8 +19,7 @@ class WindowState(Enum):
     MAIN_MENU = 2,
     NEW_SIMULATION = 3,
     RESULTS_SIMULATION = 4,
-    AWAITING_SIMULATION = 5,
-    ALL_SIMULATIONS = 6
+    ALL_SIMULATIONS = 5
 
 # La clase root del GUI, esto es lo que muestra toda informacion.
 class App(tk.Tk):
@@ -72,7 +71,7 @@ class WindowHandler():
 
     # Esto esta hardcoded, no creo que sea necesario cambiar esto excepto si se crean nuevos frames
     def __loadFrames(self) -> None:
-        for we in (WindowState.LOGIN,WindowState.REGISTER, WindowState.MAIN_MENU, WindowState.NEW_SIMULATION, WindowState.RESULTS_SIMULATION, WindowState.AWAITING_SIMULATION, WindowState.ALL_SIMULATIONS):
+        for we in (WindowState.LOGIN,WindowState.REGISTER, WindowState.MAIN_MENU, WindowState.NEW_SIMULATION, WindowState.RESULTS_SIMULATION, WindowState.ALL_SIMULATIONS):
             frame: AppWindow
 
             match we:
@@ -91,8 +90,7 @@ class WindowHandler():
                 case WindowState.RESULTS_SIMULATION:
                     frame = ResultadoSimulacionFrame(self.app.container, self.app)
 
-                case WindowState.AWAITING_SIMULATION:
-                    frame = EsperaSimulacionFrame(self.app.container, self.app)
+                
 
                 case WindowState.ALL_SIMULATIONS:
                     frame = TodasSimulacionesFrame(self.app.container, self.app)
@@ -505,7 +503,7 @@ class CrearSimulacionFrame(AppWindow):
         self._validarInputNumericoCallback = self.register(self.__validarInputNumerico)
         
     def __iniciarSimulacion(self) -> None:
-        self.app.windowHandler.cambiarWindow(WindowState.AWAITING_SIMULATION)
+        self.app.windowHandler.cambiarWindow(WindowState.RESULTS_SIMULATION)
         pass
 
     def __volverMenuPrincipal(self) -> None:
@@ -659,8 +657,7 @@ class CrearSimulacionFrame(AppWindow):
 
 
 # Esta clase representa el frame de espera de la simulacion
-class EsperaSimulacionFrame(AppWindow):
-    pass
+
 
 # Esta clase representa el frame de resultados de la simulacion
 class ResultadoSimulacionFrame(AppWindow):
@@ -693,8 +690,7 @@ class TodasSimulacionesFrame(AppWindow):
         self.__loadCallbacks()
         self.__loadWidgets()
 
-    def reset(self) -> None:
-        pass
+    
 
     def __loadCallbacks(self) -> None:
         pass
