@@ -484,7 +484,9 @@ class CrearSimulacionFrame(AppWindow):
 
     def __init__(self, master: tk.Tk, app: App, *args, **kwargs) -> None:
         super().__init__(master, app, *args, **kwargs)
-
+        
+#Se callean mesaManager, empleadoManager y restauranteManager
+        
         self.__loadCallbacks()
         self.__loadWidgets()
         self.mesaManager = MesaManager()
@@ -513,6 +515,7 @@ class CrearSimulacionFrame(AppWindow):
             messagebox.showerror("Error", "Debe agregar al menos una mesa")
             return
 
+#Se inicializan las funciones
         self.__agregarMesero_simulacion(int(self._cant_meseros_entry.get()))
         self.__agregarCocinero_simulacion(int(self._cant_cocineros_entry.get()))
         self.restauranteManager.simular(int(self._tiempo_sim_entry.get()), int(self._tiempo_tick_entry.get()))
@@ -671,6 +674,8 @@ class CrearSimulacionFrame(AppWindow):
         self._go_back_button.grid(row=1, column=3, sticky= tk.NE, padx=5, pady=5)
         pass
     
+    
+# Se definen las funciones agregar mesa, mesero y cocinero, que hacen referencia al simulador.
     def __agregarMesa_simulacion(self, capacidad):
         self.mesaManager.crearMesa(capacidad)
     def __agregarMesero_simulacion(self, cantidadMeseros):
