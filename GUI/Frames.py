@@ -712,6 +712,7 @@ class ResultadoSimulacionFrame(AppWindow):
         self.app.windowHandler.cambiarWindow(WindowState.MAIN_MENU)
 
     def __loadWidgets(self) -> None:
+        
         _go_back_button = tk.Button(self, text="Go Back", command = self.go_back)
         _go_back_button.pack()
         pass
