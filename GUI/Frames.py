@@ -650,10 +650,10 @@ class CrearSimulacionFrame(AppWindow):
         self._plato_canvas.config(yscrollcommand=self._plato_canvas_vbar.set)
         self._plato_canvas.pack(side=tk.LEFT, expand=True, fill= tk.BOTH)
 
-        self._simular_button = tk.Button(self, text="Simular", command = self.__volverMenuPrincipal)
+        self._simular_button = tk.Button(self, text="Simular", command = self.__iniciarSimulacion)
         self._simular_button.grid(row=3, column=2, sticky=tk.S, padx=5, pady=5)
 
-        self._go_back_button = tk.Button(self, text="Volver al menu principal", command = self.__iniciarSimulacion)
+        self._go_back_button = tk.Button(self, text="Volver al menu principal", command = self.__volverMenuPrincipal)
         self._go_back_button.grid(row=1, column=3, sticky= tk.NE, padx=5, pady=5)
         pass
 
