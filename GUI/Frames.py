@@ -426,7 +426,7 @@ class MenuPrincipalWindow(AppWindow):
         self.__loadWidgets()
 
     def reset(self) -> None:
-        self._profile_text_var.set("Bienvenido " + self.app.userHandler.userIngresado + "!")
+        self.after(50,lambda: self._profile_text_var.set(f"Bienvenido {self.app.userHandler.userIngresado}!"))
         pass
 
     def __logOff(self) -> None:
@@ -486,24 +486,29 @@ class CrearSimulacionFrame(AppWindow):
         self.__loadWidgets()
 
 
-        self.mesaCounter = 0
-        self.mesas = []
-        self.mesas_displayed = []
+        self._mesaCounter = 0
+        self._mesas = []
+        self._mesas_displayed = []
+
+        self._platoCounter = 0
+        self._platos = []
+        self._platos_displayed = []
 
     def reset(self) -> None:
         pass
 
+    def __loadCallbacks(self) -> None:
+        self._validarInputNumericoCallback = self.register(self.__validarInputNumerico)
+
+    # Validadores
     def __validarInputNumerico(self, input: str) -> bool:
 
         if(not input.isnumeric() and len(input) > 0):
             return False
         
         return True
-        
 
-    def __loadCallbacks(self) -> None:
-        self._validarInputNumericoCallback = self.register(self.__validarInputNumerico)
-        
+    # Metodos Privados para cambiar de Window 
     def __iniciarSimulacion(self) -> None:
         self.app.windowHandler.cambiarWindow(WindowState.AWAITING_SIMULATION)
         pass
@@ -511,21 +516,71 @@ class CrearSimulacionFrame(AppWindow):
     def __volverMenuPrincipal(self) -> None:
         self.app.windowHandler.cambiarWindow(WindowState.MAIN_MENU)
 
+    # Metodos privados que manejan informacion expuesta en los Canvas scrolleables
     def __borrar_mesa(self, master: tk.Frame) -> None:
-        index = self.mesas.index(master)
-        self.mesas.pop(index)
+        index = self._mesas.index(master)
+        self._mesas.pop(index)
         master.destroy()
 
-        for i in range(len(self.mesas_displayed)):
+        for i in range(len(self._mesas_displayed)):
             if(i > index):
-                self._mesa_canvas.move(self.mesas_displayed[i],0, -42)
+                self._mesa_canvas.move(self._mesas_displayed[i],0, -30)
 
-        self.mesas_displayed.pop(index)
+        self._mesas_displayed.pop(index)
 
-        if(40*len(self.mesas) > self._mesa_canvas.winfo_height()):
-            self._mesa_canvas.config(scrollregion=(0,0,0,42*(len(self.mesas))))
+        if(40*len(self._mesas) > self._mesa_canvas.winfo_height()):
+            self._mesa_canvas.config(scrollregion=(0,0,0,30*(len(self._mesas))))
+
+    def __borrar_plato(self, master: tk.Frame) -> None:
+        index = self._platos.index(master)
+        self._platos.pop(index)
+        master.destroy()
+
+        for i in range(len(self._platos_displayed)):
+            if(i > index):
+                self._plato_canvas.move(self._platos_displayed[i],0, -30)
+
+        self._platos_displayed.pop(index)
+
+        if(40*len(self._platos) > self._plato_canvas.winfo_height()):
+            self._plato_canvas.config(scrollregion=(0,0,0,30*(len(self._platos))))
             
+    def __agregar_plato(self) -> None:
 
+        nombre_plato = self._plato_entry_nombre.get()
+        tiempo_plato = self._plato_entry_tiempo.get()
+        if(nombre_plato == "" or tiempo_plato == ""):
+            return None
+
+        plato = tk.Frame(self)
+        plato.columnconfigure(4)
+        plato.rowconfigure(1)
+
+        width = self._plato_canvas.winfo_width()
+        display = self._plato_canvas.create_window(width/2,42*len(self._platos), anchor=tk.N, window=plato)
+
+        plato_label = tk.Label(plato, width=10,text=f"Plato {str(self._platoCounter + 1)}", font= super().h4)
+        plato_label.grid(row=1, column=1, padx=5, pady=5)
+
+        nombre_label = tk.Label(plato, width=10, text= nombre_plato, font= super().h4)
+        nombre_label.grid(row=1, column=2, padx=5, pady=5)
+
+        tiempo_label = tk.Label(plato, width=10, text= f"{tiempo_plato} segundos", font= super().h4)
+        tiempo_label.grid(row=1, column=3, padx=5, pady=5)
+
+        self._plato_entry_nombre.delete(0, tk.END)
+        self._plato_entry_tiempo.delete(0, tk.END)
+
+        borrar_button = tk.Button(plato, width=10,text="Borrar", font=super().h4, command= lambda: self.__borrar_plato(borrar_button.master))
+        borrar_button.grid(row=1, column=4, padx=5, pady=5)
+
+        if(40*len(self._platos) > self._plato_canvas.winfo_height()):
+            self._plato_canvas.config(scrollregion=(0,0,0,42*(len(self._platos)+1)))
+
+        self._platos.append(plato)
+        self._platos_displayed.append(display)
+        self._platoCounter += 1
+    
     def __agregar_mesa(self) -> None:
 
         asientos = self._mesa_entry.get()
@@ -537,25 +592,25 @@ class CrearSimulacionFrame(AppWindow):
         mesa.rowconfigure(1)
 
         width = self._mesa_canvas.winfo_width()
-        display = self._mesa_canvas.create_window(width/2,42*len(self.mesas), anchor=tk.N, window=mesa)
+        display = self._mesa_canvas.create_window(width/2,30*len(self._mesas), anchor=tk.N, window=mesa)
 
-        mesa_label = tk.Label(mesa, width=10,text="Mesa " + str(self.mesaCounter + 1), font= super().h3)
+        mesa_label = tk.Label(mesa, width=10,text=f"Mesa {str(self._mesaCounter + 1)}", font= super().h4)
         mesa_label.grid(row=1, column=1, padx=5, pady=5)
 
-        cantidad_label = tk.Label(mesa, width=10, text= str(asientos) + " asientos", font= super().h3)
+        cantidad_label = tk.Label(mesa, width=10, text= f"{str(asientos)} asientos", font= super().h4)
         cantidad_label.grid(row=1, column=2, padx=5, pady=5)
 
         self._mesa_entry.delete(0, tk.END)
 
-        borrar_button = tk.Button(mesa, width=10,text="Borrar", font=super().h3, command= lambda: self.__borrar_mesa(borrar_button.master))
+        borrar_button = tk.Button(mesa, width=10,text="Borrar", font=super().h4, command= lambda: self.__borrar_mesa(borrar_button.master))
         borrar_button.grid(row=1, column=3, padx=5, pady=5)
 
-        if(40*len(self.mesas) > self._mesa_canvas.winfo_height()):
-            self._mesa_canvas.config(scrollregion=(0,0,0,42*(len(self.mesas)+1)))
+        if(40*len(self._mesas) > self._mesa_canvas.winfo_height()):
+            self._mesa_canvas.config(scrollregion=(0,0,0,30*(len(self._mesas)+1)))
 
-        self.mesas.append(mesa)
-        self.mesas_displayed.append(display)
-        self.mesaCounter += 1
+        self._mesas.append(mesa)
+        self._mesas_displayed.append(display)
+        self._mesaCounter += 1
         
     def __loadWidgets(self) -> None:
 
@@ -636,7 +691,8 @@ class CrearSimulacionFrame(AppWindow):
         self._plato_entry_tiempo = tk.Entry(self._plato_frame, width=5, font=super().h2, validate= "key", validatecommand=(self._validarInputNumericoCallback, "%P"))
         self._plato_entry_tiempo.grid(row=1, column=2, padx=5, pady=5)
 
-        self._plato_button = tk.Button(self._plato_frame, width=15, text="Agregar Plato", font=super().h3, command=self.__agregar_mesa)
+        # Aca cambiar comando para que agregue al canvas correcto.
+        self._plato_button = tk.Button(self._plato_frame, width=15, text="Agregar Plato", font=super().h3, command=self.__agregar_plato)
         self._plato_button.grid(row=1, column=3, padx=10, pady=5, sticky=tk.W)
 
         self._plato_display_frame = tk.Frame(self._main_frame)
@@ -650,10 +706,10 @@ class CrearSimulacionFrame(AppWindow):
         self._plato_canvas.config(yscrollcommand=self._plato_canvas_vbar.set)
         self._plato_canvas.pack(side=tk.LEFT, expand=True, fill= tk.BOTH)
 
-        self._simular_button = tk.Button(self, text="Simular", command = self.__volverMenuPrincipal)
+        self._simular_button = tk.Button(self, text="Simular", command = self.__iniciarSimulacion)
         self._simular_button.grid(row=3, column=2, sticky=tk.S, padx=5, pady=5)
 
-        self._go_back_button = tk.Button(self, text="Volver al menu principal", command = self.__iniciarSimulacion)
+        self._go_back_button = tk.Button(self, text="Volver al menu principal", command = self.__volverMenuPrincipal)
         self._go_back_button.grid(row=1, column=3, sticky= tk.NE, padx=5, pady=5)
         pass
 
