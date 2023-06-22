@@ -1,7 +1,9 @@
+import sys
+sys.path.insert(0, 'SimClasses')
 from enum import Enum
-from .Menu import Menu
+from Menu import Menu
 import random as r
-from .Tiempo import tiempo_aleatorio_normal
+from Tiempo import tiempo_aleatorio_normal
 
 menu = Menu()
 

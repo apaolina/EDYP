@@ -3,6 +3,7 @@
     "diffEditor.codeLens": true,
     "python.analysis.typeCheckingMode": "off",
     "python.analysis.extraPaths": [
-        "./Database"
+        "./Database",
+        "./SimClasses"
     ]
 }

@@ -7,7 +7,10 @@ from DataBaseManager import DataManager
 from typing import Callable
 import re
 from tkinter import messagebox
-
+sys.path.insert(0,'SimClasses')
+from MesaManager import MesaManager
+sys.path.insert(0,'SimClasses')
+from EmpleadoManager import EmpleadoManager
 import matplotlib.pyplot as plt
 
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
@@ -482,8 +485,8 @@ class CrearSimulacionFrame(AppWindow):
 
         self.__loadCallbacks()
         self.__loadWidgets()
-
-
+        self.mesaManager = MesaManager()
+        self.empleadoManager = EmpleadoManager()
         self.mesaCounter = 0
         self.mesas = []
         self.mesas_displayed = []
@@ -503,6 +506,12 @@ class CrearSimulacionFrame(AppWindow):
         self._validarInputNumericoCallback = self.register(self.__validarInputNumerico)
         
     def __iniciarSimulacion(self) -> None:
+        if len(self.mesas) == 0:
+            messagebox.showerror("Error", "Debe agregar al menos una mesa")
+            return
+        
+        self.__agregarMesero_simulacion(int(self._cant_meseros_entry.get()))
+        self.__agregarCocinero_simulacion(int(self._cant_cocineros_entry.get()))
         self.app.windowHandler.cambiarWindow(WindowState.RESULTS_SIMULATION)
         pass
 
@@ -554,6 +563,7 @@ class CrearSimulacionFrame(AppWindow):
         self.mesas.append(mesa)
         self.mesas_displayed.append(display)
         self.mesaCounter += 1
+        self.__agregarMesa_simulacion(asientos)
         
     def __loadWidgets(self) -> None:
 
@@ -582,6 +592,8 @@ class CrearSimulacionFrame(AppWindow):
 
         self._cant_meseros_entry = tk.Entry(self._main_frame, width=40, font=super().h2, validate= "key", validatecommand=(self._validarInputNumericoCallback, "%P"))
         self._cant_meseros_entry.grid(row=4, column=2, padx=5, pady=5, sticky=tk.E)
+         
+        
 
         self._cant_cocineros_label = tk.Label(self._main_frame, text="Cantidad de Cocineros: ", font=super().h3)
         self._cant_cocineros_label.grid(row=5, column=1, padx=5, pady=5, sticky=tk.W)
@@ -654,6 +666,19 @@ class CrearSimulacionFrame(AppWindow):
         self._go_back_button = tk.Button(self, text="Volver al menu principal", command = self.__volverMenuPrincipal)
         self._go_back_button.grid(row=1, column=3, sticky= tk.NE, padx=5, pady=5)
         pass
+    
+    def __agregarMesa_simulacion(self, capacidad):
+        self.mesaManager.crearMesa(capacidad)
+    def __agregarMesero_simulacion(self, cantidadMeseros):
+        nombre = "Mesero"
+        for i in range(cantidadMeseros):
+            nombre = nombre + " " + str(i)
+            self.empleadoManager.crearMesero(nombre)
+    def __agregarCocinero_simulacion(self, cantidadCocinero):
+        nombre = "Cocinero"
+        for i in range(cantidadCocinero):
+            nombre = nombre + " " + str(i)
+            self.empleadoManager.crearCocinero(nombre)
 
 
 # Esta clase representa el frame de espera de la simulacion

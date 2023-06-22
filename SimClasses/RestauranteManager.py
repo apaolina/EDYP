@@ -1,7 +1,9 @@
-from .MesaManager import MesaManager
-from .GrupoClientesManager import GrupoClientesManager
-from .EmpleadoManager import EmpleadoManager
-from .CocinaManager import CocinaManager
+import sys
+sys.path.insert(0, 'SimClasses')
+from MesaManager import MesaManager
+from GrupoClientesManager import GrupoClientesManager
+from EmpleadoManager import EmpleadoManager
+from CocinaManager import CocinaManager
 from events import Events
 
 # Un tick seria un chequeo de que el tiempo paso

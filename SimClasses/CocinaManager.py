@@ -1,4 +1,6 @@
-from .Cola import Cola
+import sys
+sys.path.insert(0, 'SimClasses')
+from Cola import Cola
 # Clase que se encarga de todo lo relacionado a la cocina
 class CocinaManager():
 

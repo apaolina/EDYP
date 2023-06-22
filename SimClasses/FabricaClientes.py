@@ -1,5 +1,7 @@
-from .Persona import Cliente, GrupoClientes
-from .Tiempo import tiempo_aleatorio
+import sys
+sys.path.insert(0, 'SimClasses')
+from Persona import Cliente, GrupoClientes
+from Tiempo import tiempo_aleatorio
 import random as r
 import names
 
