@@ -1,6 +1,8 @@
-from .Persona import Cliente, GrupoClientes, EstadoGC
-from .Cola import Cola, ColaSentar
-from .FabricaClientes import FabricaClientes
+import sys
+sys.path.insert(0, 'SimClasses')
+from Persona import Cliente, GrupoClientes, EstadoGC
+from Cola import Cola, ColaSentar
+from FabricaClientes import FabricaClientes
 
 class GrupoClientesManager():
     colaSentar = ColaSentar()

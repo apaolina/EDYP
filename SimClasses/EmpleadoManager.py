@@ -1,4 +1,6 @@
-from .Persona import EstadoMesero, Mesero, Cocinero
+import sys
+sys.path.insert(0, 'SimClasses')
+from Persona import EstadoMesero, Mesero, Cocinero
 
 class EmpleadoManager():
 

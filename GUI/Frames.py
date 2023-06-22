@@ -7,7 +7,12 @@ from DataBaseManager import DataManager
 from typing import Callable
 import re
 from tkinter import messagebox
-
+sys.path.insert(0,'SimClasses')
+from MesaManager import MesaManager
+sys.path.insert(0,'SimClasses')
+from EmpleadoManager import EmpleadoManager
+sys.path.insert(0,'SimClasses')
+from RestauranteManager import Restaurante
 import matplotlib.pyplot as plt
 
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
@@ -19,8 +24,7 @@ class WindowState(Enum):
     MAIN_MENU = 2,
     NEW_SIMULATION = 3,
     RESULTS_SIMULATION = 4,
-    AWAITING_SIMULATION = 5,
-    ALL_SIMULATIONS = 6
+    ALL_SIMULATIONS = 5
 
 # La clase root del GUI, esto es lo que muestra toda informacion.
 class App(tk.Tk):
@@ -72,7 +76,7 @@ class WindowHandler():
 
     # Esto esta hardcoded, no creo que sea necesario cambiar esto excepto si se crean nuevos frames
     def __loadFrames(self) -> None:
-        for we in (WindowState.LOGIN,WindowState.REGISTER, WindowState.MAIN_MENU, WindowState.NEW_SIMULATION, WindowState.RESULTS_SIMULATION, WindowState.AWAITING_SIMULATION, WindowState.ALL_SIMULATIONS):
+        for we in (WindowState.LOGIN,WindowState.REGISTER, WindowState.MAIN_MENU, WindowState.NEW_SIMULATION, WindowState.RESULTS_SIMULATION, WindowState.ALL_SIMULATIONS):
             frame: AppWindow
 
             match we:
@@ -91,8 +95,7 @@ class WindowHandler():
                 case WindowState.RESULTS_SIMULATION:
                     frame = ResultadoSimulacionFrame(self.app.container, self.app)
 
-                case WindowState.AWAITING_SIMULATION:
-                    frame = EsperaSimulacionFrame(self.app.container, self.app)
+                
 
                 case WindowState.ALL_SIMULATIONS:
                     frame = TodasSimulacionesFrame(self.app.container, self.app)
@@ -481,7 +484,9 @@ class CrearSimulacionFrame(AppWindow):
 
     def __init__(self, master: tk.Tk, app: App, *args, **kwargs) -> None:
         super().__init__(master, app, *args, **kwargs)
-
+        
+#Se callean mesaManager, empleadoManager y restauranteManager
+        
         self.__loadCallbacks()
         self.__loadWidgets()
 
@@ -510,7 +515,15 @@ class CrearSimulacionFrame(AppWindow):
 
     # Metodos Privados para cambiar de Window 
     def __iniciarSimulacion(self) -> None:
-        self.app.windowHandler.cambiarWindow(WindowState.AWAITING_SIMULATION)
+        if len(self.mesas) == 0:
+            messagebox.showerror("Error", "Debe agregar al menos una mesa")
+            return
+
+#Se inicializan las funciones
+        self.__agregarMesero_simulacion(int(self._cant_meseros_entry.get()))
+        self.__agregarCocinero_simulacion(int(self._cant_cocineros_entry.get()))
+        self.restauranteManager.simular(int(self._tiempo_sim_entry.get()), int(self._tiempo_tick_entry.get()))
+        self.app.windowHandler.cambiarWindow(WindowState.RESULTS_SIMULATION)
         pass
 
     def __volverMenuPrincipal(self) -> None:
@@ -639,6 +652,8 @@ class CrearSimulacionFrame(AppWindow):
 
         self._cant_meseros_entry = tk.Entry(self._main_frame, width=40, font=super().h2, validate= "key", validatecommand=(self._validarInputNumericoCallback, "%P"))
         self._cant_meseros_entry.grid(row=4, column=2, padx=5, pady=5, sticky=tk.E)
+         
+        
 
         self._cant_cocineros_label = tk.Label(self._main_frame, text="Cantidad de Cocineros: ", font=super().h3)
         self._cant_cocineros_label.grid(row=5, column=1, padx=5, pady=5, sticky=tk.W)
@@ -707,16 +722,32 @@ class CrearSimulacionFrame(AppWindow):
         self._plato_canvas.pack(side=tk.LEFT, expand=True, fill= tk.BOTH)
 
         self._simular_button = tk.Button(self, text="Simular", command = self.__iniciarSimulacion)
+        self._simular_button = tk.Button(self, text="Simular", command = self.__iniciarSimulacion)
         self._simular_button.grid(row=3, column=2, sticky=tk.S, padx=5, pady=5)
 
         self._go_back_button = tk.Button(self, text="Volver al menu principal", command = self.__volverMenuPrincipal)
+        self._go_back_button = tk.Button(self, text="Volver al menu principal", command = self.__volverMenuPrincipal)
         self._go_back_button.grid(row=1, column=3, sticky= tk.NE, padx=5, pady=5)
         pass
+    
+    
+# Se definen las funciones agregar mesa, mesero y cocinero, que hacen referencia al simulador.
+    def __agregarMesa_simulacion(self, capacidad):
+        self.mesaManager.crearMesa(capacidad)
+    def __agregarMesero_simulacion(self, cantidadMeseros):
+        nombre = "Mesero"
+        for i in range(cantidadMeseros):
+            nombre = nombre + " " + str(i)
+            self.empleadoManager.crearMesero(nombre)
+    def __agregarCocinero_simulacion(self, cantidadCocinero):
+        nombre = "Cocinero"
+        for i in range(cantidadCocinero):
+            nombre = nombre + " " + str(i)
+            self.empleadoManager.crearCocinero(nombre)
 
 
 # Esta clase representa el frame de espera de la simulacion
-class EsperaSimulacionFrame(AppWindow):
-    pass
+
 
 # Esta clase representa el frame de resultados de la simulacion
 class ResultadoSimulacionFrame(AppWindow):
@@ -737,6 +768,7 @@ class ResultadoSimulacionFrame(AppWindow):
         self.app.windowHandler.cambiarWindow(WindowState.MAIN_MENU)
 
     def __loadWidgets(self) -> None:
+        
         _go_back_button = tk.Button(self, text="Go Back", command = self.go_back)
         _go_back_button.pack()
         pass
@@ -749,8 +781,7 @@ class TodasSimulacionesFrame(AppWindow):
         self.__loadCallbacks()
         self.__loadWidgets()
 
-    def reset(self) -> None:
-        pass
+    
 
     def __loadCallbacks(self) -> None:
         pass

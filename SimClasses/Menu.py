@@ -1,7 +1,8 @@
 #Se crea la clase Menu
 # Clase que visualiza los platos disponibles para pedir a los clientes basado en los ingredientes disponibles
-
-from .Plato import Plato
+import sys
+sys.path.insert(0, 'SimClasses')
+from Plato import Plato
 
 class Menu:
     def __init__(self): 

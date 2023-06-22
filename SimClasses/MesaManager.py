@@ -1,4 +1,6 @@
-from .Mesa import Mesa, EstadoMesa
+import sys
+sys.path.insert(0, r'./SimClasses')
+from Mesa import Mesa, EstadoMesa
 # Esta clase controla todas las mesas que se crearon
 class MesaManager():
 

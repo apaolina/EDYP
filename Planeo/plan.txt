@@ -1,4 +1,4 @@
-Hola chicos
+
 
 -Llega cliente/s, se le asigna mesa, y a la mesa cliente. (otra opción podría ser sumar takeaway)
 -A la mesa se le asigna mozo. 
