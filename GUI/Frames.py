@@ -11,6 +11,8 @@ sys.path.insert(0,'SimClasses')
 from MesaManager import MesaManager
 sys.path.insert(0,'SimClasses')
 from EmpleadoManager import EmpleadoManager
+sys.path.insert(0,'SimClasses')
+from RestauranteManager import Restaurante
 import matplotlib.pyplot as plt
 
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
@@ -487,6 +489,7 @@ class CrearSimulacionFrame(AppWindow):
         self.__loadWidgets()
         self.mesaManager = MesaManager()
         self.empleadoManager = EmpleadoManager()
+        self.restauranteManager = Restaurante()
         self.mesaCounter = 0
         self.mesas = []
         self.mesas_displayed = []
@@ -509,9 +512,10 @@ class CrearSimulacionFrame(AppWindow):
         if len(self.mesas) == 0:
             messagebox.showerror("Error", "Debe agregar al menos una mesa")
             return
-        
+
         self.__agregarMesero_simulacion(int(self._cant_meseros_entry.get()))
         self.__agregarCocinero_simulacion(int(self._cant_cocineros_entry.get()))
+        self.restauranteManager.simular(int(self._tiempo_sim_entry.get()), int(self._tiempo_tick_entry.get()))
         self.app.windowHandler.cambiarWindow(WindowState.RESULTS_SIMULATION)
         pass
 
