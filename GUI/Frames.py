@@ -426,7 +426,7 @@ class MenuPrincipalWindow(AppWindow):
         self.__loadWidgets()
 
     def reset(self) -> None:
-        self._profile_text_var.set("Bienvenido " + self.app.userHandler.userIngresado + "!")
+        self._profile_text_var.set("Bienvenido!") #Esto no funciona + self.app.userHandler.userIngresado +
         pass
 
     def __logOff(self) -> None:
