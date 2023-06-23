@@ -542,10 +542,9 @@ class CrearSimulacionFrame(AppWindow):
             self.app.windowHandler.cambiarWindow(WindowState.AWAITING_SIMULATION)
 
             from RestauranteManager import instance
-            import asyncio 
-            asyncio.run(instance.simular(self._cant_meseros_entry.get(), self._cant_cocineros_entry.get(),\
+            instance.simular(self._cant_meseros_entry.get(), self._cant_cocineros_entry.get(),\
                                             self._cant_clientes_entry.get(), self._mesas_dict, self._platos_dict, self._tiempo_sim_entry.get(),\
-                                                self._tiempo_tick_entry.get(), self.__mostrarResultados, id))
+                                                self._tiempo_tick_entry.get(), self.__mostrarResultados, id)
         else:
             messagebox.showerror("Error", "Hubo un error al procesar la simulacion.")
 
@@ -814,16 +813,22 @@ class ResultadoSimulacionFrame(AppWindow):
     def __loadCallbacks(self) -> None:
         pass
 
-    def go_back(self) -> None:
+    def volver_menu_ppal(self) -> None:
         self.app.windowHandler.cambiarWindow(WindowState.MAIN_MENU)
 
     def __loadWidgets(self) -> None:
         
-        _go_back_button = tk.Button(self, text="Go Back", command = self.go_back)
-        _go_back_button.pack()
+        _informacion_label = tk.Label(self, text="Se realizó la simulación correctamente, encontrarán los datos generados en el archivo database.json")
+        _informacion_label.grid(row=1,column=2)
+
+        _mensaje_aparte_label = tk.Label(self, text="El plan era visualizar con graficos la informacion generada aqui pero como pueden ver fuimos demasiado ambiciosos!")
+        _mensaje_aparte_label.grid(row=2, column=2)
+
+        _volver_menu_ppal_button = tk.Button(self, text="Volver al Menu Principal", command = self.volver_menu_ppal)
+        _volver_menu_ppal_button.grid(row=3,column=2)
         pass
 
-class TodasSimulacionesFrame(AppWindow):
+class TodasSimulacionesFrame(AppWindow): # No se llego
 
     def __init__(self, master: tk.Tk, app: App, *args, **kwargs) -> None:
         super().__init__(master, app, *args, **kwargs)

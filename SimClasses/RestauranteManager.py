@@ -4,6 +4,7 @@ from MesaManager import MesaManager
 from GrupoClientesManager import GrupoClientesManager
 from EmpleadoManager import EmpleadoManager
 from CocinaManager import CocinaManager
+from InfoManager import InfoManager
 from events import Events
 import names
 from typing import Callable
@@ -27,6 +28,7 @@ class Restaurante():
         self.grupoManager = GrupoClientesManager()
         self.empleadoManager = EmpleadoManager()
         self.cocinaManager = CocinaManager()
+        self.infoManager = InfoManager()
         self.tick: Tick
         pass
     
@@ -43,11 +45,11 @@ class Restaurante():
         self.tick.on_tick += self.grupoManager.fabricaClientes.fabricarClientes
         pass
 
-    async def simular(self, cantidad_meseros:str, cantidad_cocineros:str, cantidad_clientes: str,\
+    def simular(self, cantidad_meseros:str, cantidad_cocineros:str, cantidad_clientes: str,\
                 dict_mesas: dict[str,list[str,str]], dict_platos: dict[str,list[str,str]], \
                     tiempoSimulacionInput: str, tiempoPorTick: str, callback: Callable[[None],None], id: int) -> None: 
         
-        tiempoSimulacion = int(tiempoSimulacionInput)
+        self.tiempoSimulacion = int(tiempoSimulacionInput)
 
         for mesero in range(int(cantidad_meseros)):
             self.empleadoManager.crearMesero(names.get_full_name())
@@ -65,11 +67,12 @@ class Restaurante():
         
         self.tick = Tick(int(tiempoPorTick))
         self.__subscribirAcciones()
-        while tiempoSimulacion > 0:
+        while self.tiempoSimulacion > 0:
             self.tick.on_tick(self.tick.tiempoPorTick)
             
-            tiempoSimulacion -= int(tiempoPorTick)
+            self.tiempoSimulacion -= int(tiempoPorTick)
             
+        self.infoManager.subirEventos(id)
         callback()
         
     

@@ -1,35 +1,6 @@
 {
     "Usuarios": [
-        {
-            "usuario": "joaco",
-            "password": "4014706ee32fc2bd0f888763eb635836c3fa2ad84ccb283e2d4739bd3937693f",
-            "email": "jopalermo@itba.edu.ar"
-        },
-        {
-            "usuario": "q",
-            "password": "da2aa0da699b09b962db7700196ec17ec2181224cd037a14abf9a29766b5520c",
-            "email": "q@w.com"
-        },
-        {
-            "usuario": "joramos",
-            "password": "969009cb517ba90edb752eeba5f7c1f2cf1239977ae61a6732f110797a5bb28e",
-            "email": "joramos@itba.edu.ar"
-        },
-        {
-            "usuario": "jero1",
-            "password": "691a61ed201807317bf38a6350f28b068b21886649cc71966a5f1de3b797a62a",
-            "email": "j@gmail.com"
-        },
-        {
-            "usuario": "admin",
-            "password": "57d64f0787169617144553655d5ed75a3c533a20fb0903e3cc488a3bc69a187b",
-            "email": "admin@itba.edu.ar"
-        },
-        {
-            "usuario": "prueba",
-            "password": "27fc2f8b92205619cf2f9921a2308d03fd683f0c906847b61c213d8fe3d095d0",
-            "email": "prueba123@itba.edu.ar"
-        }
+        
     ],
     "Simulaciones": [
         

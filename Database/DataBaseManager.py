@@ -61,7 +61,7 @@ class DataManager():
                          lista_mesas:dict[str,list[str,str]], lista_platos:dict[str,list[str,str]], tiempo_simulado: str,\
                             tiempo_por_tick:str, callback:Callable[[bool],None]):
 
-        try:
+        #try:
             id = 0
             dict_mesas: dict[str, str] = {}
             dict_platos: dict[str,str] = {}
@@ -83,7 +83,7 @@ class DataManager():
                 "lista_platos": dict_platos,
                 "tiempo_simulado": tiempo_simulado,
                 "tiempo_por_tick": tiempo_por_tick,
-                "eventos": ""
+                "eventos": []
             }
 
             with open(self.database,"r+") as file:
@@ -95,5 +95,18 @@ class DataManager():
                 json.dump(file_data,file,indent = 4)
             
             callback(True, id)
-        except:
-            callback(False, None)
+        #except:
+        #    callback(False, None)
+
+    def subirEventos(self, id: int, eventos: list[(str, int)]):
+
+
+        with open(self.database,"r+") as file:
+            file_data = json.load(file)
+
+            for sim in file_data["Simulaciones"]:
+                if(sim["id"]==str(id)):
+                    sim["eventos"].append(eventos)
+
+            file.seek(0)
+            json.dump(file_data,file,indent = 4)

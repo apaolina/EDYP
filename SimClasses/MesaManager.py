@@ -33,6 +33,8 @@ class MesaManager():
 
     def desocuparMesa(self, id: int) -> None:
         self.mesas[id].estado = EstadoMesa.DESOCUPADO
+        from RestauranteManager import instance
+        instance.infoManager.declararEvento("Se desocupo la mesa " + str(id))
 
     def verEstadoMesas(self) -> dict[str, int]:
         a = 0

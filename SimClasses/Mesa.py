@@ -18,13 +18,15 @@ class Mesa:
 
     def ocupar(self) -> None:
         self.estado = EstadoMesa.OCUPADO
+        from RestauranteManager import instance
+        instance.infoManager.declararEvento("Se ocupo una mesa")
     
     def desocupar(self) -> None:
-        self.estado = EstadoMesa.SUCIO
+        self.estado = EstadoMesa.DESOCUPADO
         self.grupoClientes = None
         
     def limpiar(self) -> None:
-        self.estado = EstadoMesa.DESOCUPADO
+        self.estado = EstadoMesa.DESOCUPADO # No implementado
 
     def getId(self) -> int:
         return self.id

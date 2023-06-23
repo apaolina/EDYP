@@ -15,6 +15,7 @@ class NodoCola(Generic[T]):
 
     def MoverAtras(self) -> None:
         self.posicion += 1
+    
 class Cola(Generic[T]):
     def __init__(self) -> None:
         self.nodos: list[NodoCola] = []

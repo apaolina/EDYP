@@ -6,6 +6,6 @@ class PaqueteUsuario():
         self.password = password
         pass
 
-# Contenedor de informacion estilistica de la aplicacion (colores, fuentes)
+# Contenedor de informacion estilistica de la aplicacion (colores, fuentes) NO IMPLEMENTADO
 class Palette():
     pass

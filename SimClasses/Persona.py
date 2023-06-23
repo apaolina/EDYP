@@ -1,7 +1,6 @@
 import sys
 sys.path.insert(0, 'SimClasses')
 from enum import Enum
-from Menu import Menu
 import random as r
 from Tiempo import tiempo_aleatorio_normal
 
@@ -124,8 +123,9 @@ class GrupoClientes():
         if(resultado):
             if(instance.grupoManager.colaSentar.dentro(self)):
                 instance.grupoManager.colaSentar.desencolar(self)
+                instance.infoManager.declararEvento("Se sento un grupo de clientes")
 
-            self.contadorParaAccion = tiempo_aleatorio_normal(40,7)
+            self.contadorParaAccion = tiempo_aleatorio_normal(40,7) # Esto esta fuera del scope, implementar en el futuro
             self.estado = EstadoGC.ELIGIENDO_COMIDA
             self.mesa = id
 
@@ -223,12 +223,10 @@ class Mesero(Empleado):
         
         match self.estado:
 
-            case EstadoMesero.ESPERANDO_ACCION: # Orden de priorizacion iria aca
+            case EstadoMesero.ESPERANDO_ACCION: 
                 self.__requestPedido()
                 if(self.estado == EstadoMesero.ESPERANDO_ACCION):
                     self.__requestPlatos()
-                # if(self.estado == EstadoMesero.ESPERANDO_ACCION):
-                #    self.__requestPlatos()
                 pass
 
             case EstadoMesero.TOMANDO_PEDIDO:
@@ -237,6 +235,7 @@ class Mesero(Empleado):
 
                 from RestauranteManager import instance
                 instance.cocinaManager.agregarPedido(self.pedidoEnMano)
+                instance.infoManager.declararEvento("Se tomo un pedido")
 
                 self.estado = EstadoMesero.ESPERANDO_ACCION
                 self.pedidoEnMano = None
@@ -249,6 +248,7 @@ class Mesero(Empleado):
 
                 from RestauranteManager import instance
                 instance.grupoManager.gruposSentados[self.pedidoEnMano[1]].entregarPedido()
+                instance.infoManager.declararEvento("Se entrego un pedido")
                 
                 self.estado = EstadoMesero.ESPERANDO_ACCION
                 self.pedidoEnMano = None
@@ -308,6 +308,8 @@ class Cocinero(Empleado):
 
                 from RestauranteManager import instance
                 instance.cocinaManager.agregarInventario(self.platoEnCoccion)
+                instance.infoManager.declararEvento("Se cocino un " + self.platoEnCoccion)
+                
                 
                 self.platoEnCoccion = ""
                 self.estado = EstadoCocinero.ESPERANDO_ACCION

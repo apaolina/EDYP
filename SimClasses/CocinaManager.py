@@ -78,4 +78,7 @@ class CocinaManager():
         if(all(self.pedidoEnPreparacion[1])):
             self.colaPedidosEntregar.encolar(self.pedidoEnPreparacion[0])
             self.pedidoEnPreparacion = [(),[]]
+            from RestauranteManager import instance
+            instance.infoManager.declararEvento("Se preparo un pedido")
+            
     
