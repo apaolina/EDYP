@@ -2,17 +2,14 @@ import tkinter as tk
 from DataClasses import *
 from enum import Enum
 import sys
+
 sys.path.insert(0,'Database')
 from DataBaseManager import DataManager
 from typing import Callable
 import re
 from tkinter import messagebox
 sys.path.insert(0,'SimClasses')
-from MesaManager import MesaManager
-sys.path.insert(0,'SimClasses')
-from EmpleadoManager import EmpleadoManager
-sys.path.insert(0,'SimClasses')
-from RestauranteManager import Restaurante
+
 import matplotlib.pyplot as plt
 
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
@@ -23,8 +20,9 @@ class WindowState(Enum):
     REGISTER = 1,
     MAIN_MENU = 2,
     NEW_SIMULATION = 3,
-    RESULTS_SIMULATION = 4,
-    ALL_SIMULATIONS = 5
+    AWAITING_SIMULATION = 4,
+    RESULTS_SIMULATION = 5,
+    ALL_SIMULATIONS = 6
 
 # La clase root del GUI, esto es lo que muestra toda informacion.
 class App(tk.Tk):
@@ -76,7 +74,7 @@ class WindowHandler():
 
     # Esto esta hardcoded, no creo que sea necesario cambiar esto excepto si se crean nuevos frames
     def __loadFrames(self) -> None:
-        for we in (WindowState.LOGIN,WindowState.REGISTER, WindowState.MAIN_MENU, WindowState.NEW_SIMULATION, WindowState.RESULTS_SIMULATION, WindowState.ALL_SIMULATIONS):
+        for we in (WindowState.LOGIN,WindowState.REGISTER, WindowState.MAIN_MENU, WindowState.NEW_SIMULATION, WindowState.AWAITING_SIMULATION, WindowState.RESULTS_SIMULATION, WindowState.ALL_SIMULATIONS):
             frame: AppWindow
 
             match we:
@@ -95,7 +93,8 @@ class WindowHandler():
                 case WindowState.RESULTS_SIMULATION:
                     frame = ResultadoSimulacionFrame(self.app.container, self.app)
 
-                
+                case WindowState.AWAITING_SIMULATION:
+                    frame = EsperaSimulacionFrame(self.app.container, self.app)
 
                 case WindowState.ALL_SIMULATIONS:
                     frame = TodasSimulacionesFrame(self.app.container, self.app)
@@ -119,6 +118,7 @@ class UserHandler():
         self.dataManager = DataManager()
 
         self.userIngresado: (str|None)
+        self.progreso_sim: int = 0
         pass
 
     def requestLogin(self,usuarioInput: str, passwordInput:str , callback: Callable[[bool],None]) -> None:
@@ -492,14 +492,35 @@ class CrearSimulacionFrame(AppWindow):
 
 
         self._mesaCounter = 0
-        self._mesas = []
-        self._mesas_displayed = []
+        self._mesas: list[tk.Frame] = []
+        self._mesas_displayed: list[int] = []
+        self._mesas_dict: dict[str,list[str,list]] = {}
 
         self._platoCounter = 0
-        self._platos = []
-        self._platos_displayed = []
+        self._platos: list[tk.Frame] = []
+        self._platos_displayed: list[int] = []
+        self._platos_dict: dict[str,list[str,str]] = {}
 
     def reset(self) -> None:
+        self._nombre_sim_entry.delete(0,tk.END)
+        self._tiempo_sim_entry.delete(0,tk.END)
+        self._tiempo_tick_entry.delete(0,tk.END)
+        self._mesa_entry.delete(0,tk.END)
+        self._plato_entry_nombre.delete(0,tk.END)
+        self._plato_entry_tiempo.delete(0,tk.END)
+        self._cant_meseros_entry.delete(0,tk.END)
+        self._cant_clientes_entry.delete(0,tk.END)
+        self._cant_cocineros_entry.delete(0,tk.END)
+        
+        self._mesaCounter = 0
+        self._platoCounter = 0
+        
+        for mesa in self._mesas:
+            self.__borrar_mesa(mesa)
+
+        for plato in self._platos:
+            self.__borrar_plato(plato)
+        
         pass
 
     def __loadCallbacks(self) -> None:
@@ -512,19 +533,33 @@ class CrearSimulacionFrame(AppWindow):
             return False
         
         return True
+    
+    def __mostrarResultados(self) -> None:
+        self.app.windowHandler.cambiarWindow(WindowState.RESULTS_SIMULATION)
+
+    def __procesarSimulacion(self, result:bool, id: int) -> None:
+        if(result):
+            self.app.windowHandler.cambiarWindow(WindowState.AWAITING_SIMULATION)
+
+            from RestauranteManager import instance
+            import asyncio 
+            asyncio.run(instance.simular(self._cant_meseros_entry.get(), self._cant_cocineros_entry.get(),\
+                                            self._cant_clientes_entry.get(), self._mesas_dict, self._platos_dict, self._tiempo_sim_entry.get(),\
+                                                self._tiempo_tick_entry.get(), self.__mostrarResultados, id))
+        else:
+            messagebox.showerror("Error", "Hubo un error al procesar la simulacion.")
 
     # Metodos Privados para cambiar de Window 
     def __iniciarSimulacion(self) -> None:
-        if len(self.mesas) == 0:
-            messagebox.showerror("Error", "Debe agregar al menos una mesa")
+
+        if len(self._mesas) == 0 or len(self._platos) == 0:
+            messagebox.showerror("Error", "Debe haber minimo 1 plato y 1 mesa para realizar la simulacion")
             return
 
-#Se inicializan las funciones
-        self.__agregarMesero_simulacion(int(self._cant_meseros_entry.get()))
-        self.__agregarCocinero_simulacion(int(self._cant_cocineros_entry.get()))
-        self.restauranteManager.simular(int(self._tiempo_sim_entry.get()), int(self._tiempo_tick_entry.get()))
-        self.app.windowHandler.cambiarWindow(WindowState.RESULTS_SIMULATION)
-        pass
+        self.dataManager.cargarSimulacion(self.app.userHandler.userIngresado, self._nombre_sim_entry.get(), self._cant_meseros_entry.get(), self._cant_cocineros_entry.get(),\
+                                            self._cant_clientes_entry.get(), self._mesas_dict, self._platos_dict, self._tiempo_sim_entry.get(),\
+                                                self._tiempo_tick_entry.get(), self.__procesarSimulacion)
+        
 
     def __volverMenuPrincipal(self) -> None:
         self.app.windowHandler.cambiarWindow(WindowState.MAIN_MENU)
@@ -539,7 +574,7 @@ class CrearSimulacionFrame(AppWindow):
             if(i > index):
                 self._mesa_canvas.move(self._mesas_displayed[i],0, -30)
 
-        self._mesas_displayed.pop(index)
+        self._mesas_dict.pop(self._mesas_displayed.pop(index))
 
         if(40*len(self._mesas) > self._mesa_canvas.winfo_height()):
             self._mesa_canvas.config(scrollregion=(0,0,0,30*(len(self._mesas))))
@@ -551,12 +586,12 @@ class CrearSimulacionFrame(AppWindow):
 
         for i in range(len(self._platos_displayed)):
             if(i > index):
-                self._plato_canvas.move(self._platos_displayed[i],0, -30)
+                self._plato_canvas.move(self._platos_displayed[i],0, -35)
 
-        self._platos_displayed.pop(index)
+        self._platos_dict.pop(self._platos_displayed.pop(index))
 
         if(40*len(self._platos) > self._plato_canvas.winfo_height()):
-            self._plato_canvas.config(scrollregion=(0,0,0,30*(len(self._platos))))
+            self._plato_canvas.config(scrollregion=(0,0,0,35*(len(self._platos))))
             
     def __agregar_plato(self) -> None:
 
@@ -570,7 +605,7 @@ class CrearSimulacionFrame(AppWindow):
         plato.rowconfigure(1)
 
         width = self._plato_canvas.winfo_width()
-        display = self._plato_canvas.create_window(width/2,42*len(self._platos), anchor=tk.N, window=plato)
+        display = self._plato_canvas.create_window(width/2,35*len(self._platos), anchor=tk.N, window=plato)
 
         plato_label = tk.Label(plato, width=10,text=f"Plato {str(self._platoCounter + 1)}", font= super().h4)
         plato_label.grid(row=1, column=1, padx=5, pady=5)
@@ -588,11 +623,12 @@ class CrearSimulacionFrame(AppWindow):
         borrar_button.grid(row=1, column=4, padx=5, pady=5)
 
         if(40*len(self._platos) > self._plato_canvas.winfo_height()):
-            self._plato_canvas.config(scrollregion=(0,0,0,42*(len(self._platos)+1)))
+            self._plato_canvas.config(scrollregion=(0,0,0,35*(len(self._platos)+1)))
 
         self._platos.append(plato)
         self._platos_displayed.append(display)
         self._platoCounter += 1
+        self._platos_dict[display] = [nombre_plato, tiempo_plato]
     
     def __agregar_mesa(self) -> None:
 
@@ -624,6 +660,7 @@ class CrearSimulacionFrame(AppWindow):
         self._mesas.append(mesa)
         self._mesas_displayed.append(display)
         self._mesaCounter += 1
+        self._mesas_dict[display] = [f"Mesa {str(self._mesaCounter)}", str(asientos)]
         
     def __loadWidgets(self) -> None:
 
@@ -635,43 +672,47 @@ class CrearSimulacionFrame(AppWindow):
         self._titulo_label = tk.Label(self._main_frame, text="Nueva Simulación", font=super().h1)
         self._titulo_label.grid(row=1,column=1,columnspan=3)
 
+        self._nombre_sim_label = tk.Label(self._main_frame, text="Nombre de la Simulación: ", font=super().h3)
+        self._nombre_sim_label.grid(row=2, column=1, padx=5, pady=5, sticky=tk.W)
+
+        self._nombre_sim_entry = tk.Entry(self._main_frame, width=40, font=super().h2)
+        self._nombre_sim_entry.grid(row=2, column=2, padx=5, pady=5, sticky=tk.E)
+
         self._tiempo_sim_label = tk.Label(self._main_frame, text="Tiempo de Simulación (en segundos): ", font=super().h3)
-        self._tiempo_sim_label.grid(row=2, column=1, padx=5, pady=5, sticky=tk.W)
+        self._tiempo_sim_label.grid(row=3, column=1, padx=5, pady=5, sticky=tk.W)
 
         self._tiempo_sim_entry = tk.Entry(self._main_frame, width=40, font=super().h2, validate= "key", validatecommand=(self._validarInputNumericoCallback, "%P"))
-        self._tiempo_sim_entry.grid(row=2, column=2, padx=5, pady=5, sticky=tk.E)
+        self._tiempo_sim_entry.grid(row=3, column=2, padx=5, pady=5, sticky=tk.E)
 
         self._tiempo_tick_label = tk.Label(self._main_frame, text="Tiempo entre Tick (en segundos): ", font=super().h3)
-        self._tiempo_tick_label.grid(row=3, column=1, padx=5, pady=5, sticky=tk.W)
+        self._tiempo_tick_label.grid(row=4, column=1, padx=5, pady=5, sticky=tk.W)
 
         self._tiempo_tick_entry = tk.Entry(self._main_frame, width=40, font=super().h2)
-        self._tiempo_tick_entry.grid(row=3, column=2, padx=5, pady=5, sticky=tk.E)
+        self._tiempo_tick_entry.grid(row=4, column=2, padx=5, pady=5, sticky=tk.E)
 
         self._cant_meseros_label = tk.Label(self._main_frame, text="Cantidad de Meseros: ", font=super().h3)
-        self._cant_meseros_label.grid(row=4, column=1, padx=5, pady=5, sticky=tk.W)
+        self._cant_meseros_label.grid(row=5, column=1, padx=5, pady=5, sticky=tk.W)
 
         self._cant_meseros_entry = tk.Entry(self._main_frame, width=40, font=super().h2, validate= "key", validatecommand=(self._validarInputNumericoCallback, "%P"))
-        self._cant_meseros_entry.grid(row=4, column=2, padx=5, pady=5, sticky=tk.E)
-         
-        
-
+        self._cant_meseros_entry.grid(row=5, column=2, padx=5, pady=5, sticky=tk.E)
+  
         self._cant_cocineros_label = tk.Label(self._main_frame, text="Cantidad de Cocineros: ", font=super().h3)
-        self._cant_cocineros_label.grid(row=5, column=1, padx=5, pady=5, sticky=tk.W)
+        self._cant_cocineros_label.grid(row=6, column=1, padx=5, pady=5, sticky=tk.W)
 
         self._cant_cocineros_entry = tk.Entry(self._main_frame, width=40, font=super().h2)
-        self._cant_cocineros_entry.grid(row=5, column=2, padx=5, pady=5, sticky=tk.E)
+        self._cant_cocineros_entry.grid(row=6, column=2, padx=5, pady=5, sticky=tk.E)
 
         self._cant_clientes_label = tk.Label(self._main_frame, text="Cantidad de Grupo de Clientes por Hora: ", font=super().h3)
-        self._cant_clientes_label.grid(row=6, column=1, padx=5, pady=5, sticky=tk.W)
+        self._cant_clientes_label.grid(row=7, column=1, padx=5, pady=5, sticky=tk.W)
 
         self._cant_clientes_entry = tk.Entry(self._main_frame, width=40, font=super().h2, validate= "key", validatecommand=(self._validarInputNumericoCallback, "%P"))
-        self._cant_clientes_entry.grid(row=6, column=2, padx=5, pady=5, sticky=tk.E)
+        self._cant_clientes_entry.grid(row=7, column=2, padx=5, pady=5, sticky=tk.E)
 
         self._mesa_label = tk.Label(self._main_frame, text="Cantidad de Asientos en Mesa: ", font=super().h3)
-        self._mesa_label.grid(row=7, column=1, padx=5, pady=5, sticky=tk.W)
+        self._mesa_label.grid(row=8, column=1, padx=5, pady=5, sticky=tk.W)
 
         self._mesa_frame = tk.Frame(self._main_frame)
-        self._mesa_frame.grid(row=7,column=2, sticky= tk.W)
+        self._mesa_frame.grid(row=8,column=2, sticky= tk.W)
         self._mesa_frame.grid_columnconfigure(2)
         self._mesa_frame.grid_rowconfigure(1)
 
@@ -693,10 +734,10 @@ class CrearSimulacionFrame(AppWindow):
         self._mesa_canvas.pack(side=tk.LEFT, expand=True, fill= tk.BOTH)
 
         self._plato_label = tk.Label(self._main_frame, text="Ingresar Nombre de Plato y Tiempo Promedio de Coccion:", font=super().h3)
-        self._plato_label.grid(row=8, column=1, padx=5, pady=5, sticky=tk.W)
+        self._plato_label.grid(row=9, column=1, padx=5, pady=5, sticky=tk.W)
 
         self._plato_frame = tk.Frame(self._main_frame)
-        self._plato_frame.grid(row=8,column=2, sticky= tk.W)
+        self._plato_frame.grid(row=9,column=2, sticky= tk.W)
         self._plato_frame.grid_columnconfigure(3)
         self._plato_frame.grid_rowconfigure(1)
 
@@ -729,25 +770,34 @@ class CrearSimulacionFrame(AppWindow):
         self._go_back_button = tk.Button(self, text="Volver al menu principal", command = self.__volverMenuPrincipal)
         self._go_back_button.grid(row=1, column=3, sticky= tk.NE, padx=5, pady=5)
         pass
-    
-    
-# Se definen las funciones agregar mesa, mesero y cocinero, que hacen referencia al simulador.
-    def __agregarMesa_simulacion(self, capacidad):
-        self.mesaManager.crearMesa(capacidad)
-    def __agregarMesero_simulacion(self, cantidadMeseros):
-        nombre = "Mesero"
-        for i in range(cantidadMeseros):
-            nombre = nombre + " " + str(i)
-            self.empleadoManager.crearMesero(nombre)
-    def __agregarCocinero_simulacion(self, cantidadCocinero):
-        nombre = "Cocinero"
-        for i in range(cantidadCocinero):
-            nombre = nombre + " " + str(i)
-            self.empleadoManager.crearCocinero(nombre)
 
 
 # Esta clase representa el frame de espera de la simulacion
+class EsperaSimulacionFrame(AppWindow):
+    
+    def __init__(self, master: tk.Tk, app: App, *args, **kwargs) -> None:
+        super().__init__(master, app, *args, **kwargs)
 
+        self.__loadCallbacks()
+        self.__loadWidgets()
+
+    def reset(self):
+        pass
+
+    def __loadCallbacks(self) -> None:
+        pass
+
+    def update_percentage(self, percentage: int) -> None:
+        self.text.set(f"{percentage}%")
+        pass
+
+    def __loadWidgets(self) -> None:
+        self.text = tk.StringVar()
+        self.text.set("0%")
+        self._percentage_label = tk.Label(self, textvariable=self.text, font= super().h1)
+        self._percentage_label.grid(row=2,column=2)
+        pass
+    
 
 # Esta clase representa el frame de resultados de la simulacion
 class ResultadoSimulacionFrame(AppWindow):
@@ -782,6 +832,8 @@ class TodasSimulacionesFrame(AppWindow):
         self.__loadWidgets()
 
     
+    def reset(self):
+        pass
 
     def __loadCallbacks(self) -> None:
         pass

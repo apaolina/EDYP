@@ -5,8 +5,6 @@ from Menu import Menu
 import random as r
 from Tiempo import tiempo_aleatorio_normal
 
-menu = Menu()
-
 #Clase generica de las personas
 class Persona():
 
@@ -99,12 +97,13 @@ class GrupoClientes():
                     return None
 
                 for cliente in self.clientes:
-                    plato = menu.Platos_menu[r.randint(0,len(menu.Platos_menu) - 1)]
+                    from RestauranteManager import instance
+                    plato = instance.cocinaManager.menu.Platos_menu[r.randint(0,len(instance.cocinaManager.menu.Platos_menu) - 1)]
                     self.listaPedido.append(plato)
 
                 self.estado = EstadoGC.ESPERANDO_PEDIR
 
-                from .RestauranteManager import instance
+                from RestauranteManager import instance
                 instance.grupoManager.colaPedido.encolar(self)
 
             case EstadoGC.COMIENDO:
@@ -113,7 +112,7 @@ class GrupoClientes():
                     self.contadorParaAccion -= tiempoPorTick
                     return None
                 
-                from .RestauranteManager import instance
+                from RestauranteManager import instance
                 self.desocupando = True
                 instance.mesaManager.desocuparMesa(self.mesa)
 
@@ -236,7 +235,7 @@ class Mesero(Empleado):
                 if(self.contadorParaAccion > 1):
                     self.contadorParaAccion -= tiempoPorTick
 
-                from .RestauranteManager import instance
+                from RestauranteManager import instance
                 instance.cocinaManager.agregarPedido(self.pedidoEnMano)
 
                 self.estado = EstadoMesero.ESPERANDO_ACCION
@@ -248,7 +247,7 @@ class Mesero(Empleado):
                     self.contadorParaAccion -= tiempoPorTick
 
 
-                from .RestauranteManager import instance
+                from RestauranteManager import instance
                 instance.grupoManager.gruposSentados[self.pedidoEnMano[1]].entregarPedido()
                 
                 self.estado = EstadoMesero.ESPERANDO_ACCION
@@ -275,14 +274,14 @@ class Cocinero(Empleado):
         self.platoEnCoccion = ""
         self.contadorParaAccion = 0
 
-    def responseCocinar(self, plato: (None|str)) -> None:
+    def responseCocinar(self, plato: (None|str), tiempoCoccion: (None|int)) -> None:
         
         if(plato is None):
             return None
         
         self.platoEnCoccion = plato
         self.estado = EstadoCocinero.COCINANDO
-        self.contadorParaAccion = tiempo_aleatorio_normal(9,2)
+        self.contadorParaAccion = tiempo_aleatorio_normal(tiempoCoccion,2)
         
         
     def __requestCocinar(self) -> None:
@@ -307,7 +306,7 @@ class Cocinero(Empleado):
                 if(self.contadorParaAccion > 1):
                     self.contadorParaAccion -= tiempoPorTick
 
-                from .RestauranteManager import instance
+                from RestauranteManager import instance
                 instance.cocinaManager.agregarInventario(self.platoEnCoccion)
                 
                 self.platoEnCoccion = ""

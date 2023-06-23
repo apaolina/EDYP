@@ -14,6 +14,9 @@ class GrupoClientesManager():
         self.fabricaClientes = FabricaClientes() # Este objeto producira la entrada de nuevos clientes
         pass
     
+    def setLambdaFabrica(self, lmda: int) -> None:
+        self.fabricaClientes.setLambda(lmda)
+        
     def getCantidadGrupoClientes(self) -> int:
         return GrupoClientes.totalGrupos
     

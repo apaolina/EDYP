@@ -11,10 +11,13 @@ class FabricaClientes():
     def __init__(self) -> None:
         self.tiempoParaProxCliente: int = 0
         self.n_clientes: int = 0
-        pass
+        self.lmda = 60
+
+    def setLambda(self, lmda: int) -> None:
+        self.lmda = lmda
 
     def __tiempoEntreClientes(self) -> None: # Esto devolvera la cantidad de tiempo para que llegue un nuevo grupo de clientes
-        self.tiempoParaProxCliente = tiempo_aleatorio(60) # Definir el valor de lambda que queremos para los clientes (Lo fije 60 en un principio)
+        self.tiempoParaProxCliente = tiempo_aleatorio(self.lmda)
     
     def __descontarTiempo(self, tiempoPorTick:int) -> None: # Esta funcion ajusta la cantidad de tiempo entre c/tick
         self.tiempoParaProxCliente -= tiempoPorTick

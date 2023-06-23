@@ -1,6 +1,7 @@
 import sys
 sys.path.insert(0, 'SimClasses')
 from Cola import Cola
+from Menu import Menu
 # Clase que se encarga de todo lo relacionado a la cocina
 class CocinaManager():
 
@@ -11,13 +12,18 @@ class CocinaManager():
         self.colaPedidosPreparar = Cola()
         self.colaPedidosEntregar = Cola()
         self.pedidoEnPreparacion = [(),[]]
+        self.menu = Menu()
         self.inventario = {
-        "Hamburguesa": 0, 
-        "Pancho": 0
-        } # Cambiar para el 2ndo parcial, hacerlo en base al menu y lo que agrega el usuario
+
+        } 
+
+    def agregarPlato(self, nombre_plato: str, tiempo_promedio_coccion: int):
+        self.menu.agregar_plato(nombre_plato, tiempo_promedio_coccion)
+        self.inventario[nombre_plato] = 0
+
 
     def agregarPedido(self, pedido) -> None:
-        """hola"""
+    
         self.colaPedidosPreparar.encolar(pedido)
 
         for plato in pedido[0]:
@@ -26,10 +32,12 @@ class CocinaManager():
     def requestCocinar(self, resultado) -> None:
 
         if(self.colaPlatosProducir.totalnodos == 0):
-            resultado(None)
+            resultado(None, None)
             return None
         
-        resultado(self.colaPlatosProducir.desencolar())
+        plato = self.colaPlatosProducir.desencolar()
+
+        resultado(plato, self.menu.dict_platos[plato])
 
     def requestPlatos(self, response) -> None:
 
