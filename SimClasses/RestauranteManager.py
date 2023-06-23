@@ -5,6 +5,8 @@ from GrupoClientesManager import GrupoClientesManager
 from EmpleadoManager import EmpleadoManager
 from CocinaManager import CocinaManager
 from events import Events
+import names
+from typing import Callable
 
 # Un tick seria un chequeo de que el tiempo paso
 class Tick(Events):
@@ -41,12 +43,36 @@ class Restaurante():
         self.tick.on_tick += self.grupoManager.fabricaClientes.fabricarClientes
         pass
 
-    def simular(self, tiempoSimulacion: int, tiempoPorTick: int) -> None: # Esto despues va a devolver los resultados de la simulacion, tiempoSim debe ser en segundos
-        self.tick = Tick(tiempoPorTick)
+    async def simular(self, cantidad_meseros:str, cantidad_cocineros:str, cantidad_clientes: str,\
+                dict_mesas: dict[str,list[str,str]], dict_platos: dict[str,list[str,str]], \
+                    tiempoSimulacionInput: str, tiempoPorTick: str, callback: Callable[[None],None], id: int) -> None: 
+        
+        tiempoSimulacion = int(tiempoSimulacionInput)
+
+        for mesero in range(int(cantidad_meseros)):
+            self.empleadoManager.crearMesero(names.get_full_name())
+        
+        for cocinero in range(int(cantidad_cocineros)):
+            self.empleadoManager.crearCocinero(names.get_full_name())
+
+        self.grupoManager.setLambdaFabrica(int(cantidad_clientes))
+
+        for mesa in dict_mesas.values():
+            self.mesaManager.crearMesa(int(mesa[1]))
+
+        for plato in dict_platos.values():
+            self.cocinaManager.agregarPlato(plato[0], int(plato[1]))
+        
+        self.tick = Tick(int(tiempoPorTick))
         self.__subscribirAcciones()
         while tiempoSimulacion > 0:
             self.tick.on_tick(self.tick.tiempoPorTick)
-            # Aca hay que poner un metodo de recoleccion de informacion
-            tiempoSimulacion -= tiempoPorTick
+            
+            tiempoSimulacion -= int(tiempoPorTick)
+            
+        callback()
+        
+    
+
 
 instance = Restaurante()
