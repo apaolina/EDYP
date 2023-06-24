@@ -423,6 +423,1000 @@
                     ]
                 ]
             ]
+        },
+        {
+            "id": "4",
+            "usuario": "jero1",
+            "nombre": "P5",
+            "cantidad_meseros": "3",
+            "cantidad_cocineros": "3",
+            "clientes_por_hora": "30",
+            "lista_mesas": {
+                "Mesa 1": "5",
+                "Mesa 2": "5",
+                "Mesa 3": "5",
+                "Mesa 4": "5",
+                "Mesa 5": "5",
+                "Mesa 6": "5",
+                "Mesa 7": "5",
+                "Mesa 8": "5",
+                "Mesa 9": "5",
+                "Mesa 10": "5"
+            },
+            "lista_platos": {
+                "Pancho": "30",
+                "Hamburguesa": "35"
+            },
+            "tiempo_simulado": "1000",
+            "tiempo_por_tick": "1",
+            "eventos": [
+                [
+                    [
+                        "Se ocupo una mesa",
+                        1000
+                    ],
+                    [
+                        "Se ocupo una mesa",
+                        970
+                    ],
+                    [
+                        "Se tomo un pedido",
+                        957
+                    ],
+                    [
+                        "Se cocino un Hamburguesa",
+                        955
+                    ],
+                    [
+                        "Se cocino un Hamburguesa",
+                        955
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        955
+                    ],
+                    [
+                        "Se cocino un Hamburguesa",
+                        953
+                    ],
+                    [
+                        "Se preparo un pedido",
+                        952
+                    ],
+                    [
+                        "Se entrego un pedido",
+                        951
+                    ],
+                    [
+                        "Se ocupo una mesa",
+                        942
+                    ],
+                    [
+                        "Se desocupo la mesa 0",
+                        936
+                    ],
+                    [
+                        "Se tomo un pedido",
+                        930
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        928
+                    ],
+                    [
+                        "Se preparo un pedido",
+                        927
+                    ],
+                    [
+                        "Se entrego un pedido",
+                        926
+                    ],
+                    [
+                        "Se desocupo la mesa 1",
+                        918
+                    ],
+                    [
+                        "Se ocupo una mesa",
+                        909
+                    ],
+                    [
+                        "Se tomo un pedido",
+                        894
+                    ],
+                    [
+                        "Se cocino un Hamburguesa",
+                        892
+                    ],
+                    [
+                        "Se cocino un Hamburguesa",
+                        892
+                    ],
+                    [
+                        "Se preparo un pedido",
+                        891
+                    ],
+                    [
+                        "Se entrego un pedido",
+                        890
+                    ],
+                    [
+                        "Se desocupo la mesa 2",
+                        880
+                    ],
+                    [
+                        "Se ocupo una mesa",
+                        878
+                    ],
+                    [
+                        "Se tomo un pedido",
+                        873
+                    ],
+                    [
+                        "Se cocino un Hamburguesa",
+                        871
+                    ],
+                    [
+                        "Se cocino un Hamburguesa",
+                        871
+                    ],
+                    [
+                        "Se preparo un pedido",
+                        870
+                    ],
+                    [
+                        "Se entrego un pedido",
+                        869
+                    ],
+                    [
+                        "Se desocupo la mesa 0",
+                        860
+                    ],
+                    [
+                        "Se ocupo una mesa",
+                        846
+                    ],
+                    [
+                        "Se tomo un pedido",
+                        835
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        833
+                    ],
+                    [
+                        "Se cocino un Hamburguesa",
+                        833
+                    ],
+                    [
+                        "Se cocino un Hamburguesa",
+                        833
+                    ],
+                    [
+                        "Se preparo un pedido",
+                        832
+                    ],
+                    [
+                        "Se entrego un pedido",
+                        831
+                    ],
+                    [
+                        "Se desocupo la mesa 1",
+                        824
+                    ],
+                    [
+                        "Se ocupo una mesa",
+                        812
+                    ],
+                    [
+                        "Se tomo un pedido",
+                        796
+                    ],
+                    [
+                        "Se cocino un Hamburguesa",
+                        794
+                    ],
+                    [
+                        "Se cocino un Hamburguesa",
+                        794
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        794
+                    ],
+                    [
+                        "Se preparo un pedido",
+                        793
+                    ],
+                    [
+                        "Se entrego un pedido",
+                        792
+                    ],
+                    [
+                        "Se desocupo la mesa 0",
+                        792
+                    ],
+                    [
+                        "Se ocupo una mesa",
+                        784
+                    ],
+                    [
+                        "Se tomo un pedido",
+                        771
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        769
+                    ],
+                    [
+                        "Se preparo un pedido",
+                        768
+                    ],
+                    [
+                        "Se entrego un pedido",
+                        767
+                    ],
+                    [
+                        "Se desocupo la mesa 1",
+                        758
+                    ],
+                    [
+                        "Se tomo un pedido",
+                        745
+                    ],
+                    [
+                        "Se ocupo una mesa",
+                        744
+                    ],
+                    [
+                        "Se cocino un Hamburguesa",
+                        743
+                    ],
+                    [
+                        "Se preparo un pedido",
+                        742
+                    ],
+                    [
+                        "Se entrego un pedido",
+                        741
+                    ],
+                    [
+                        "Se desocupo la mesa 0",
+                        736
+                    ],
+                    [
+                        "Se ocupo una mesa",
+                        716
+                    ],
+                    [
+                        "Se tomo un pedido",
+                        688
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        686
+                    ],
+                    [
+                        "Se cocino un Hamburguesa",
+                        686
+                    ],
+                    [
+                        "Se ocupo una mesa",
+                        686
+                    ],
+                    [
+                        "Se preparo un pedido",
+                        685
+                    ],
+                    [
+                        "Se entrego un pedido",
+                        684
+                    ],
+                    [
+                        "Se desocupo la mesa 1",
+                        675
+                    ],
+                    [
+                        "Se ocupo una mesa",
+                        664
+                    ],
+                    [
+                        "Se tomo un pedido",
+                        657
+                    ],
+                    [
+                        "Se cocino un Hamburguesa",
+                        655
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        655
+                    ],
+                    [
+                        "Se preparo un pedido",
+                        654
+                    ],
+                    [
+                        "Se entrego un pedido",
+                        653
+                    ],
+                    [
+                        "Se tomo un pedido",
+                        644
+                    ],
+                    [
+                        "Se cocino un Hamburguesa",
+                        642
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        642
+                    ],
+                    [
+                        "Se preparo un pedido",
+                        641
+                    ],
+                    [
+                        "Se entrego un pedido",
+                        640
+                    ],
+                    [
+                        "Se desocupo la mesa 0",
+                        639
+                    ],
+                    [
+                        "Se desocupo la mesa 2",
+                        626
+                    ],
+                    [
+                        "Se tomo un pedido",
+                        621
+                    ],
+                    [
+                        "Se ocupo una mesa",
+                        621
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        619
+                    ],
+                    [
+                        "Se cocino un Hamburguesa",
+                        619
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        619
+                    ],
+                    [
+                        "Se preparo un pedido",
+                        618
+                    ],
+                    [
+                        "Se entrego un pedido",
+                        617
+                    ],
+                    [
+                        "Se desocupo la mesa 1",
+                        606
+                    ],
+                    [
+                        "Se ocupo una mesa",
+                        587
+                    ],
+                    [
+                        "Se tomo un pedido",
+                        577
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        575
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        575
+                    ],
+                    [
+                        "Se cocino un Hamburguesa",
+                        575
+                    ],
+                    [
+                        "Se preparo un pedido",
+                        574
+                    ],
+                    [
+                        "Se entrego un pedido",
+                        573
+                    ],
+                    [
+                        "Se desocupo la mesa 0",
+                        560
+                    ],
+                    [
+                        "Se ocupo una mesa",
+                        553
+                    ],
+                    [
+                        "Se tomo un pedido",
+                        543
+                    ],
+                    [
+                        "Se cocino un Hamburguesa",
+                        541
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        541
+                    ],
+                    [
+                        "Se cocino un Hamburguesa",
+                        541
+                    ],
+                    [
+                        "Se preparo un pedido",
+                        540
+                    ],
+                    [
+                        "Se entrego un pedido",
+                        539
+                    ],
+                    [
+                        "Se desocupo la mesa 1",
+                        530
+                    ],
+                    [
+                        "Se ocupo una mesa",
+                        517
+                    ],
+                    [
+                        "Se tomo un pedido",
+                        509
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        507
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        507
+                    ],
+                    [
+                        "Se cocino un Hamburguesa",
+                        507
+                    ],
+                    [
+                        "Se preparo un pedido",
+                        506
+                    ],
+                    [
+                        "Se entrego un pedido",
+                        505
+                    ],
+                    [
+                        "Se desocupo la mesa 0",
+                        500
+                    ],
+                    [
+                        "Se ocupo una mesa",
+                        490
+                    ],
+                    [
+                        "Se tomo un pedido",
+                        472
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        470
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        470
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        470
+                    ],
+                    [
+                        "Se preparo un pedido",
+                        469
+                    ],
+                    [
+                        "Se entrego un pedido",
+                        468
+                    ],
+                    [
+                        "Se desocupo la mesa 1",
+                        463
+                    ],
+                    [
+                        "Se ocupo una mesa",
+                        458
+                    ],
+                    [
+                        "Se tomo un pedido",
+                        447
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        445
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        445
+                    ],
+                    [
+                        "Se preparo un pedido",
+                        444
+                    ],
+                    [
+                        "Se entrego un pedido",
+                        443
+                    ],
+                    [
+                        "Se desocupo la mesa 0",
+                        434
+                    ],
+                    [
+                        "Se tomo un pedido",
+                        416
+                    ],
+                    [
+                        "Se ocupo una mesa",
+                        416
+                    ],
+                    [
+                        "Se cocino un Hamburguesa",
+                        414
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        414
+                    ],
+                    [
+                        "Se preparo un pedido",
+                        413
+                    ],
+                    [
+                        "Se entrego un pedido",
+                        412
+                    ],
+                    [
+                        "Se desocupo la mesa 1",
+                        401
+                    ],
+                    [
+                        "Se ocupo una mesa",
+                        384
+                    ],
+                    [
+                        "Se tomo un pedido",
+                        379
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        377
+                    ],
+                    [
+                        "Se cocino un Hamburguesa",
+                        377
+                    ],
+                    [
+                        "Se preparo un pedido",
+                        376
+                    ],
+                    [
+                        "Se entrego un pedido",
+                        375
+                    ],
+                    [
+                        "Se desocupo la mesa 0",
+                        367
+                    ],
+                    [
+                        "Se ocupo una mesa",
+                        356
+                    ],
+                    [
+                        "Se tomo un pedido",
+                        336
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        334
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        334
+                    ],
+                    [
+                        "Se cocino un Hamburguesa",
+                        334
+                    ],
+                    [
+                        "Se cocino un Hamburguesa",
+                        332
+                    ],
+                    [
+                        "Se preparo un pedido",
+                        331
+                    ],
+                    [
+                        "Se entrego un pedido",
+                        330
+                    ],
+                    [
+                        "Se tomo un pedido",
+                        321
+                    ],
+                    [
+                        "Se desocupo la mesa 1",
+                        321
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        319
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        319
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        319
+                    ],
+                    [
+                        "Se ocupo una mesa",
+                        319
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        317
+                    ],
+                    [
+                        "Se preparo un pedido",
+                        316
+                    ],
+                    [
+                        "Se entrego un pedido",
+                        315
+                    ],
+                    [
+                        "Se desocupo la mesa 0",
+                        303
+                    ],
+                    [
+                        "Se ocupo una mesa",
+                        294
+                    ],
+                    [
+                        "Se tomo un pedido",
+                        269
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        267
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        267
+                    ],
+                    [
+                        "Se preparo un pedido",
+                        266
+                    ],
+                    [
+                        "Se ocupo una mesa",
+                        266
+                    ],
+                    [
+                        "Se entrego un pedido",
+                        265
+                    ],
+                    [
+                        "Se desocupo la mesa 1",
+                        251
+                    ],
+                    [
+                        "Se ocupo una mesa",
+                        242
+                    ],
+                    [
+                        "Se tomo un pedido",
+                        235
+                    ],
+                    [
+                        "Se cocino un Hamburguesa",
+                        233
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        233
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        233
+                    ],
+                    [
+                        "Se preparo un pedido",
+                        232
+                    ],
+                    [
+                        "Se entrego un pedido",
+                        231
+                    ],
+                    [
+                        "Se tomo un pedido",
+                        223
+                    ],
+                    [
+                        "Se desocupo la mesa 0",
+                        223
+                    ],
+                    [
+                        "Se cocino un Hamburguesa",
+                        221
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        221
+                    ],
+                    [
+                        "Se cocino un Hamburguesa",
+                        221
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        219
+                    ],
+                    [
+                        "Se preparo un pedido",
+                        218
+                    ],
+                    [
+                        "Se ocupo una mesa",
+                        218
+                    ],
+                    [
+                        "Se entrego un pedido",
+                        217
+                    ],
+                    [
+                        "Se desocupo la mesa 2",
+                        206
+                    ],
+                    [
+                        "Se tomo un pedido",
+                        199
+                    ],
+                    [
+                        "Se cocino un Hamburguesa",
+                        197
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        197
+                    ],
+                    [
+                        "Se cocino un Hamburguesa",
+                        197
+                    ],
+                    [
+                        "Se cocino un Hamburguesa",
+                        195
+                    ],
+                    [
+                        "Se ocupo una mesa",
+                        195
+                    ],
+                    [
+                        "Se preparo un pedido",
+                        194
+                    ],
+                    [
+                        "Se entrego un pedido",
+                        193
+                    ],
+                    [
+                        "Se desocupo la mesa 1",
+                        188
+                    ],
+                    [
+                        "Se tomo un pedido",
+                        169
+                    ],
+                    [
+                        "Se ocupo una mesa",
+                        169
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        167
+                    ],
+                    [
+                        "Se cocino un Hamburguesa",
+                        167
+                    ],
+                    [
+                        "Se preparo un pedido",
+                        166
+                    ],
+                    [
+                        "Se entrego un pedido",
+                        165
+                    ],
+                    [
+                        "Se desocupo la mesa 0",
+                        160
+                    ],
+                    [
+                        "Se ocupo una mesa",
+                        141
+                    ],
+                    [
+                        "Se tomo un pedido",
+                        138
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        136
+                    ],
+                    [
+                        "Se cocino un Hamburguesa",
+                        136
+                    ],
+                    [
+                        "Se preparo un pedido",
+                        135
+                    ],
+                    [
+                        "Se tomo un pedido",
+                        134
+                    ],
+                    [
+                        "Se entrego un pedido",
+                        134
+                    ],
+                    [
+                        "Se cocino un Hamburguesa",
+                        132
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        132
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        132
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        130
+                    ],
+                    [
+                        "Se preparo un pedido",
+                        129
+                    ],
+                    [
+                        "Se entrego un pedido",
+                        128
+                    ],
+                    [
+                        "Se desocupo la mesa 2",
+                        126
+                    ],
+                    [
+                        "Se desocupo la mesa 1",
+                        119
+                    ],
+                    [
+                        "Se ocupo una mesa",
+                        97
+                    ],
+                    [
+                        "Se tomo un pedido",
+                        95
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        93
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        93
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        93
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        91
+                    ],
+                    [
+                        "Se preparo un pedido",
+                        90
+                    ],
+                    [
+                        "Se entrego un pedido",
+                        89
+                    ],
+                    [
+                        "Se desocupo la mesa 0",
+                        85
+                    ],
+                    [
+                        "Se ocupo una mesa",
+                        69
+                    ],
+                    [
+                        "Se tomo un pedido",
+                        67
+                    ],
+                    [
+                        "Se cocino un Hamburguesa",
+                        65
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        65
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        65
+                    ],
+                    [
+                        "Se preparo un pedido",
+                        64
+                    ],
+                    [
+                        "Se entrego un pedido",
+                        63
+                    ],
+                    [
+                        "Se desocupo la mesa 1",
+                        55
+                    ],
+                    [
+                        "Se ocupo una mesa",
+                        44
+                    ],
+                    [
+                        "Se tomo un pedido",
+                        28
+                    ],
+                    [
+                        "Se cocino un Hamburguesa",
+                        26
+                    ],
+                    [
+                        "Se cocino un Hamburguesa",
+                        26
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        26
+                    ],
+                    [
+                        "Se cocino un Hamburguesa",
+                        24
+                    ],
+                    [
+                        "Se preparo un pedido",
+                        23
+                    ],
+                    [
+                        "Se entrego un pedido",
+                        22
+                    ],
+                    [
+                        "Se ocupo una mesa",
+                        20
+                    ],
+                    [
+                        "Se desocupo la mesa 0",
+                        2
+                    ]
+                ]
+            ]
         }
     ]
 }

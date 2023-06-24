@@ -4,6 +4,10 @@ import sys
 from Hasheo import *
 from Usuario import *
 from Hasheo import verificar_contraseña
+from InfoManager import InfoManager
+from events import Events
+import names
+from typing import Callable
 
 class Simulador:
     
@@ -17,6 +21,9 @@ class Simulador:
         self.tiempo = 0
         self.usuario = Usuario()
         self.mesas = {}
+        self.lista_mesas = []
+        self._mesas_dict: dict[str,list[str,list]] = {}
+        
 
     def opcion_tres(self):
         print('|')
@@ -60,22 +67,27 @@ class Simulador:
             file.write(self.nombre + "," + str(self.cantidad_cocineros) + "," + str(self.cantidad_mozos) + "," + str(self.cantidad_mesas) + "," + str(self.clientes) + "," + str(self.clientes_generados) + "," + str(self.tiempo) + "\n")
             file.close()
             print('|')
-            print("|Resultados guardados con exito")
+            print("|Hasta luego")
             exit()
 
     def resultado_simulacion(self, start, end):
         print('|')
         print("----------------------------------------")
         print("|Resultados de la simulación:")
-        print(f"grupos: {instance.grupoManager.getCantidadGrupoClientes()}")
-        print(f"en cola: {instance.grupoManager.colaSentar.totalnodos}")
-        print(instance.mesaManager.verEstadoMesas())
-        print(instance.cocinaManager.inventario)
-        print(end-start)
+        print(f"|grupos: {instance.grupoManager.getCantidadGrupoClientes()}")
+        print(f"|en cola: {instance.grupoManager.colaSentar.totalnodos}")
+        print("|" + str(instance.mesaManager.verEstadoMesas()))
+        print("|" +str(instance.cocinaManager.inventario))
+        print("|" + str(end-start))
         self.clientes = instance.grupoManager.getCantidadGrupoClientes()
         self.clientes_generados = instance.grupoManager.getCantidadNClientes()
+        print('|')
+        print("|Los resultados se han almacenado con éxito en resultadosSim.txt")
         self.registrar_resultados()
         exit()
+    
+    def no_hago_nada(self):
+        return print("|Sim finalizada")
 
     def empezar_simulacion(self):
         print('|')
@@ -88,7 +100,7 @@ class Simulador:
         tiempoSimulacion = int(tiempoSimulacion)
         self.tiempo = tiempoSimulacion
         start = time.time()
-        instance.simular(self.cantidad_mozos, self.cantidad_cocineros, cantidad_clientes= 10, dict_mesas= self.mesas, dict_platos= {'Pancho': 30, 'Hamburguesa': 35}, tiempoSimulacionInput= self.tiempo, tiempoPorTick = 1, callback= None, id = 10)
+        instance.simular(self.cantidad_mozos, self.cantidad_cocineros, cantidad_clientes= 10, dict_mesas= self.mesas, dict_platos= {0:['Hamburguesa', 35], 1: ['Pancho', 35]}, tiempoSimulacionInput= self.tiempo, tiempoPorTick = 1, callback= self.no_hago_nada, id = 9999)
         end = time.time()
         self.resultado_simulacion(start, end)
 
@@ -167,9 +179,12 @@ class Simulador:
                 self.crear_mesas(usuario_ingresado)
             
             capacidad_mesas = int(capacidad_mesas)
-            for i in range(1, mesas+1):
-                instance.mesaManager.crearMesa(capacidad_mesas)
-                self.mesas[str(i)] = str(capacidad_mesas)
+            
+            dict_mesas: dict[str, str] = {}
+            
+            for v in self._mesas_dict.values():
+                dict_mesas[v[0]] = v[1]
+            
             print('|')
             print("|Ha creado " + str(mesas) + " mesas de " + str(capacidad_mesas) + " personas cada una")
             
@@ -185,7 +200,14 @@ class Simulador:
                     self.crear_mesas(usuario_ingresado)
         
                 capacidad_mesas = int(capacidad_mesas)
+                
                 instance.mesaManager.crearMesa(capacidad_mesas)
+            
+            dict_mesas: dict[str, str] = {}
+            
+            for v in self._mesas_dict.values():
+                dict_mesas[v[0]] = v[1]
+                
             print('|')
             print("|Ha creado " + str(mesas) + " mesas de diferentes capacidades")
             self.crear_empleados()
