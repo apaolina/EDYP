@@ -1,12 +1,9 @@
 from SimClasses import instance
 import time
+import sys
 from Hasheo import *
 from Usuario import *
-
-#Va a haber que agregar muchos verificadores acá. Especialmente cuando interactuamos con el users.txt
-#Tambien verificar que las respuestas sean numericas o strings, dependiendo de lo que se pida.
-#DUDA para cada simulación es necesario crear mozos y cocineros nuevos o ya hay guardados, hay que eliminar a los viejos?
-#Se me ocurre que habría que ponerle un nombre a cada simulación y guardar los resultados como los parametros de la simulación, los empleados que se crearon, etc. en un archivo de texto
+from Hasheo import verificar_contraseña
 
 class Simulador:
     
@@ -18,6 +15,8 @@ class Simulador:
         self.clientes = 0
         self.clientes_generados = 0
         self.tiempo = 0
+        self.usuario = Usuario()
+        self.mesas = {}
 
     def opcion_tres(self):
         print('|')
@@ -31,16 +30,16 @@ class Simulador:
         contraseña = input("|>>  ")
         print("|Repita su contraseña: ")
         repetir_contraseña = input("|>>  ")
-        if Usuario.verificar_contraseña_usuario(usuario, contraseña, repetir_contraseña) == False:
+        if self.usuario.verificar_constraseña_usuario(usuario, contraseña, repetir_contraseña) == False:
             print("|Las contraseñas no coinciden, intente nuevamente")
             self.registrar_usuario(usuario)
         else:  
             try:
-                self.try_guardar_usuario_en_archivo(usuario, contraseña)
+                self.usuario.try_guardar_usuario_en_archivo(usuario, contraseña)
                 self.consola()
                     
             except FileNotFoundError:
-                self.except_guardar_usuario_en_archivo(usuario, contraseña)
+                self.usuario.except_guardar_usuario_en_archivo(usuario, contraseña)
                 self.consola()
 
     def opcion_dos(self):
@@ -48,7 +47,11 @@ class Simulador:
         print("|Creando nuevo usuario...")
         print("|Ingrese su nombre de usuario:")
         usuario = str(input('|>>  ').strip())
-        if self.verificar_existencia_usuario(usuario) == True:
+        self.usuario.crear_usuario(usuario, "")
+        if self.usuario.verificar_existencia_usuario(usuario) == True:
+            print('|')
+            print("|El usuario ya existe, intente con otro nombre de usuario")
+            print('|')
             self.consola()
         self.registrar_usuario(usuario)
         
@@ -85,7 +88,7 @@ class Simulador:
         tiempoSimulacion = int(tiempoSimulacion)
         self.tiempo = tiempoSimulacion
         start = time.time()
-        instance.simular(tiempoSimulacion, tiempoPorTick = 1)
+        instance.simular(self.cantidad_mozos, self.cantidad_cocineros, cantidad_clientes= 10, dict_mesas= self.mesas, dict_platos= {'Pancho': 30, 'Hamburguesa': 35}, tiempoSimulacionInput= self.tiempo, tiempoPorTick = 1, callback= None, id = 10)
         end = time.time()
         self.resultado_simulacion(start, end)
 
@@ -166,8 +169,11 @@ class Simulador:
             capacidad_mesas = int(capacidad_mesas)
             for i in range(1, mesas+1):
                 instance.mesaManager.crearMesa(capacidad_mesas)
+                self.mesas[str(i)] = str(capacidad_mesas)
             print('|')
             print("|Ha creado " + str(mesas) + " mesas de " + str(capacidad_mesas) + " personas cada una")
+            
+            
             self.crear_empleados()
         if respuesta == "2":
             for i in range(1, mesas+1):
@@ -219,6 +225,7 @@ class Simulador:
             print('|')
         print("|Ingrese su contraseña: ")
         contraseña_ingresada = input("|>>  ")
+        self.usuario.crear_usuario(usuario_ingresado, contraseña_ingresada)
         verificador = verificar_contraseña(contraseña_ingresada, usuario_ingresado)
         if verificador == True:
             print('----------------------------------------')

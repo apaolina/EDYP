@@ -1,8 +1,428 @@
 {
     "Usuarios": [
-        
+        {
+            "usuario": "jero1",
+            "password": "691a61ed201807317bf38a6350f28b068b21886649cc71966a5f1de3b797a62a",
+            "email": "j@c.com"
+        }
     ],
     "Simulaciones": [
-        
+        {
+            "id": "1",
+            "usuario": "jero1",
+            "nombre": "Jero Rest\u00f3",
+            "cantidad_meseros": "5",
+            "cantidad_cocineros": "5",
+            "clientes_por_hora": "2",
+            "lista_mesas": {
+                "Mesa 1": "5",
+                "Mesa 2": "2",
+                "Mesa 3": "5",
+                "Mesa 4": "5",
+                "Mesa 5": "5",
+                "Mesa 6": "5"
+            },
+            "lista_platos": {
+                "Pancho": "1",
+                "Lechuza": "7",
+                "Milanesa": "20",
+                "Trex": "6"
+            },
+            "tiempo_simulado": "100",
+            "tiempo_por_tick": "1",
+            "eventos": [
+                [
+                    [
+                        "Se ocupo una mesa",
+                        100
+                    ],
+                    [
+                        "Se ocupo una mesa",
+                        99
+                    ],
+                    [
+                        "Se ocupo una mesa",
+                        97
+                    ],
+                    [
+                        "Se ocupo una mesa",
+                        92
+                    ],
+                    [
+                        "Se ocupo una mesa",
+                        90
+                    ],
+                    [
+                        "Se ocupo una mesa",
+                        88
+                    ],
+                    [
+                        "Se tomo un pedido",
+                        68
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        66
+                    ],
+                    [
+                        "Se cocino un Lechuza",
+                        66
+                    ],
+                    [
+                        "Se preparo un pedido",
+                        65
+                    ],
+                    [
+                        "Se entrego un pedido",
+                        64
+                    ],
+                    [
+                        "Se tomo un pedido",
+                        60
+                    ],
+                    [
+                        "Se tomo un pedido",
+                        59
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        58
+                    ],
+                    [
+                        "Se preparo un pedido",
+                        57
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        57
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        57
+                    ],
+                    [
+                        "Se cocino un Lechuza",
+                        57
+                    ],
+                    [
+                        "Se preparo un pedido",
+                        56
+                    ],
+                    [
+                        "Se entrego un pedido",
+                        56
+                    ],
+                    [
+                        "Se entrego un pedido",
+                        55
+                    ],
+                    [
+                        "Se desocupo la mesa 1",
+                        54
+                    ],
+                    [
+                        "Se ocupo una mesa",
+                        54
+                    ],
+                    [
+                        "Se tomo un pedido",
+                        53
+                    ],
+                    [
+                        "Se cocino un Milanesa",
+                        51
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        51
+                    ],
+                    [
+                        "Se cocino un Lechuza",
+                        51
+                    ],
+                    [
+                        "Se preparo un pedido",
+                        50
+                    ],
+                    [
+                        "Se tomo un pedido",
+                        50
+                    ],
+                    [
+                        "Se entrego un pedido",
+                        49
+                    ],
+                    [
+                        "Se cocino un Lechuza",
+                        48
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        48
+                    ],
+                    [
+                        "Se cocino un Trex",
+                        48
+                    ],
+                    [
+                        "Se desocupo la mesa 0",
+                        48
+                    ],
+                    [
+                        "Se preparo un pedido",
+                        47
+                    ],
+                    [
+                        "Se desocupo la mesa 2",
+                        47
+                    ],
+                    [
+                        "Se ocupo una mesa",
+                        47
+                    ],
+                    [
+                        "Se entrego un pedido",
+                        46
+                    ],
+                    [
+                        "Se desocupo la mesa 4",
+                        45
+                    ],
+                    [
+                        "Se desocupo la mesa 5",
+                        45
+                    ],
+                    [
+                        "Se ocupo una mesa",
+                        43
+                    ],
+                    [
+                        "Se ocupo una mesa",
+                        41
+                    ],
+                    [
+                        "Se ocupo una mesa",
+                        40
+                    ],
+                    [
+                        "Se tomo un pedido",
+                        38
+                    ],
+                    [
+                        "Se cocino un Lechuza",
+                        36
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        36
+                    ],
+                    [
+                        "Se cocino un Milanesa",
+                        36
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        36
+                    ],
+                    [
+                        "Se preparo un pedido",
+                        35
+                    ],
+                    [
+                        "Se entrego un pedido",
+                        34
+                    ],
+                    [
+                        "Se desocupo la mesa 3",
+                        24
+                    ],
+                    [
+                        "Se ocupo una mesa",
+                        24
+                    ],
+                    [
+                        "Se tomo un pedido",
+                        13
+                    ],
+                    [
+                        "Se cocino un Lechuza",
+                        11
+                    ],
+                    [
+                        "Se cocino un Lechuza",
+                        11
+                    ],
+                    [
+                        "Se preparo un pedido",
+                        10
+                    ],
+                    [
+                        "Se tomo un pedido",
+                        10
+                    ],
+                    [
+                        "Se entrego un pedido",
+                        9
+                    ],
+                    [
+                        "Se cocino un Milanesa",
+                        8
+                    ],
+                    [
+                        "Se cocino un Trex",
+                        8
+                    ],
+                    [
+                        "Se preparo un pedido",
+                        7
+                    ],
+                    [
+                        "Se entrego un pedido",
+                        6
+                    ],
+                    [
+                        "Se tomo un pedido",
+                        5
+                    ],
+                    [
+                        "Se cocino un Lechuza",
+                        3
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        3
+                    ],
+                    [
+                        "Se cocino un Lechuza",
+                        3
+                    ],
+                    [
+                        "Se cocino un Milanesa",
+                        3
+                    ],
+                    [
+                        "Se preparo un pedido",
+                        2
+                    ],
+                    [
+                        "Se entrego un pedido",
+                        1
+                    ]
+                ]
+            ]
+        },
+        {
+            "id": "2",
+            "usuario": "jero1",
+            "nombre": "Jero Car",
+            "cantidad_meseros": "5",
+            "cantidad_cocineros": "5",
+            "clientes_por_hora": "30",
+            "lista_mesas": {
+                "Mesa 1": "5",
+                "Mesa 2": "5",
+                "Mesa 3": "5",
+                "Mesa 4": "5",
+                "Mesa 5": "55",
+                "Mesa 6": "5",
+                "Mesa 7": "5"
+            },
+            "lista_platos": {
+                "Pancho": "30",
+                "Jam": "5"
+            },
+            "tiempo_simulado": "100",
+            "tiempo_por_tick": "1",
+            "eventos": []
+        },
+        {
+            "id": "3",
+            "usuario": "jero1",
+            "nombre": "123",
+            "cantidad_meseros": "5",
+            "cantidad_cocineros": "5",
+            "clientes_por_hora": "30",
+            "lista_mesas": {
+                "Mesa 1": "5",
+                "Mesa 2": "5",
+                "Mesa 3": "5",
+                "Mesa 4": "5",
+                "Mesa 5": "5",
+                "Mesa 6": "5",
+                "Mesa 7": "5",
+                "Mesa 8": "5",
+                "Mesa 9": "5"
+            },
+            "lista_platos": {
+                "Pancho": "30",
+                "Queso": "6"
+            },
+            "tiempo_simulado": "100",
+            "tiempo_por_tick": "1",
+            "eventos": [
+                [
+                    [
+                        "Se ocupo una mesa",
+                        100
+                    ],
+                    [
+                        "Se tomo un pedido",
+                        68
+                    ],
+                    [
+                        "Se ocupo una mesa",
+                        68
+                    ],
+                    [
+                        "Se cocino un Queso",
+                        66
+                    ],
+                    [
+                        "Se preparo un pedido",
+                        65
+                    ],
+                    [
+                        "Se entrego un pedido",
+                        64
+                    ],
+                    [
+                        "Se desocupo la mesa 0",
+                        58
+                    ],
+                    [
+                        "Se ocupo una mesa",
+                        44
+                    ],
+                    [
+                        "Se tomo un pedido",
+                        24
+                    ],
+                    [
+                        "Se cocino un Pancho",
+                        22
+                    ],
+                    [
+                        "Se cocino un Queso",
+                        22
+                    ],
+                    [
+                        "Se preparo un pedido",
+                        21
+                    ],
+                    [
+                        "Se entrego un pedido",
+                        20
+                    ],
+                    [
+                        "Se ocupo una mesa",
+                        18
+                    ],
+                    [
+                        "Se desocupo la mesa 1",
+                        9
+                    ]
+                ]
+            ]
+        }
     ]
 }

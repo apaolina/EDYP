@@ -3,12 +3,12 @@ import time
 from Hasheo import *
 
 
-#Creamos la clase usuario ya que es obligatioro :(
+
     
 class Usuario:
     def ___innit___(self):
-        nombre_usuario = ""
-        contraseña_usuario = ""
+        self.nombre_usuario = ""
+        self.contraseña_usuario = ""
     
     def crear_usuario(self, nombre_usuario, contraseña_usuario):
         self.nombre_usuario = nombre_usuario
