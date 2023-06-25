@@ -62,8 +62,6 @@ class Restaurante():
         for mesa in dict_mesas.values():
             self.mesaManager.crearMesa(int(mesa[1]))
 
-        print(self.mesaManager)
-
         for plato in dict_platos.values():
             self.cocinaManager.agregarPlato(plato[0], int(plato[1]))
         

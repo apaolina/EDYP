@@ -130,6 +130,7 @@ class GrupoClientes():
             instance.grupoManager.gruposSentados.update({self.id:self})
 
         elif(not instance.grupoManager.colaSentar.dentro(self)):
+            instance.infoManager.declararEvento("Se encolo un grupo de clientes")
             instance.grupoManager.colaSentar.encolar(self)
     
     def requestMesa(self) -> None:

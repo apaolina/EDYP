@@ -59,7 +59,7 @@ class DataManager():
             
     def cargarSimulacion(self, usuario:str, nombre: str, cantidad_meseros: str, cantidad_cocineros: str, clientes_por_hora: str,\
                          lista_mesas:dict[str,list[str,str]], lista_platos:dict[str,list[str,str]], tiempo_simulado: str,\
-                            tiempo_por_tick:str, callback:Callable[[bool],None]):
+                            tiempo_por_tick:str, callback:Callable[[bool],None]) -> None:
 
         #try:
             id = 0
@@ -98,7 +98,7 @@ class DataManager():
         #except:
         #    callback(False, None)
 
-    def subirEventos(self, id: int, eventos: list[(str, int)]):
+    def subirEventos(self, id: int, eventos: list[(str, int)]) -> None:
 
 
         with open(self.database,"r+") as file:
@@ -110,3 +110,34 @@ class DataManager():
 
             file.seek(0)
             json.dump(file_data,file,indent = 4)
+
+
+    def getSimulaciones(self, usuario: str) -> list[str]:
+        results = []
+        with open(self.database,"r+") as file:
+            file_data = json.load(file)
+
+            for user in file_data['Simulaciones']:
+                if(user['usuario'] == usuario):
+                    results.append(user['nombre'])
+
+        return results
+    
+    def getSimulacionesCompleto(self, usuario: str, nombre:str):
+        results = {}
+        with open(self.database,"r+") as file:
+            file_data = json.load(file)
+
+            for user in file_data['Simulaciones']:
+                if(user['usuario'] == usuario and user["nombre"] == nombre):
+                    results["cantidad_meseros"] = user["cantidad_meseros"]
+                    results["cantidad_cocineros"] = user["cantidad_cocineros"]
+                    results["clientes_por_hora"] = user["clientes_por_hora"]
+                    results["lista_mesas"] = user["lista_mesas"]
+                    results["lista_platos"] = user["lista_platos"]
+                    results["tiempo_simulado"] = user["tiempo_simulado"]
+                    results["tiempo_por_tick"] = user["tiempo_por_tick"]
+                    results["eventos"] = user["eventos"]
+
+        return results
+

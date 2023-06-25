@@ -44,6 +44,8 @@ class App(tk.Tk):
         self.windowHandler = WindowHandler(self)
         self.userHandler = UserHandler(self)
 
+        self.tempStorage = ""
+
         self.container: tk.Frame
     
     # Funcion que elige al azar el icono de la aplicacion entre las variantes
@@ -516,11 +518,19 @@ class CrearSimulacionFrame(AppWindow):
         self._platoCounter = 0
         
         for mesa in self._mesas:
-            self.__borrar_mesa(mesa)
+            mesa.destroy()
+
+        self._mesas.clear()
+        self._mesas_displayed.clear()
+        self._mesas_dict.clear()
 
         for plato in self._platos:
-            self.__borrar_plato(plato)
+            plato.destroy()
         
+        self._platos.clear()
+        self._platos_displayed.clear()
+        self._platos_dict.clear()
+
         pass
 
     def __loadCallbacks(self) -> None:
@@ -554,6 +564,8 @@ class CrearSimulacionFrame(AppWindow):
         if len(self._mesas) == 0 or len(self._platos) == 0:
             messagebox.showerror("Error", "Debe haber minimo 1 plato y 1 mesa para realizar la simulacion")
             return
+
+        self.app.tempStorage = self._nombre_sim_entry.get()
 
         self.dataManager.cargarSimulacion(self.app.userHandler.userIngresado, self._nombre_sim_entry.get(), self._cant_meseros_entry.get(), self._cant_cocineros_entry.get(),\
                                             self._cant_clientes_entry.get(), self._mesas_dict, self._platos_dict, self._tiempo_sim_entry.get(),\
@@ -807,8 +819,63 @@ class ResultadoSimulacionFrame(AppWindow):
         self.__loadCallbacks()
         self.__loadWidgets()
 
+        self._sim = {}
+        self._inputs = []
+        self._inputs_displayed = []
+
+    def __agregar_input(self, info:str) -> None:
+
+        input = tk.Frame(self)
+        input.rowconfigure(1)
+
+        width = self._sim_canvas.winfo_width()
+        display = self._sim_canvas.create_window(width/2,45*len(self._inputs), anchor=tk.N, window=input)
+
+        input_label = tk.Label(input, width=40,height=1,text=info, font= super().h4)
+        input_label.pack(padx=5, pady=5)
+
+        if(40*len(self._inputs) > self._sim_canvas.winfo_height()):
+            self._sim_canvas.config(scrollregion=(0,0,0,45*(len(self._inputs)+1)))
+
+        self._inputs.append(input)
+        self._inputs_displayed.append(display)
+
     def reset(self) -> None:
-        pass
+        self._sim = self.app.userHandler.dataManager.getSimulacionesCompleto(self.app.userHandler.userIngresado, self.app.tempStorage)
+        for input in self._inputs:
+            input.destroy()
+
+        self._inputs.clear()
+        self._inputs_displayed.clear()
+
+        for k in self._sim.keys():
+            match k:
+                case "cantidad_meseros":
+                    self.__agregar_input("Cantidad de Meseros: " + str(self._sim[k]))
+                case "cantidad_cocineros":
+                    self.__agregar_input("Cantidad de Cocineros: " + str(self._sim[k]))
+                case "clientes_por_hora":
+                    self.__agregar_input("Cantidad de Clientes por Hora: " + str(self._sim[k]))
+                case "lista_mesas":
+                    asientos = []
+                    for mesa in self._sim[k].values():
+                        asientos.append(mesa)
+                    
+                    self.__agregar_input("Cantidad de mesas: " + str(len(self._sim[k])))
+                    self.__agregar_input("Cantidad de asientos c/una: " + str(asientos))
+                case "lista_platos":
+                    for nombre in self._sim[k].keys():
+                        self.__agregar_input("Nombre de Plato: " + nombre)
+                        self.__agregar_input("Tiempo de Coccion: " + str(self._sim[k][nombre]))
+                case "tiempo_simulado":
+                    self.__agregar_input("Tiempo Simulado: " + str(self._sim[k]))
+                case "tiempo_por_tick":
+                    self.__agregar_input("Tiempo por Tick: " + str(self._sim[k]))
+                case "eventos":
+                    self.__agregar_input("Cantidad de Eventos: " + str(len(self._sim[k][0])))
+                case _:
+                    pass
+
 
     def __loadCallbacks(self) -> None:
         pass
@@ -818,17 +885,25 @@ class ResultadoSimulacionFrame(AppWindow):
 
     def __loadWidgets(self) -> None:
         
-        _informacion_label = tk.Label(self, text="Se realizó la simulación correctamente, encontrarán los datos generados en el archivo database.json")
-        _informacion_label.grid(row=1,column=2)
+        self._informacion_label = tk.Label(self, text="Se realizó la simulación correctamente, encontrarán los datos generados en el archivo database.json")
+        self._informacion_label.grid(row=1,column=2)
 
-        _mensaje_aparte_label = tk.Label(self, text="El plan era visualizar con graficos la informacion generada aqui pero como pueden ver fuimos demasiado ambiciosos!")
-        _mensaje_aparte_label.grid(row=2, column=2)
+        self._sim_display_frame = tk.Frame(self, height= 2*self.winfo_reqheight()/3, width=self.winfo_reqwidth())
+        self._sim_display_frame.grid(row=2, column=2)
 
-        _volver_menu_ppal_button = tk.Button(self, text="Volver al Menu Principal", command = self.volver_menu_ppal)
-        _volver_menu_ppal_button.grid(row=3,column=2)
-        pass
+        self._sim_canvas = tk.Canvas(self._sim_display_frame)
 
-class TodasSimulacionesFrame(AppWindow): # No se llego
+        self._sim_canvas_vbar = tk.Scrollbar(self._sim_display_frame, orient=tk.VERTICAL, command=self._sim_canvas.yview)
+        self._sim_canvas_vbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+        self._sim_canvas.config(yscrollcommand=self._sim_canvas_vbar.set)
+        self._sim_canvas.pack(side=tk.LEFT, expand=True, fill= tk.BOTH)
+
+        self._volver_menu_ppal_button = tk.Button(self, text="Volver al Menu Principal", command = self.volver_menu_ppal)
+        self._volver_menu_ppal_button.grid(row=3,column=2)
+        
+
+class TodasSimulacionesFrame(AppWindow):
 
     def __init__(self, master: tk.Tk, app: App, *args, **kwargs) -> None:
         super().__init__(master, app, *args, **kwargs)
@@ -836,8 +911,44 @@ class TodasSimulacionesFrame(AppWindow): # No se llego
         self.__loadCallbacks()
         self.__loadWidgets()
 
-    
+        self._simulaciones: list[tk.Frame] = []
+        self._sims_displayed: list[int] = []
+
+    def __ver_resultados(self, nombre: str) -> None:
+        self.app.tempStorage = nombre
+        self.app.windowHandler.cambiarWindow(WindowState.RESULTS_SIMULATION)
+
+    def __agregar_sim(self, nombre:str) -> None:
+
+        simulacion = tk.Frame(self)
+        simulacion.columnconfigure(3)
+        simulacion.rowconfigure(1)
+
+        width = self._sim_canvas.winfo_width()
+        display = self._sim_canvas.create_window(width/2,70*len(self._simulaciones), anchor=tk.N, window=simulacion)
+
+        sim_button = tk.Button(simulacion, width=20,height=1,text=nombre, font= super().h2, command=lambda:self.__ver_resultados(nombre))
+        sim_button.pack(padx=5, pady=5)
+
+        if(40*len(self._simulaciones) > self._sim_canvas.winfo_height()):
+            self._sim_canvas.config(scrollregion=(0,0,0,70*(len(self._simulaciones)+1)))
+
+        self._simulaciones.append(simulacion)
+        self._sims_displayed.append(display)
+
+
     def reset(self):
+
+        for sim in self._simulaciones:
+            sim.destroy()
+
+        self._simulaciones.clear()
+        self._sims_displayed.clear()
+
+        listaSim = self.app.userHandler.dataManager.getSimulaciones(self.app.userHandler.userIngresado)
+        for sim in listaSim:
+            self.__agregar_sim(sim)
+
         pass
 
     def __loadCallbacks(self) -> None:
@@ -847,6 +958,17 @@ class TodasSimulacionesFrame(AppWindow): # No se llego
         self.app.windowHandler.cambiarWindow(WindowState.MAIN_MENU)
 
     def __loadWidgets(self) -> None:
+
+        self._sim_display_frame = tk.Frame(self, height= 2*self.winfo_reqheight()/3, width=self.winfo_reqwidth())
+        self._sim_display_frame.grid(row=1, rowspan=2, column=1,columnspan=3)
+
+        self._sim_canvas = tk.Canvas(self._sim_display_frame)
+
+        self._sim_canvas_vbar = tk.Scrollbar(self._sim_display_frame, orient=tk.VERTICAL, command=self._sim_canvas.yview)
+        self._sim_canvas_vbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+        self._sim_canvas.config(yscrollcommand=self._sim_canvas_vbar.set)
+        self._sim_canvas.pack(side=tk.LEFT, expand=True, fill= tk.BOTH)
         _go_back_button = tk.Button(self, text="Go Back", command = self.go_back)
-        _go_back_button.pack()
+        _go_back_button.grid(row=3,column=2)
         pass
