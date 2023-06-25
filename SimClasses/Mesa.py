@@ -10,11 +10,12 @@ class EstadoMesa(Enum):
 class Mesa:
     totalMesas = 0
     
-    def __init__(self, capacidad):
+    def __init__(self, capacidad: int) -> None:
         self.id = Mesa.totalMesas
         Mesa.totalMesas += 1
         self.capacidad = capacidad
         self.estado = EstadoMesa.DESOCUPADO
+        self.grupoClientes = None
 
     def ocupar(self) -> None:
         self.estado = EstadoMesa.OCUPADO

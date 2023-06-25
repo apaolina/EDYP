@@ -1,4 +1,4 @@
-from SimClasses import instance
+from SimClasses import  instance
 import time
 import sys
 from Hasheo import *
@@ -20,9 +20,10 @@ class Simulador:
         self.clientes_generados = 0
         self.tiempo = 0
         self.usuario = Usuario()
-        self.mesas = {}
+        self.mesas: dict[str, list[str]] = {}
         self.lista_mesas = []
         self._mesas_dict: dict[str,list[str,list]] = {}
+        self.instance = instance
         
 
     def opcion_tres(self):
@@ -74,20 +75,20 @@ class Simulador:
         print('|')
         print("----------------------------------------")
         print("|Resultados de la simulación:")
-        print(f"|grupos: {instance.grupoManager.getCantidadGrupoClientes()}")
-        print(f"|en cola: {instance.grupoManager.colaSentar.totalnodos}")
-        print("|" + str(instance.mesaManager.verEstadoMesas()))
-        print("|" +str(instance.cocinaManager.inventario))
+        print(f"|grupos: {self.instance.grupoManager.getCantidadGrupoClientes()}")
+        print(f"|en cola: {self.instance.grupoManager.colaSentar.totalnodos}")
+        print("|" + str(self.instance.mesaManager.verEstadoMesas()))
+        print("|" +str(self.instance.cocinaManager.inventario))
         print("|" + str(end-start))
-        self.clientes = instance.grupoManager.getCantidadGrupoClientes()
-        self.clientes_generados = instance.grupoManager.getCantidadNClientes()
+        self.clientes = self.instance.grupoManager.getCantidadGrupoClientes()
+        self.clientes_generados = self.instance.grupoManager.getCantidadNClientes()
         print('|')
         print("|Los resultados se han almacenado con éxito en resultadosSim.txt")
         self.registrar_resultados()
         exit()
     
     def no_hago_nada(self):
-        return print("|Sim finalizada")
+        print("|Sim finalizada")
 
     def empezar_simulacion(self):
         print('|')
@@ -100,7 +101,7 @@ class Simulador:
         tiempoSimulacion = int(tiempoSimulacion)
         self.tiempo = tiempoSimulacion
         start = time.time()
-        instance.simular(self.cantidad_mozos, self.cantidad_cocineros, cantidad_clientes= 10, dict_mesas= self.mesas, dict_platos= {0:['Hamburguesa', 35], 1: ['Pancho', 35]}, tiempoSimulacionInput= self.tiempo, tiempoPorTick = 1, callback= self.no_hago_nada, id = 9999)
+        self.instance.simular(self.cantidad_mozos, self.cantidad_cocineros, cantidad_clientes= 10, dict_mesas= self.mesas, dict_platos= {0:['Hamburguesa', 35], 1: ['Pancho', 35]}, tiempoSimulacionInput= self.tiempo, tiempoPorTick = 1, callback= self.no_hago_nada, id = 9999)
         end = time.time()
         self.resultado_simulacion(start, end)
 
@@ -119,7 +120,7 @@ class Simulador:
             print("|Ingrese el nombre del cocinero " + str(i) + ":")
             nombre_cocinero = input('|>>  ')
             nombres_Cocineros.append(nombre_cocinero)
-            instance.empleadoManager.crearCocinero(nombre_cocinero)
+            
         print("|Ha creado " + str(numero_cocineros) + " cocineros con exito")
         print("|Nombres de los cocineros creados:")
         for nombre in nombres_Cocineros:
@@ -140,7 +141,7 @@ class Simulador:
             print("|Ingrese el nombre del mozo " + str(i) + ":")
             nombre_mozo = input('|>>  ')
             nombres_Mozos.append(nombre_mozo)
-            instance.empleadoManager.crearMesero(nombre_mozo)
+
         print("|Ha creado " + str(numero_mozos) + " mozos con exito")
         print("|Nombres de los mozos creados:")
         for nombre in nombres_Mozos:
@@ -180,14 +181,11 @@ class Simulador:
             
             capacidad_mesas = int(capacidad_mesas)
             
-            dict_mesas: dict[str, str] = {}
-            
-            for v in self._mesas_dict.values():
-                dict_mesas[v[0]] = v[1]
+            for mesa in range(mesas):
+                self.mesas[mesa] = [mesa,capacidad_mesas]
             
             print('|')
             print("|Ha creado " + str(mesas) + " mesas de " + str(capacidad_mesas) + " personas cada una")
-            
             
             self.crear_empleados()
         if respuesta == "2":
@@ -201,12 +199,7 @@ class Simulador:
         
                 capacidad_mesas = int(capacidad_mesas)
                 
-                instance.mesaManager.crearMesa(capacidad_mesas)
-            
-            dict_mesas: dict[str, str] = {}
-            
-            for v in self._mesas_dict.values():
-                dict_mesas[v[0]] = v[1]
+                self.mesas[i] = [i,capacidad_mesas]
                 
             print('|')
             print("|Ha creado " + str(mesas) + " mesas de diferentes capacidades")

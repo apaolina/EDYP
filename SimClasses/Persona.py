@@ -116,8 +116,6 @@ class GrupoClientes():
                 instance.mesaManager.desocuparMesa(self.mesa)
 
     def __responseMesa(self, resultado: bool, id: int) -> None:
-        import sys
-        sys.path.insert(0, 'SimClasses')
         from RestauranteManager import instance
 
         if(resultado):
@@ -135,8 +133,6 @@ class GrupoClientes():
             instance.grupoManager.colaSentar.encolar(self)
     
     def requestMesa(self) -> None:
-        import sys
-        sys.path.insert(0, 'SimClasses')
         from RestauranteManager import instance
 
         if(self.estado != EstadoGC.ESPERANDO_MESA):
@@ -202,8 +198,6 @@ class Mesero(Empleado):
         self.contadorParaAccion = tiempo_aleatorio_normal(5,3) # Otra instancia donde necesitamos aleatorizar el tiempo
     
     def __requestPlatos(self) -> None:
-        import sys
-        sys.path.insert(0, 'SimClasses')
         from RestauranteManager import instance
         if(self.estado != EstadoMesero.ESPERANDO_ACCION):
             raise Exception(f"Mesero {self.id} ya esta ocupado")
@@ -211,8 +205,6 @@ class Mesero(Empleado):
         instance.cocinaManager.requestPlatos(self.__responsePlatos)
 
     def __requestPedido(self) -> None:
-        import sys
-        sys.path.insert(0, 'SimClasses')
         from RestauranteManager import instance
         if(self.estado != EstadoMesero.ESPERANDO_ACCION):
             raise Exception(f"Mesero {self.id} ya esta ocupado")
@@ -289,8 +281,6 @@ class Cocinero(Empleado):
         if(self.estado != EstadoCocinero.ESPERANDO_ACCION):
             raise Exception(f"Cocinero {self.id} ya esta cocinando")
         
-        import sys
-        sys.path.insert(0, 'SimClasses')
         from RestauranteManager import instance
         instance.cocinaManager.requestCocinar(self.responseCocinar)
         

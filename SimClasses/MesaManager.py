@@ -10,7 +10,8 @@ class MesaManager():
 
     def crearMesa(self, capacidad:int) -> Mesa:
         nuevaMesa = Mesa(capacidad)
-        self.mesas.update({nuevaMesa.getId():nuevaMesa})
+        self.mesas[nuevaMesa.getId()] = nuevaMesa
+
         return nuevaMesa
     
     def eliminarMesa(self, id: int) -> None:
@@ -18,10 +19,15 @@ class MesaManager():
 
     def requestMesa(self, cantidad: int, response) -> None:
         # Busca dentro de la lista de todas las mesas una que este desocupada y que tenga la capacidad para el grupo que pide
+        print(self)
         encontroMesa = False
         mesaId = -1
+
         for id in range(len(self.mesas)):
+            print(f"criterio 1:{id in self.mesas}")
             if(id in self.mesas):
+                print(f"criterio 2:{(self.mesas[id].getEstado() == EstadoMesa.DESOCUPADO)}")
+                print(f"criterio 3:{(self.mesas[id].getCapacidad() >= cantidad)}")
                 if((self.mesas[id].getEstado() == EstadoMesa.DESOCUPADO) and\
                     (self.mesas[id].getCapacidad() >= cantidad)):
                     encontroMesa = True
@@ -54,5 +60,5 @@ class MesaManager():
         
         return {"Desocupado": a, "Ocupado": b, "Sucio": c}
     
-    def __str__(self) -> str:
-        return f"Mesas: {self.mesas}"
+    #def __str__(self) -> str:
+    #    return f"Mesas: {self.mesas}"

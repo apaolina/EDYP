@@ -11,6 +11,7 @@ class InfoManager():
     def declararEvento(self, evento:str) -> None:
         from RestauranteManager import instance
         self.eventos.append((evento, instance.tiempoSimulacion))
+        print(evento)
 
     def subirEventos(self, id:int) -> None:
         self.dataManager.subirEventos(id, self.eventos)
